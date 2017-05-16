@@ -1,0 +1,4 @@
+11 May 2017 18:58:06,258 INFO  ~ Starting C:\Users\Lemur\workspace\PI\project4\.
+11 May 2017 18:58:07,552 WARN  ~ You're running Play! in DEV mode
+11 May 2017 18:58:11,025 INFO  ~ Connected to jdbc:jtds:sqlserver://localhost/ra199-2012 for default
+11 May 2017 18:58:12,287 INFO  ~ Application 'project' is now started !
