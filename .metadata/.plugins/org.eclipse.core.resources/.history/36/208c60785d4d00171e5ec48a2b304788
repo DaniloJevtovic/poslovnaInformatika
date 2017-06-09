@@ -1,0 +1,20 @@
+package models;
+
+import java.sql.Date;
+
+import play.db.jpa.Model;
+
+public class DnevnoStanjeRacuna extends Model {
+
+	public Long brojIzvoda;
+	public Date datumPrometa;
+	public long predhodnoStanje;
+	public long prometUKorist;
+	public long prometNaTeret;
+	public long novoStanje;
+	
+	public DnevnoStanjeRacuna() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,30 @@
+package models;
+
+import java.sql.Date;
+
+import play.db.jpa.Model;
+
+public class AnalitikaIzvoda extends Model {
+
+	public long brojStavke;
+	public String duzNalogodavac;
+	public String povjerPrimalac;
+	public Date datumPrijema;
+	public Date datumValute;
+	public String racunDuznika;
+	public int modelZaduzenja;
+	public String pozNaBrojZaduzenja;
+	public String racunPovjerioca;
+	public int modelOdobrenja;
+	public String pozNaBrojOdobrenja;
+	public boolean hitno;
+	public long iznos;
+	public int tipGreske;
+	public char status;
+	
+	
+	public AnalitikaIzvoda() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class AnalitikaIzvoda extends Model {
+
+	public AnalitikaIzvoda() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

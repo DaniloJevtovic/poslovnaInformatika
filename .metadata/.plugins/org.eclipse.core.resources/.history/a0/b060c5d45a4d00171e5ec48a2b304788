@@ -1,0 +1,9 @@
+package models;
+
+public class KursnaLista {
+
+	public KursnaLista() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

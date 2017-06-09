@@ -1,0 +1,9 @@
+package models;
+
+public class Valute {
+
+	public Valute() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

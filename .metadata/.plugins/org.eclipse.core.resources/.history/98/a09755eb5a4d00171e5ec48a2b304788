@@ -1,0 +1,9 @@
+package models;
+
+public class KursUValuti extends Model {
+
+	public KursUValuti() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

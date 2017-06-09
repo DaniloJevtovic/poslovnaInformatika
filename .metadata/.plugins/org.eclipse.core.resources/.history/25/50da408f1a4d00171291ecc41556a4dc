@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Banka extends Model {
+
+	public Banka() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

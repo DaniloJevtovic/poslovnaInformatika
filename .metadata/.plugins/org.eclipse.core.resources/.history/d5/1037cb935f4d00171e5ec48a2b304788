@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Ukidanje extends Model {
+
+	public Ukidanje() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

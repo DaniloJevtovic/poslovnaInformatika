@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Klijent extends Model {
+
+	public Klijent() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

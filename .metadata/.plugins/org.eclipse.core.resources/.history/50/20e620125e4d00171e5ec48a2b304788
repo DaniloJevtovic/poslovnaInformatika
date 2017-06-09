@@ -1,0 +1,21 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Klijent extends Model {
+
+	public String tipKlijenta;
+	public String nazivKlijenta;
+	public String imeKlijenta;
+	public String prezimeKlijenta;
+	public String telefonKlijenta;
+	public String adresaKlijenta;
+	public String webKlijenta;
+	public String emailKlijenta;
+	public String faksKlijenta;
+	
+	public Klijent() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

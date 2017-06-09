@@ -1,0 +1,21 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Banka extends Model {
+
+	public int idBanke;
+	public String sifraBanke;
+	public String PIBBanke;
+	public String nazivBanke;
+	public String adresaBanke;
+	public String telefonBanke;
+	public String emailBanke;
+	public String webBanke;
+	public String faksBanke;
+	
+	public Banka() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

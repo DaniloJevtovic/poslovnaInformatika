@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class DnevnoStanjeRacuna extends Model {
+
+	public DnevnoStanjeRacuna() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

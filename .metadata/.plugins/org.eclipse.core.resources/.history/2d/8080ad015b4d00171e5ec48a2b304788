@@ -1,0 +1,9 @@
+package models;
+
+public class MedjubankarskiPrenos extends Model {
+
+	public MedjubankarskiPrenos() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

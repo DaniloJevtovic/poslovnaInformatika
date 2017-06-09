@@ -1,0 +1,18 @@
+package models;
+
+import java.sql.Date;
+
+import play.db.jpa.Model;
+
+public class Racuni extends Model{
+
+	public int idRacuna;
+	public String brojRacuna;
+	public Date datumOtvaranja;
+	public boolean vazeci;
+	
+	public Racuni() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

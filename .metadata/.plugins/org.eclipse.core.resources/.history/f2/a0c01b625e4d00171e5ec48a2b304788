@@ -1,0 +1,14 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class KursnaLista extends Model{
+
+	public int idKursneListe;
+	pu
+	
+	public KursnaLista() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

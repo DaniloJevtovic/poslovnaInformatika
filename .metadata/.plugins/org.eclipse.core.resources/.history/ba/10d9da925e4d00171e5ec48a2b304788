@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class KursUValuti extends Model {
+
+	public KursUValuti() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

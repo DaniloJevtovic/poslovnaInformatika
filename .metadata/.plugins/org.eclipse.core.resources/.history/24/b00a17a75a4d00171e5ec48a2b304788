@@ -1,0 +1,9 @@
+package models;
+
+public class Banka {
+
+	public Banka() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

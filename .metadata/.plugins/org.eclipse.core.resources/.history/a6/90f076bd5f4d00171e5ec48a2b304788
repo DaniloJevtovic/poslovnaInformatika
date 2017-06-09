@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Valute extends Model{
+
+	public Valute() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

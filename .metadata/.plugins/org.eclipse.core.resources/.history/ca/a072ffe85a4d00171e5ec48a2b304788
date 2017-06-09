@@ -1,0 +1,9 @@
+package models;
+
+public class KursUValuti {
+
+	public KursUValuti() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

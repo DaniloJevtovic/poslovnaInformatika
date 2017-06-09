@@ -1,0 +1,9 @@
+package models;
+
+public class VrstePlacanja extends Model {
+
+	public VrstePlacanja() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

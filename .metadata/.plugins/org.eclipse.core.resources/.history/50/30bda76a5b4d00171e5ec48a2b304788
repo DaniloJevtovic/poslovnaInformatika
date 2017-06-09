@@ -1,0 +1,9 @@
+package models;
+
+public class StavkaKliringa {
+
+	public StavkaKliringa() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

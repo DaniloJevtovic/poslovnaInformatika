@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class MedjubankarskiPrenos extends Model {
+
+	public MedjubankarskiPrenos() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

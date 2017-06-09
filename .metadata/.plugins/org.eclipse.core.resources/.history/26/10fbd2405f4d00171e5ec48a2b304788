@@ -1,0 +1,11 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class Racuni extends Model{
+
+	public Racuni() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

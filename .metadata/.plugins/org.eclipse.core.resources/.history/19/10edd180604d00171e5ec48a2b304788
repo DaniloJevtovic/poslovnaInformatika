@@ -1,0 +1,16 @@
+package models;
+
+import play.db.jpa.Model;
+
+public class AnalitikaIzvoda extends Model {
+
+	public long brojStavke;
+	public String duzNalogodavac;
+	public String povjerPrimalac;
+	
+	
+	public AnalitikaIzvoda() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

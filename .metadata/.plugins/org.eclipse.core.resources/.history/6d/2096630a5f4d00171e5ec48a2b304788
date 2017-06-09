@@ -1,0 +1,18 @@
+package models;
+
+import java.sql.Date;
+
+import play.db.jpa.Model;
+
+public class MedjubankarskiPrenos extends Model {
+
+	public String idKliringa;
+	public Date datumKliringa;
+	public String swiftKodBankeDuz;
+	
+	
+	public MedjubankarskiPrenos() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

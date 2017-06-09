@@ -1,0 +1,9 @@
+package models;
+
+public class Ukidanje {
+
+	public Ukidanje() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

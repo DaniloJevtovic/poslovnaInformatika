@@ -1,0 +1,19 @@
+package models;
+
+import java.sql.Date;
+
+import play.db.jpa.Model;
+
+public class KursnaLista extends Model{
+
+	public int idKursneListe;
+	public Date datumKursneListe;
+	public int brojKursneListe;
+	public Date primSeOd;
+	public Date primSeDo;
+	
+	public KursnaLista() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
