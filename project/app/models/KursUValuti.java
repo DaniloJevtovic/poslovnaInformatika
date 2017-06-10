@@ -4,7 +4,7 @@ import play.db.jpa.Model;
 
 public class KursUValuti extends Model {
 
-	public int kursUValuti;
+	public int redniBroj;
 	public long kupovni;
 	public long srednji;
 	public long prodajni;
@@ -13,9 +13,9 @@ public class KursUValuti extends Model {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public KursUValuti(int kursUValuti, long kupovni, long srednji, long prodajni) {
+	public KursUValuti(int redniBroj, long kupovni, long srednji, long prodajni) {
 		super();
-		this.kursUValuti = kursUValuti;
+		this.redniBroj = redniBroj;
 		this.kupovni = kupovni;
 		this.srednji = srednji;
 		this.prodajni = prodajni;

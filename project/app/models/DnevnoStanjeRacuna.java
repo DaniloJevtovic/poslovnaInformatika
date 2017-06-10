@@ -14,6 +14,10 @@ public class DnevnoStanjeRacuna extends Model {
 	public long prometNaTeret;
 	public long novoStanje;
 	
+	public DnevnoStanjeRacuna() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public DnevnoStanjeRacuna(Long brojIzvoda, Date datumPrometa, long predhodnoStanje, long prometUKorist,
 			long prometNaTeret, long novoStanje) {
 		// TODO Auto-generated constructor stub

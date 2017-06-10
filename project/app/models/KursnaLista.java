@@ -9,8 +9,8 @@ public class KursnaLista extends Model{
 	public int idKursneListe;
 	public Date datumKursneListe;
 	public int brojKursneListe;
-	public Date primSeOd;
-	public Date primSeDo;
+	public Date primSeOd;	//primjenjuje se od
+	public Date primSeDo;	//primjenjuje se do
 	
 	public KursnaLista() {
 		// TODO Auto-generated constructor stub

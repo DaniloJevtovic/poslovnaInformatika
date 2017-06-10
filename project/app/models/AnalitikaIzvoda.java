@@ -8,6 +8,7 @@ public class AnalitikaIzvoda extends Model {
 
 	public long brojStavke;
 	public String duzNalogodavac;
+	public String svrhaPlacanja;
 	public String povjerPrimalac;
 	public Date datumPrijema;
 	public Date datumValute;
@@ -27,8 +28,8 @@ public class AnalitikaIzvoda extends Model {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public AnalitikaIzvoda(long brojStavke, String duzNalogodavac, String povjerPrimalac, Date datumPrijema,
-			Date datumValute, String racunDuznika, int modelZaduzenja, String pozNaBrojZaduzenja,
+	public AnalitikaIzvoda(long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
+			Date datumPrijema, Date datumValute, String racunDuznika, int modelZaduzenja, String pozNaBrojZaduzenja,
 			String racunPovjerioca, int modelOdobrenja, String pozNaBrojOdobrenja, boolean hitno, long iznos,
 			int tipGreske, char status) {
 		super();
