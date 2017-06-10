@@ -1,6 +1,9 @@
 package models;
 
 import java.sql.Date;
+import java.util.List;
+
+import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
@@ -14,6 +17,9 @@ public class MedjubankarskiPrenos extends Model {
 	public String racBankePovj;
 	public long ukupanIznos;
 	public String vrstaPrenosa;
+	
+	@OneToMany(mappedBy = "medjuBankarskiPrenos")
+	public List<StavkaKliringa> stavkeKliringa;
 
 	public MedjubankarskiPrenos() {
 		// TODO Auto-generated constructor stub

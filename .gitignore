@@ -55,3 +55,4 @@ RemoteSystemsTempFiles/.project
 .metadata/.plugins/org.eclipse.core.resources/3.snap
 .metadata/version.ini
 *.snap
+project/tmp/bytecode/DEV/controllers.Valute

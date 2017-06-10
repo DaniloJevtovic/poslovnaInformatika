@@ -42,13 +42,13 @@ INDEX VERSION 1.130+C:\Users\Lemur\GIT\poslovnaInformatika\.metadata\.plugins\or
 4048551542.index
 2798818236.index
 484677605.index
-222837346.index
-3581163120.index
 2936170451.index
+3581163120.index
+222837346.index
 2310654041.index
 2040463399.index
-565899265.index
 3503261099.index
+565899265.index
 1765954736.index
 1496281281.index
 2033839043.index

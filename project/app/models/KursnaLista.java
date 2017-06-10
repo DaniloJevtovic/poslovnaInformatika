@@ -2,6 +2,8 @@ package models;
 
 import java.sql.Date;
 
+import javax.persistence.ManyToOne;
+
 import play.db.jpa.Model;
 
 public class KursnaLista extends Model{
@@ -11,6 +13,9 @@ public class KursnaLista extends Model{
 	public int brojKursneListe;
 	public Date primSeOd;	//primjenjuje se od
 	public Date primSeDo;	//primjenjuje se do
+	
+	@ManyToOne
+	public Banka banka;
 	
 	public KursnaLista() {
 		// TODO Auto-generated constructor stub

@@ -7,7 +7,23 @@
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="play.mvc.Controller"/>
-<fullyQualifiedTypeName name="models.Banka"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="models.KursnaLista"/>
+<fullyQualifiedTypeName name="models.Ukidanje"/>
+<fullyQualifiedTypeName name="models.Banka"/>
+<fullyQualifiedTypeName name="models.Klijent"/>
+<fullyQualifiedTypeName name="models.MedjubankarskiPrenos"/>
+<fullyQualifiedTypeName name="models.Drzava"/>
+<fullyQualifiedTypeName name="models.KursUValuti"/>
+<fullyQualifiedTypeName name="models.Racun"/>
+<fullyQualifiedTypeName name="org.omg.CORBA.PUBLIC_MEMBER"/>
+<fullyQualifiedTypeName name="models.AnalitikaIzvoda"/>
+<fullyQualifiedTypeName name="models.VrstaPlacanja"/>
+<fullyQualifiedTypeName name="models.NaseljenoMesto"/>
+<fullyQualifiedTypeName name="models.Valuta"/>
+<fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
 <fullyQualifiedTypeName name="models.DnevnoStanjeRacuna"/>
+<fullyQualifiedTypeName name="javax.persistence.OneToMany"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="models.StavkaKliringa"/>
 </qualifiedTypeNameHistroy>

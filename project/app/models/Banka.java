@@ -1,5 +1,7 @@
 package models;
 
+import javax.persistence.OneToMany;
+
 import play.db.jpa.Model;
 
 public class Banka extends Model {
@@ -13,6 +15,12 @@ public class Banka extends Model {
 	public String emailBanke;
 	public String webBanke;
 	public String faksBanke;
+	
+	@OneToMany(mappedBy = "banka")
+	public KursnaLista kursnaLista;
+	
+	@OneToMany(mappedBy = "banka")
+	public Racun racun;
 	
 	public Banka() {
 		// TODO Auto-generated constructor stub

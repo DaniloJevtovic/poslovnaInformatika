@@ -1,6 +1,10 @@
 package models;
 
 import java.sql.Date;
+import java.util.List;
+
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
@@ -22,6 +26,21 @@ public class AnalitikaIzvoda extends Model {
 	public long iznos;
 	public int tipGreske;
 	public char status;
+	
+	@ManyToOne
+	public VrstaPlacanja vrstaPlacanja;
+	
+	@ManyToOne
+	public NaseljenoMesto naseljenoMesto;
+	
+	@ManyToOne
+	public Valuta valuta;
+	
+	@ManyToOne
+	public DnevnoStanjeRacuna dnevnoStanjeRacuna;
+	
+	@OneToMany(mappedBy = "analitikaIzvoda")
+	public List<StavkaKliringa> stavkeKliringa;
 	
 	
 	public AnalitikaIzvoda() {

@@ -1,6 +1,10 @@
 package models;
 
 import java.sql.Date;
+import java.util.List;
+
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 import sun.util.logging.resources.logging;
@@ -13,6 +17,12 @@ public class DnevnoStanjeRacuna extends Model {
 	public long prometUKorist;
 	public long prometNaTeret;
 	public long novoStanje;
+	
+	@ManyToOne
+	public Racun racun;
+	
+	@OneToMany(mappedBy = "dnevnoStanjeRacuna")
+	public List<AnalitikaIzvoda> analitikeIzvoda;
 	
 	public DnevnoStanjeRacuna() {
 		// TODO Auto-generated constructor stub
