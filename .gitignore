@@ -46,12 +46,37 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Ovo mi treba jer sam greskom u eclipsu otvorio poslovnaInformatika kao projekat pa ih je eclipse napravio
+# Ti ih izbaci ako ti ne trebaju : Stevan
 /.classpath
 /.project
 /.settings
 
+# Ovo sam nasao na internetu kao sample .gitignore za play framework
+# Gledao sam na dva mjesta na iternetu
+# Na jednom mjestu je pisalo da /project/eclipse treba izbaciti
+# A na drugom nije; ja sam ga izbacio : Stevan
 /project/.classpath
 /project/.project
 /project/.settings
 /project/tmp
 /project/eclipse
+
+# Ovo si ti dodao u .gitignore pa sam ja zakomentarisao : Stevan
+
+# RemoteSystemsTempFiles/.project
+# .metadata/.plugins/org.eclipse.epp.logging.aeri.ide/org.eclipse.epp.logging.aeri.ide.server/http-cache/write.lock
+# .metadata/.plugins/org.eclipse.core.resources/3.snap
+# .metadata/.log
+# .metadata/.plugins/org.eclipse.core.resources/.projects/project/.markers.snap
+# .metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/org.eclipse.egit.core/GitProjectData.properties
+# *.resources
+# .metadata/.plugins/org.eclipse.core.resources/3.snap
+# .metadata/version.ini
+# *.snap
+# project/tmp/bytecode/DEV/controllers.Valute
+
+#Ovo sam ja uzeo tvoje pa uskladio sa mojim : Stevan
+/.metadata
+*.resources
+*.snap

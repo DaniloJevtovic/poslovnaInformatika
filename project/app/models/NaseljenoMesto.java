@@ -4,6 +4,7 @@ import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import play.data.validation.Max;
 import play.db.jpa.Model;
@@ -17,6 +18,9 @@ public class NaseljenoMesto extends Model {
 	
 	@ManyToOne
 	public Drzava drzava;
+	
+	@OneToMany(mappedBy = "naseljenoMjesto")
+	public List<AnalitikaIzvoda> analitikeIzvoda;
 	
 	public NaseljenoMesto(String oznaka, String naziv, String postanskiBroj, Drzava drzava) {
 		// TODO Auto-generated constructor stub

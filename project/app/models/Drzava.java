@@ -20,6 +20,9 @@ public class Drzava extends Model {
 	@OneToMany(mappedBy = "drzava")
 	public List<NaseljenoMesto> naseljenaMesta;
 	
+	@OneToMany(mappedBy = "drzava")
+	public List<Valuta> valute;
+	
 	public Drzava(String oznaka, String naziv){
 		super();
 		this.oznaka = oznaka;
