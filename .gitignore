@@ -45,3 +45,13 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+RemoteSystemsTempFiles/.project
+.metadata/.plugins/org.eclipse.epp.logging.aeri.ide/org.eclipse.epp.logging.aeri.ide.server/http-cache/write.lock
+.metadata/.plugins/org.eclipse.core.resources/3.snap
+.metadata/.log
+.metadata/.plugins/org.eclipse.core.resources/.projects/project/.markers.snap
+.metadata/.plugins/org.eclipse.core.resources/.projects/RemoteSystemsTempFiles/org.eclipse.egit.core/GitProjectData.properties
+*.resources
+.metadata/.plugins/org.eclipse.core.resources/3.snap
+.metadata/version.ini
+*.snap
