@@ -2,10 +2,12 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
+@Entity
 public class Klijent extends Model {
 
 	public String tipKlijenta;

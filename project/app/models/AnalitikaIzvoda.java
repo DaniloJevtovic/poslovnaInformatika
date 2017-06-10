@@ -3,11 +3,13 @@ package models;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
+@Entity
 public class AnalitikaIzvoda extends Model {
 
 	public long brojStavke;
@@ -31,7 +33,7 @@ public class AnalitikaIzvoda extends Model {
 	public VrstaPlacanja vrstaPlacanja;
 	
 	@ManyToOne
-	public NaseljenoMesto naseljenoMesto;
+	public NaseljenoMesto naseljenoMjesto;
 	
 	@ManyToOne
 	public Valuta valuta;

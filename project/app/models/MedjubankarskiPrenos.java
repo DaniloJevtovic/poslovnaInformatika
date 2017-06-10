@@ -3,10 +3,12 @@ package models;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
+@Entity
 public class MedjubankarskiPrenos extends Model {
 
 	public String idKliringa;
@@ -18,7 +20,7 @@ public class MedjubankarskiPrenos extends Model {
 	public long ukupanIznos;
 	public String vrstaPrenosa;
 	
-	@OneToMany(mappedBy = "medjuBankarskiPrenos")
+	@OneToMany(mappedBy = "medjubankarskiPrenos")
 	public List<StavkaKliringa> stavkeKliringa;
 
 	public MedjubankarskiPrenos() {

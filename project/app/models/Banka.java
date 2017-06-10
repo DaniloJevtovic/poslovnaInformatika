@@ -1,9 +1,13 @@
 package models;
 
+import java.util.List;
+
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
+@Entity
 public class Banka extends Model {
 
 	public int idBanke;
@@ -17,10 +21,10 @@ public class Banka extends Model {
 	public String faksBanke;
 	
 	@OneToMany(mappedBy = "banka")
-	public KursnaLista kursnaLista;
+	public List<KursnaLista> kursnaLista;
 	
 	@OneToMany(mappedBy = "banka")
-	public Racun racun;
+	public List<Racun> racun;
 	
 	public Banka() {
 		// TODO Auto-generated constructor stub
