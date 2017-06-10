@@ -1,0 +1,9 @@
+package controllers;
+
+public class StavkeKliringa {
+
+	public StavkeKliringa() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

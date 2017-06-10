@@ -1,0 +1,9 @@
+package controllers;
+
+public class KurseviUValuti {
+
+	public KurseviUValuti() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

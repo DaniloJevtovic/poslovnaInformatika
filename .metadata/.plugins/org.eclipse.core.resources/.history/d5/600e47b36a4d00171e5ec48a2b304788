@@ -1,0 +1,9 @@
+package controllers;
+
+public class VrstePlacanja {
+
+	public VrstePlacanja() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

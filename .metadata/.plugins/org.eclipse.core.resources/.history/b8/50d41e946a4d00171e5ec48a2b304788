@@ -1,0 +1,9 @@
+package controllers;
+
+public class DnevnaStanjaRacuna {
+
+	public DnevnaStanjaRacuna() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

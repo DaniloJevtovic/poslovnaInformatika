@@ -1,0 +1,11 @@
+package controllers;
+
+import play.mvc.Controller;
+
+public class Valute2 extends Controller {
+
+	public Valute2() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

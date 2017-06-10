@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.dom4j.rule.Mode"/>
 <fullyQualifiedTypeName name="play.db.jpa.Model"/>
+<fullyQualifiedTypeName name="java.lang.Long"/>
+<fullyQualifiedTypeName name="sun.util.logging.resources.logging"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.sql.Date"/>
+<fullyQualifiedTypeName name="play.mvc.Controller"/>
+<fullyQualifiedTypeName name="models.Banka"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="models.DnevnoStanjeRacuna"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,9 @@
+package controllers;
+
+public class KursneListe {
+
+	public KursneListe() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

@@ -1,0 +1,9 @@
+package controllers;
+
+public class Valute2 {
+
+	public Valute2() {
+		// TODO Auto-generated constructor stub
+	}
+
+}
