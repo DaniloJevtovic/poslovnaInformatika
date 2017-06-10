@@ -5,6 +5,9 @@ import java.util.List;
 import models.Banka;
 import play.mvc.Controller;
 
+/*
+ * Radi Danilo
+ */
 public class Banke extends Controller {
 
 	public Banke() {
