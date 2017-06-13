@@ -1,0 +1,111 @@
+#{extends 'standardForm.html' /}
+#{set title:'Kurs u valuti' /}
+
+<script>
+
+function sync(item){
+    kupovni = item.find(".kupovni").html()
+    srednji= item.find(".srednji").html()
+    prodajni= item.find(".prodajni").html()
+    id = item.find(".id").html()
+    $("#kupovni").val(kupovni);
+    $("#srednji").val(srednji);
+    $("#prodajni").val(prodajni);
+    $("#id").val(id);
+}
+
+/*function nextForm(id){
+	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
+}
+
+function remove(id){
+	$(location).attr('href', '/Drzave/delete?id=' +id)
+}*/
+
+</script>
+
+<p>
+<ul>
+  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  <li><a href="@{KurseviUValuti.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{KurseviUValuti.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="@{KurseviUValuti.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Kursevi u valuti</h1>
+
+<table class = "maintable">
+	<tr class = "header">
+	   <th>Kupovni</th>
+	   <th>Srednji</th>
+	   <th>Prodajni</th>
+	</tr>
+#{list items:kursevi, as:'kurs'}
+	<tr>
+		<td class = "kupovni">${kurs.kupovni}</td>
+		<td class = "srednji">${kurs.srednji}</td>
+		<td class = "prodajni">${kurs.prodajni}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${kurs.id}</td>
+	</tr>
+#{/list}
+</table>
+
+<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{KurseviUValuti.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{KurseviUValuti.edit()}
+				#{/elseif}
+				#{else}
+					@{KurseviUValuti.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+					
+				#{/}
+				<p>
+				#{field 'kupovni'}
+					<label for = "${field.id}">Kupovni</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+				#{/}
+				</p>
+								<p>
+				#{field 'srednji'}
+					<label for = "${field.id}">Srednji</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+				#{/}
+				</p>
+								<p>
+				#{field 'prodajni'}
+					<label for = "${field.id}">Prodajni</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{KurseviUValuti.show("edit")}" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+	</p>
+</div>
+</div>
+
