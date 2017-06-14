@@ -1,0 +1,162 @@
+#{extends 'standardForm.html' /}
+#{set title:'Medjubankarski prenosi' /}
+
+<script>
+	function sync(item){
+		id = item.find(".id").html()
+		idKliringa = item.find(".idKliringa").html()
+		datumKliringa = item.find(".datumKliringa").html()
+		swiftKodBankeDuz = item.find(".swiftKodBankeDuz").html()
+		racBankeDuz = item.find(".racBankeDuz").html()
+		swiftKodBankePovj = item.find(".swiftKodBankePovj").html()
+		racBankePovj = item.find(".racBankePovj").html()
+		ukupanIznos = item.find(".ukupanIznos").html()
+		vrstaPrenosa = item.find(".vrstaPrenosa").html()
+
+		$("#id").val(id);
+		$("#idKliringa").val(idKliringa);
+		$("#datumKliringa").val(datumKliringa);
+		$("#swiftKodBankeDuz").val(swiftKodBankeDuz);
+		$("#racBankeDuz").val(racBankeDuz);
+		$("#swiftKodBankePovj").val(swiftKodBankePovj);
+		$("#racBankePovj").val(racBankePovj);
+		$("#ukupanIznos").val(ukupanIznos);
+		$("#vrstaPrenosa").val(vrstaPrenosa);
+
+	}
+
+	function remove(id){
+		$(location).attr('href', '/MedjubankarskiPrenosi/delete?id=' +id)
+	}
+</script>
+
+<p>
+	<ul>
+		<li><a href="/" id = "medjubankarskiPrenosi"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  		<li><a href="@{MedjubankarskiPrenosi.show('search')}" title="pretraga" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  		<li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  		<li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  		<li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  		<li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  		<li><a href="@{MedjubankarskiPrenosi.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  		<li><a href="@{MedjubankarskiPrenosi.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+	</ul>
+</p>
+
+<div class = "container-fluid">
+	<h1>Međubankarski prenosi</h1>
+
+	<table class = "maintable">
+		<tr class = "header">
+	   		<th>Id kliringa</th> 
+	   		<th>Datum kliringa</th>
+	  		<th>Swift kod banke duznika</th>
+	   		<th>Racun banke duznika</th>
+	   		<th>Swift kod banke povjerioca</th>
+	   		<th>Racun banke povjerioca</th>
+	   		<th>Ukupan iznos</th>
+	   		<th>Vrsta prenosa</th>
+		</tr>
+		#{list items:medjubankarskiPrenosi, as:'medjubankarskiPrenos'}
+		<tr>
+			<td class = "idKliringa">${medjubankarskiPrenos.idKliringa}</td>
+			<td class = "datumKliringa">${medjubankarskiPrenos.datumKliringa.format('dd.MM.yyyy')}</td>
+			<td class = "swiftKodBankeDuz">${medjubankarskiPrenos.swiftKodBankeDuz}</td>
+			<td class = "racBankeDuz">${medjubankarskiPrenos.racBankeDuz}</td>
+			<td class = "swiftKodBankePovj">${medjubankarskiPrenos.swiftKodBankePovj}</td>
+			<td class = "racBankePovj">${medjubankarskiPrenos.racBankePovj}</td>
+			<td class = "ukupanIznos">${medjubankarskiPrenos.ukupanIznos}</td>
+			<td class = "vrstaPrenosa">${medjubankarskiPrenos.vrstaPrenosa}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${medjubankarskiPrenos.id}</td>
+		</tr>
+		#{/list}
+	</table>
+	
+	<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{MedjubankarskiPrenosi.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{MedjubankarskiPrenosi.edit()}
+				#{/elseif}
+				#{else}
+					@{MedjubankarskiPrenosi.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'idKliringa'}
+					<label for = "${field.id}">ID Kliringa:</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumKliringa'}
+					<label for = "${field.id}">Datum kliringa:</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly"/>
+					
+					<script>
+						$('#datumKliringa').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'swiftKodBankeDuz'}
+					<label for = "${field.id}">Swift kod banke duznika:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'racBankeDuz'}
+					<label for = "${field.id}">Racun banke duznika:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'swiftKodBankePovj'}
+					<label for = "${field.id}">Swift kod banke povjerioca:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'racBankePovj'}
+					<label for = "${field.id}">Racun banke povjerioca:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'ukupanIznos'}
+					<label for = "${field.id}">Ukupan iznos:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'vrstaPrenosa'}
+					<label for = "${field.id}">Vrsta prenosa:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+		</p>
+	</div>
+	
+</div>
+	
