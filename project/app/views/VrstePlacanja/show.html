@@ -1,24 +1,24 @@
 #{extends 'standardForm.html' /}
-#{set title:'Države' /}
+#{set title:'Vrste placanja' /}
 
 <script>
 
 function sync(item){
-	oznaka = item.find(".oznaka").html()
-    naziv = item.find(".naziv").html()
+	oznakaVrste = item.find(".oznakaVrste").html()
+    nazivVrstePlacanja= item.find(".nazivVrstePlacanja").html()
     id = item.find(".id").html()
-    $("#oznaka").val(oznaka);
-    $("#naziv").val(naziv);
+    $("#oznakaVrste").val(oznakaVrste);
+    $("#nazivVrstePlacanja").val(nazivVrstePlacanja);
     $("#id").val(id);
 }
 
-function nextForm(id){
+/*function nextForm(id){
 	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
 }
 
 function remove(id){
 	$(location).attr('href', '/Drzave/delete?id=' +id)
-}
+}*/
 
 </script>
 
@@ -26,7 +26,7 @@ function remove(id){
 <ul>
   <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
   
-  <li><a href="@{Drzave.show('search')}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{VrstePlacanja.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -34,26 +34,26 @@ function remove(id){
   <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{Drzave.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{Drzave.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="@{VrstePlacanja.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="@{VrstePlacanja.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
 </ul>
 </p>
 
 <div class = "container-fluid">
-<h1>Države</h1>
+<h1>Vrste placanja</h1>
 
 <table class = "maintable">
 	<tr class = "header">
-	   <th>Oznaka drzave</th> 
-	   <th>Naziv drzave</th>
+	   <th>Oznaka vrste</th>
+	   <th>Naziv vrste</th>
 	</tr>
-#{list items:drzave, as:'drzava'}
+#{list items:placanje, as:'vPlacanje'}
 	<tr>
-		<td class = "oznaka">${drzava.oznaka}</td>
-		<td class = "naziv">${drzava.naziv}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${drzava.id}</td>
+		<td class = "oznakaVrste">${vPlacanje.oznakaVrste}</td>
+		<td class = "nazivVrstePlacanja">${vPlacanje.nazivVrstePlacanja}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${vPlacanje.id}</td>
 	</tr>
 #{/list}
 </table>
@@ -63,13 +63,13 @@ function remove(id){
 		<div><b>Status: ${mode}</b></div> <br>
 			#{set 'action'}
 				#{if mode == 'add'}
-					@{Drzave.create()}
+					@{VrstePlacanja.create()}
 				#{/if}
 				#{elseif mode == 'edit'}
-					@{Drzave.edit()}
+					@{VrstePlacanja.edit()}
 				#{/elseif}
 				#{else}
-					@{Drzave.filter()}
+					@{VrstePlacanja.filter()}
 				#{/else}
 			#{/set}
 		
@@ -77,22 +77,22 @@ function remove(id){
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
-				
 				<p>
-				#{field 'oznaka'}
-					<label for = "${field.id}">Oznaka države:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}" placeholder="Oznaka"/>
+				#{field 'oznakaVrste'}
+					<label for = "${field.id}">Oznaka vrste</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
 				<p>
-				#{field 'naziv'}
-					<label for = "${field.id}">Naziv države:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{field 'nazivVrstePlacanja'}
+					<label for = "${field.id}">Naziv vrste placanja</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
+
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
-					<a href = "#" style="margin-left:1em">Rollback</a>
+					<a href = "@{VrstePlacanja.show("edit")}" style="margin-left:1em">Rollback</a>
 				</div>			
 			</form>
 	</p>

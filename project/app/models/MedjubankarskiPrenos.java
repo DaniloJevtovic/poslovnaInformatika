@@ -1,6 +1,6 @@
 package models;
 
-import java.sql.Date;
+import java.util.*;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,7 +17,7 @@ public class MedjubankarskiPrenos extends Model {
 	public String racBankeDuz;
 	public String swiftKodBankePovj;
 	public String racBankePovj;
-	public long ukupanIznos;
+	public Long ukupanIznos;
 	public String vrstaPrenosa;
 	
 	@OneToMany(mappedBy = "medjubankarskiPrenos")
@@ -28,7 +28,7 @@ public class MedjubankarskiPrenos extends Model {
 	}
 
 	public MedjubankarskiPrenos(String idKliringa, Date datumKliringa, String swiftKodBankeDuz, String racBankeDuz,
-			String swiftKodBankePovj, String racBankePovj, long ukupanIznos, String vrstaPrenosa) {
+			String swiftKodBankePovj, String racBankePovj, Long ukupanIznos, String vrstaPrenosa) {
 		super();
 		this.idKliringa = idKliringa;
 		this.datumKliringa = datumKliringa;
