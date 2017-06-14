@@ -1,0 +1,101 @@
+#{extends 'standardForm.html' /}
+#{set title:'Vrste placanja' /}
+
+<script>
+
+function sync(item){
+	oznakaVrste = item.find(".oznakaVrste").html()
+    nazivVrstePlacanja= item.find(".nazivVrstePlacanja").html()
+    id = item.find(".id").html()
+    $("#oznakaVrste").val(oznakaVrste);
+    $("#nazivVrstePlacanja").val(nazivVrstePlacanja);
+    $("#id").val(id);
+}
+
+/*function nextForm(id){
+	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
+}
+
+function remove(id){
+	$(location).attr('href', '/Drzave/delete?id=' +id)
+}*/
+
+</script>
+
+<p>
+<ul>
+  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  <li><a href="@{VrstePlacanja.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{VrstePlacanja.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="@{VrstePlacanja.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Vrste placanja</h1>
+
+<table class = "maintable">
+	<tr class = "header">
+	   <th>Oznaka vrste</th>
+	   <th>Naziv vrste</th>
+	</tr>
+#{list items:placanje, as:'vPlacanje'}
+	<tr>
+		<td class = "oznakaVrste">${vPlacanje.oznakaVrste}</td>
+		<td class = "nazivVrstePlacanja">${vPlacanje.nazivVrstePlacanja}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${vPlacanje.id}</td>
+	</tr>
+#{/list}
+</table>
+
+<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{VrstePlacanja.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{VrstePlacanja.edit()}
+				#{/elseif}
+				#{else}
+					@{VrstePlacanja.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				<p>
+				#{field 'oznakaVrste'}
+					<label for = "${field.id}">Oznaka vrste</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
+				#{/}
+				</p>
+				<p>
+				#{field 'nazivVrstePlacanja'}
+					<label for = "${field.id}">Naziv vrste placanja</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+				#{/}
+				</p>
+
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{VrstePlacanja.show("edit")}" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+	</p>
+</div>
+</div>
+
