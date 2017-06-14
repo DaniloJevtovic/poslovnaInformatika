@@ -10,7 +10,6 @@ import play.db.jpa.Model;
 @Entity
 public class KursnaLista extends Model{
 
-	public int idKursneListe;
 	public Date datumKursneListe;
 	public int brojKursneListe;
 	public Date primSeOd;	//primjenjuje se od
@@ -23,9 +22,8 @@ public class KursnaLista extends Model{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public KursnaLista(int idKursneListe, Date datumKursneListe, int brojKursneListe, Date primSeOd, Date primSeDo) {
+	public KursnaLista(Date datumKursneListe, int brojKursneListe, Date primSeOd, Date primSeDo) {
 		super();
-		this.idKursneListe = idKursneListe;
 		this.datumKursneListe = datumKursneListe;
 		this.brojKursneListe = brojKursneListe;
 		this.primSeOd = primSeOd;

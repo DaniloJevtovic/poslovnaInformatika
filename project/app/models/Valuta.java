@@ -11,7 +11,6 @@ import play.db.jpa.Model;
 @Entity
 public class Valuta extends Model{
 
-	public int idValute;
 	public String zvanicnaSifra;
 	public String nazivValute;
 	
@@ -34,9 +33,8 @@ public class Valuta extends Model{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Valuta(int idValute, String zvanicnaSifra, String nazivValute) {
+	public Valuta(String zvanicnaSifra, String nazivValute) {
 		super();
-		this.idValute = idValute;
 		this.zvanicnaSifra = zvanicnaSifra;
 		this.nazivValute = nazivValute;
 	}

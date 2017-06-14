@@ -1,0 +1,183 @@
+#{extends 'standardForm.html' /}
+#{set title:'Klijenti' /}
+
+<script>
+
+function sync(item){
+	tip = item.find(".tipKlijenta").html();
+	naziv = item.find(".nazivKlijenta").html();
+	ime = item.find(".imeKlijenta").html();
+	prezime = item.find(".przKlijenta").html();
+	telefon = item.find(".telKlijenta").html();
+	adresa = item.find(".adrKlijenta").html();
+	web = item.find(".webKlijenta").html();
+	email = item.find(".emailKlijenta").html();
+	faks = item.find(".faksKlijenta").html();
+    id = item.find(".id").html();
+    
+    $("#tipKlijenta").val(tip);
+    $("#nazivKlijenta").val(naziv);
+    $("#imeKlijenta").val(ime);
+    $("#przKlijenta").val(prezime);
+    $("#telKlijenta").val(telefon);
+    $("#adrKlijenta").val(adresa);
+    $("#webKlijenta").val(web);
+    $("#emailKlijenta").val(email);
+    $("#faksKlijenta").val(faks);
+    $("#id").val(id);
+}
+
+function nextForm(id){
+	$(location).attr('href', '/Racun/nextForm?klijent_id=' +id);	
+}
+
+function remove(id){
+	$(location).attr('href', '/Klijenti/delete?id=' +id)
+}
+
+</script>
+
+<p>
+<ul>
+  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  <li><a href="@{Klijenti.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{Klijenti.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="@{Klijenti.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Klijenti</h1>
+
+<table class = "maintable">
+	<tr class = "header">
+	   <th>Tip</th> 
+	   <th>Naziv</th>
+	   <th>Ime</th> 
+	   <th>Prezime</th>
+	   <th>Telefon</th> 
+	   <th>Adresa</th>
+	   <th>Web</th> 
+	   <th>Email</th>
+	   <th>Faks</th> 
+	</tr>
+#{list items:klijenti, as:'klijent'}
+	<tr #{if klijent.id == highlightedId} class = "highlighted" #{/if}>
+		<td class = "tipKlijenta">${klijent.tipKlijenta}</td>
+		<td class = "nazivKlijenta">${klijent.nazivKlijenta}</td>
+		<td class = "imeKlijenta">${klijent.imeKlijenta}</td>
+		<td class = "przKlijenta">${klijent.przKlijenta}</td>
+		<td class = "telKlijenta">${klijent.telKlijenta}</td>
+		<td class = "adrKlijenta">${klijent.adrKlijenta}</td>
+		<td class = "webKlijenta">${klijent.webKlijenta}</td>
+		<td class = "emailKlijenta">${klijent.emailKlijenta}</td>
+		<td class = "faksKlijenta">${klijent.faksKlijenta}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${klijent.id}</td>
+	</tr>
+#{/list}
+</table>
+
+<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{Klijenti.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{Klijenti.edit()}
+				#{/elseif}
+				#{else}
+					@{Klijenti.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'tipKlijenta'}
+					<label for = "${field.id}">Tip</label>
+					<input type = "radio" name="${field.name}" value="Fizičko Lice" id="${field.id + "F"}">
+					<input type = "radio" name="${field.name}" value="Pravno Lice" id="${field.id + "P"}">
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'tipKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'nazivKlijenta'}
+					<label for = "${field.id}">Naziv</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'nazivKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'imeKlijenta'}
+					<label for = "${field.id}">Ime</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'imeKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'przKlijenta'}
+					<label for = "${field.id}">Prezime</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'przKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'telKlijenta'}
+					<label for = "${field.id}">Telefon</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'telKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'adrKlijenta'}
+					<label for = "${field.id}">Adresa</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'adrKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'webKlijenta'}
+					<label for = "${field.id}">Web</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'webKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'emailKlijenta'}
+					<label for = "${field.id}">Email</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'emailKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'faksKlijenta'}
+					<label for = "${field.id}">Faks</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'faksKlijenta' /}</span>
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{Klijenti.show("edit")}" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+	</p>
+</div>
+</div>
+
