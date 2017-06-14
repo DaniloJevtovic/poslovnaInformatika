@@ -1,6 +1,6 @@
 package models;
 
-import java.sql.Date;
+import java.util.*;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,17 +8,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
-import sun.util.logging.resources.logging;
 
 @Entity
 public class DnevnoStanjeRacuna extends Model {
 
 	public Long brojIzvoda;
 	public Date datumPrometa;
-	public long predhodnoStanje;
-	public long prometUKorist;
-	public long prometNaTeret;
-	public long novoStanje;
+	public Long predhodnoStanje;
+	public Long prometUKorist;
+	public Long prometNaTeret;
+	public Long novoStanje;
 	
 	@ManyToOne
 	public Racun racun;
@@ -30,8 +29,8 @@ public class DnevnoStanjeRacuna extends Model {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public DnevnoStanjeRacuna(Long brojIzvoda, Date datumPrometa, long predhodnoStanje, long prometUKorist,
-			long prometNaTeret, long novoStanje) {
+	public DnevnoStanjeRacuna(Long brojIzvoda, Date datumPrometa, Long predhodnoStanje, Long prometUKorist,
+			Long prometNaTeret, Long novoStanje) {
 		// TODO Auto-generated constructor stub
 		super();
 		this.brojIzvoda = brojIzvoda;
