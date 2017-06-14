@@ -1,0 +1,87 @@
+#{extends 'standardForm.html' /}
+#{set title:'Stavke kliringa' /}
+
+<script>
+	function sync(item){
+		id = item.find(".id").html()
+		idStavke = item.find(".idStavke").html()
+		
+		$("#id").val(id);
+		$("#idStavke").val(idStavke);
+	}
+
+	function remove(id){
+		$(location).attr('href', '/StavkeKliringa/delete?id=' +id)
+	}
+</script>
+
+<p>
+	<ul>
+		<li><a href="/" id = "stavkeKliringa"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  		<li><a href="@{StavkeKliringa.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  		<li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  		<li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  		<li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  		<li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  		<li><a href="@{StavkeKliringa.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  		<li><a href="@{StavkeKliringa.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+	</ul>
+</p>
+
+<div class = "container-fluid">
+	<h1>Stavke kliringa</h1>
+
+	<table class = "maintable">
+		<tr class = "header">
+	   		<th>ID Stavke</th> 
+		</tr>
+		#{list items:stavkeKliringa, as:'stavkaKliringa'}
+		<tr>
+			<td class = "idStavke">${stavkaKliringa.idStavke}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${stavkaKliringa.id}</td>
+		</tr>
+		#{/list}
+	</table>
+	
+	<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{StavkeKliringa.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{StavkeKliringa.edit()}
+				#{/elseif}
+				#{else}
+					@{StavkeKliringa.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'idStavke'}
+					<label for = "${field.id}">ID Stavke kliringa:</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+		</p>
+	</div>
+	
+</div>
+	
