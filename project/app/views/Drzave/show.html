@@ -26,7 +26,7 @@ function remove(id){
 <ul>
   <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
   
-  <li><a href="@{Drzave.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{Drzave.show('search')}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -34,8 +34,8 @@ function remove(id){
   <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{Drzave.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{Drzave.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="@{Drzave.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="@{Drzave.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
 </ul>
@@ -46,8 +46,8 @@ function remove(id){
 
 <table class = "maintable">
 	<tr class = "header">
-	   <th>Oznaka</th> 
-	   <th>Naziv</th>
+	   <th>Oznaka drzave</th> 
+	   <th>Naziv drzave</th>
 	</tr>
 #{list items:drzave, as:'drzava'}
 	<tr>
@@ -80,13 +80,13 @@ function remove(id){
 				
 				<p>
 				#{field 'oznaka'}
-					<label for = "${field.id}">Oznaka</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<label for = "${field.id}">Oznaka države:</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}" placeholder="Oznaka"/>
 				#{/}
 				</p>
 				<p>
 				#{field 'naziv'}
-					<label for = "${field.id}">Naziv</label>
+					<label for = "${field.id}">Naziv države:</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>

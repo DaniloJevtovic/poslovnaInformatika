@@ -93,32 +93,32 @@ function remove(id){
 				
 				<p>
 				#{field 'oznaka'}
-					<label for = "${field.id}">Oznaka</label>
+					<label for = "${field.id}">Oznaka:</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
 				<p>
 				#{field 'naziv'}
-					<label for = "${field.id}">Naziv</label>
+					<label for = "${field.id}">Naziv:</label>
 					<input type = "text" name = "${field.name}" id = "${field.name}"/>
 				#{/}
 				</p>
 				<p>
 				#{field 'postanskiBroj'}
-					<label for = "${field.id}">Poštanski broj</label>
+					<label for = "${field.id}">Poštanski broj:</label>
 					<input type = "text" name = "${field.name}" id = "${field.name}"/>
 				#{/}
 				</p>
 				<p>
 				#{field 'drzava'}
-					<label for = "${field.id}">Država</label>
-					<select name = "${field.name}" id = "${field.id}"/>
+					<label for = "${field.id}">Država:</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
 					#{list items:drzave, as:'drzava'}
 					<option value = "${drzava.id}">${drzava.naziv}</option>
 					#{/list}
 					</select>
 					
-					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#drzaveModal">...	</button>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal"  data-target="#drzaveModal">...	</button>
 				#{/}
 				</p>
 				<div id = "formActions">
