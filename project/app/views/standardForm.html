@@ -113,7 +113,16 @@
             }
     
         });
-		
+		MyModals = {};
+		(function(MyModals) {
+			var callbacks = {};
+			MyModals.addCallback = function(name, callback) {
+				callbacks[name] = callback;
+			};
+			MyModals.callback = function(name, id) {
+				callbacks[name](id);
+			};
+		}(MyModals));
 	});
 	
 	$(document).ready(function() {
@@ -128,6 +137,8 @@
 	    }( function( datepicker ) {
 
 	    datepicker.regional[ "sr-SR" ] = {
+	    	changeMonth: true,
+	    	changeYear: true,
 	    	closeText: "Zatvori",
 	    	prevText: "&#x3C;",
 	    	nextText: "&#x3E;",

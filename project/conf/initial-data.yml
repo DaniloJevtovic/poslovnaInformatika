@@ -29,6 +29,7 @@ Klijent(ziko):
 Klijent(preduzeceA):
  tipKlijenta : P
  nazivKlijenta : Preduzece A
+ pibKlijenta : 12345678
  imeKlijenta : Pero
  przKlijenta : Peric
  telKlijenta : 444444444
@@ -40,6 +41,7 @@ Klijent(preduzeceA):
 Klijent(preduzeceB):
  tipKlijenta : P
  nazivKlijenta : Preduzece B
+ pibKlijenta : 12345679
  imeKlijenta : Miko
  przKlijenta : Mikic
  telKlijenta : 777777777

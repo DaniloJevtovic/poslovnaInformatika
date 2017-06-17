@@ -2,9 +2,12 @@ package controllers;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.session.KonstanteSesije;
+import controllers.validation.ValidacijaRacuna;
 import models.Banka;
 import models.Klijent;
 import models.Racun;
@@ -21,60 +24,77 @@ public class Racuni extends Controller {
 	}
 	
 	public static void showDefault() {
-		show(Konstante.KONF_IZMJENA);
+		show(Konstante.KONF_DODAVANJE, "");
 	}
 	
-	public static void show(String mode) {
+	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
 			List<Racun> racuni = Racun.findAll();
-			render(mode, racuni);
+			List<Klijent> klijenti = Klijent.find("select k from Klijent k order by k.tipKlijenta desc, k.nazivKlijenta, k.przKlijenta, k.imeKlijenta").fetch();
+			List<Banka> banke = Banka.findAll();
+			List<Valuta> valute = Valuta.find("select v from Valuta v order by v.zvanicnaSifra").fetch();
+			KonstanteSesije.fillFlash(flash, mode, highlightedId);
+			render(racuni, klijenti, banke, valute);
 		} else {
 			throw new IllegalArgumentException(PomocneOperacije.porukaNevazecaKonfiguracija(mode));
 		}
 	}
 	
-	public static void create(String brojRacuna, Long racun_klijent_id, Long racun_valuta_id) {
-		validation.required(brojRacuna);
+	public static void create(String brojRacuna, Long klijent, Long banka, Long valuta) {
+		ValidacijaRacuna.validate(validation, brojRacuna, klijent, banka, valuta);
 		
-		if(brojRacuna.matches("^[0-9]{3}-[0-9]{13}-[0-9]{2}$")) {
-			long brojRacuna18 = Long.parseLong(brojRacuna.replace("-", ""));
-			long kontrolneCifre = brojRacuna18 % 100;
-			if(98 - ((brojRacuna18-kontrolneCifre) % 97) == kontrolneCifre) {
-				java.util.Date sada = new java.util.Date();
-				Date datumOtvaranja = new Date(sada.getTime());
-				Racun racun = new Racun(brojRacuna18, datumOtvaranja, true);
-				try {
-					Banka banka = Banka.find("bySifraBanke", brojRacuna18 / 1000000000000000L).first();
-					if(banka!=null) {
-						Klijent klijent = Klijent.findById(racun_klijent_id);
-						if(klijent!=null) {
-							Valuta valuta =Valuta.findById(racun_valuta_id);
-							if(valuta!=null) {
-								racun.banka = banka;
-								racun.save();
-								show(Konstante.KONF_DODAVANJE);
-							} else {
-								//valuta je null
-							}
-						} else {
-							//klijent je null
-						}
-					} else {
-						//banka je null
-					}
-				} catch(Exception e) {
-					//greska vjerovatno jer broj racuna nije jedinstven
-					validation.addError("", "");
-				}
-			} else {
-				validation.addError("", "");
-			}
-		} else {
-			validation.addError("brojRacuna", "");
-		}
 		if(validation.hasErrors()) {
 			validation.keep();
-			show(Konstante.KONF_DODAVANJE);
+			/*validation.errorsMap().forEach(new BiConsumer<String, List<play.data.validation.Error>>() {
+
+				@Override
+				public void accept(String t, List<play.data.validation.Error> u) {
+					System.out.println("Greska: " + t);
+					System.out.println(u.get(0).message());
+				}
+				
+			});*/
+			show(Konstante.KONF_DODAVANJE, "");
+		} else {
+			String dijelovi[] = brojRacuna.split("-");
+			int kontrolneCifre = Integer.parseInt(dijelovi[2]);
+			long glavnina = Long.parseLong(dijelovi[0] + dijelovi[1] + dijelovi[2]) - kontrolneCifre;
+			System.out.println("Glavnina: " + glavnina);
+			System.out.println("Kontrolne cifre: " + kontrolneCifre);
+			System.out.println("Glavnina mod 97: " + (glavnina % 97));
+			System.out.println("Provjera: " + ( 98 - (glavnina%97)));
+			if(kontrolneCifre != (98 - (glavnina % 97))) {
+				validation.addError("brojRacuna", "Nije validan po modelu 97");
+			}
+			Klijent _klijent = Klijent.findById(klijent);
+			if(_klijent==null) {
+				validation.addError("klijent", "Nepostojeci klijent");
+			}
+			Banka _banka = Banka.findById(banka);
+			if(_banka==null) {
+				validation.addError("banka", "Nepostojeca banka");
+			}
+			if(!_banka.sifraBanke.equals(dijelovi[0])) {
+				validation.addError("banka", "Sifra banke ne odgovara strukturi broja racuna");
+			}
+			Valuta _valuta = Valuta.findById(valuta);
+			if(_valuta==null) {
+				validation.addError("valuta", "Nepostojeca valuta");
+			}
+			if(validation.hasErrors()) {
+				validation.keep();
+				show(Konstante.KONF_DODAVANJE, "");
+			} else {
+				java.util.Date sada = new java.util.Date();
+				Date datumOtvaranja = new Date(sada.getTime());
+				Racun racun = new Racun(brojRacuna, datumOtvaranja, true);
+				racun.valuta = _valuta;
+				racun.banka = _banka;
+				racun.klijent = _klijent;
+				racun.save();
+				show(Konstante.KONF_DODAVANJE, racun.id.toString());
+			}
+			
 		}
 	}
 
@@ -82,7 +102,17 @@ public class Racuni extends Controller {
 		Racun racun = Racun.findById(id);
 		if(racun!=null) {
 			racun.delete();
-			show(Konstante.KONF_IZMJENA);
+			String highlightedId = "";
+			Racun prviVeci = Racun.find("byIdGreaterThan", id).first();
+			if(prviVeci!=null) {
+				highlightedId = prviVeci.id.toString();
+			} else {
+				Racun prviManji = Racun.find("select r from Racun r where r.id < ? order by id desc", id).first();
+				if(prviManji!=null) {
+					highlightedId = prviManji.id.toString();
+				}
+			}
+			show(flash.get(KonstanteSesije.MODE), highlightedId);
 		} else {
 			notFound(PomocneOperacije.porukaNijePronadjen(Konstante.IME_ENTITETA_RACUN, id));
 		}

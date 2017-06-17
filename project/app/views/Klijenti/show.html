@@ -1,22 +1,56 @@
 #{extends 'standardForm.html' /}
 #{set title:'Klijenti' /}
-
 <script>
 
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+	#{if flash.highlightedId}
+	var items = $(".maintable tr");
+	$(".highlighted").removeClass("highlighted");
+	for(var i = 0; i < items.length; i++) {
+		var item = $(items[i]);
+		var id = item.find(".id").html();
+		if(id == highlightedId) {
+			item.addClass("highlighted")
+			sync(item);
+			break;
+		}
+	}
+	#{/if}
+	$("#search").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#edit").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Klijenti.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
 function sync(item){
-	tip = item.find(".tipKlijenta").html();
-	naziv = item.find(".nazivKlijenta").html();
-	ime = item.find(".imeKlijenta").html();
-	prezime = item.find(".przKlijenta").html();
-	telefon = item.find(".telKlijenta").html();
-	adresa = item.find(".adrKlijenta").html();
-	web = item.find(".webKlijenta").html();
-	email = item.find(".emailKlijenta").html();
-	faks = item.find(".faksKlijenta").html();
-    id = item.find(".id").html();
+	var tip = item.find(".tipKlijenta").html();
+	var naziv = item.find(".nazivKlijenta").html();
+	var pib = item.find(".pibKlijenta").html();
+	var ime = item.find(".imeKlijenta").html();
+	var prezime = item.find(".przKlijenta").html();
+	var telefon = item.find(".telKlijenta").html();
+	var adresa = item.find(".adrKlijenta").html();
+	var web = item.find(".webKlijenta").html();
+	var email = item.find(".emailKlijenta").html();
+	var faks = item.find(".faksKlijenta").html();
+    var id = item.find(".id").html();
     
     $("#tipKlijenta").val(tip);
     $("#nazivKlijenta").val(naziv);
+    $("#pibKlijenta").val(pib);
     $("#imeKlijenta").val(ime);
     $("#przKlijenta").val(prezime);
     $("#telKlijenta").val(telefon);
@@ -25,6 +59,7 @@ function sync(item){
     $("#emailKlijenta").val(email);
     $("#faksKlijenta").val(faks);
     $("#id").val(id);
+    highlightedId = id;
 }
 
 function nextForm(id){
@@ -32,7 +67,7 @@ function nextForm(id){
 }
 
 function remove(id){
-	$(location).attr('href', '/Klijenti/delete?id=' +id)
+	$(location).attr('href', '/Klijenti/delete?id=' + highlightedId)
 }
 
 </script>
@@ -41,7 +76,7 @@ function remove(id){
 <ul>
   <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
   
-  <li><a href="@{Klijenti.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -49,8 +84,8 @@ function remove(id){
   <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{Klijenti.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{Klijenti.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
 </ul>
@@ -63,6 +98,7 @@ function remove(id){
 	<tr class = "header">
 	   <th>Tip</th> 
 	   <th>Naziv</th>
+	   <th>Pib</th>
 	   <th>Ime</th> 
 	   <th>Prezime</th>
 	   <th>Telefon</th> 
@@ -75,6 +111,7 @@ function remove(id){
 	<tr #{if klijent.id == highlightedId} class = "highlighted" #{/if}>
 		<td class = "tipKlijenta">${klijent.tipKlijenta}</td>
 		<td class = "nazivKlijenta">${klijent.nazivKlijenta}</td>
+		<td class = "pibKlijenta">${klijent.pibKlijenta}</td>
 		<td class = "imeKlijenta">${klijent.imeKlijenta}</td>
 		<td class = "przKlijenta">${klijent.przKlijenta}</td>
 		<td class = "telKlijenta">${klijent.telKlijenta}</td>
@@ -89,12 +126,12 @@ function remove(id){
 
 <div class = "panel">
 	<p>
-		<div><b>Status: ${mode}</b></div> <br>
+		<div><b>Status: ${flash.mode}</b></div> <br>
 			#{set 'action'}
-				#{if mode == 'add'}
+				#{if flash.mode == 'add'}
 					@{Klijenti.create()}
 				#{/if}
-				#{elseif mode == 'edit'}
+				#{elseif flash.mode == 'edit'}
 					@{Klijenti.edit()}
 				#{/elseif}
 				#{else}
@@ -110,9 +147,10 @@ function remove(id){
 				<p>
 				#{field 'tipKlijenta'}
 					<label for = "${field.id}">Tip</label>
-					<input type = "radio" name="${field.name}" value="Fizičko Lice" id="${field.id + "F"}">
-					<input type = "radio" name="${field.name}" value="Pravno Lice" id="${field.id + "P"}">
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					  <option value = "P">Pravno Lice</option>
+					  <option value = "F">Fizičko Lice</option>
+					</select>
 					<span class="error">#{error 'tipKlijenta' /}</span>
 				#{/}
 				</p>
@@ -121,6 +159,13 @@ function remove(id){
 					<label for = "${field.id}">Naziv</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 					<span class="error">#{error 'nazivKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'pibKlijenta'}
+					<label for = "${field.id}">Pib</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'pibKlijenta' /}</span>
 				#{/}
 				</p>
 				<p>
@@ -174,7 +219,7 @@ function remove(id){
 				</p>
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
-					<a href = "@{Klijenti.show("edit")}" style="margin-left:1em">Rollback</a>
+					<a href = "@{Klijenti.showDefault()}" style="margin-left:1em">Rollback</a>
 				</div>			
 			</form>
 	</p>

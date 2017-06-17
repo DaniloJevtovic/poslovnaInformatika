@@ -64,6 +64,10 @@ form select{
 	margin-left:1em;
 }
 
+input, select {
+	min-width: 200px;
+}
+
 /*
 input[type=text] {
     padding:5px; 

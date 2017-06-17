@@ -1,0 +1,25 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Tip</th>
+			<th>Naziv</th>
+			<th>Pib</th>
+			<th>Ime</th>
+			<th>Prezime</th>
+			<th>Id</th>
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'klijent'}
+		<tr>
+			<td class="tipKlijenta">${klijent.tipKlijenta}</td>
+			<td class="nazivKlijenta">${klijent.nazivKlijenta}</td>
+			<td class="pibKlijenta">${klijent.pibKlijenta}</td>
+			<td class="imeKlijenta">${klijent.imeKlijenta}</td>
+			<td class="przKlijenta">${klijent.przKlijenta}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id">${klijent.id}</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

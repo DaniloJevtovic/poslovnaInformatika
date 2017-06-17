@@ -3,26 +3,45 @@
 
 <script>
 
-function sync(item){
-	brojRacuna = item.find(".brojRacuna").html();
-	valuta = item.find(".valuta").html();
-	banka = item.find(".banka").html();
-	klijent = item.find(".klijent").html();
-	datumOtvaranja = item.find(".datumOtvaranja").html();
-	vazeci = item.find(".vazeci").html();
-	id = item.find(".id").html();
-	idKlijenta = item.find(".klijent_id").html();
-	idValute = item.find(".valuta_id").html();
-	
-    $("#brojRacuna").val(brojRacuna);
-    $("#valuta_zvanicnaSifra").val(valuta);
-    $("#banka_nazivBanke").val(banka);
-    $("#klijent_nazivKlijenta").val(klijent);
-    $("#datumOtvaranja").val(datumOtvaranja);
-    $("#vazeci").val(vazeci);
-    $("#id").val(id);
-    $("#racun_klijent_id").val(idKlijenta);
-    $("#racun_valuta_id").val(idValute);
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+	#{if flash.highlightedId}
+	var items = $(".maintable tr");
+	$(".highlighted").removeClass("highlighted");
+	for(var i = 0; i < items.length; i++) {
+		var item = $(items[i]);
+		var id = item.find(".id").html();
+		if(id == highlightedId) {
+			item.addClass("highlighted")
+			sync(item);
+			break;
+		}
+	}
+	#{/if}
+	$("#search").click(function() {
+		var loc = '@{Racuni.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{Racuni.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Racuni.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+function sync(data){
+	$("#brojRacuna").val(data[2]);
+    $("#datumOtvaranja").val(data[4]);
+    $("#vazeci").val(data[2]);
+    $("#id").val(data[6]);
+    $("#valuta").val(data[7]);
+    $("#klijent").val(data[9]);
+    $("#banka").val(data[8]);
+    
+    highlightedId = data[6];
 }
 /*
 function nextForm(id){
@@ -39,7 +58,7 @@ function remove(id){
 <ul>
   <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
   
-  <li><a href="@{Racuni.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -47,69 +66,52 @@ function remove(id){
   <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{Racuni.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{Racuni.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
 </ul>
 </p>
 
 <div class = "container-fluid">
-<h1>Klijenti</h1>
-
+<h1>Računi</h1>
+<!-- 
 <table class = "maintable">
 	<tr class = "header">
-	   <th>Broj računa</th> 
-	   <th>Šifra valute</th>
 	   <th>Banka</th>
 	   <th>Klijent</th>
+	   <th>Broj računa</th> 
+	   <th>Šifra valute</th>
 	   <th>Datum otvaranja</th>
 	   <th>Važeći</th> 
 	</tr>
 #{list items:racuni, as:'racun'}
 	<tr>
-		<td class = "brojRacuna">${racun.brojRacuna}</td>
-		<td class = "valuta">#{if racun.valuta} ${racun.valuta.zvanicnaSifra} #{/if}</td>
 		<td class = "banka">#{if racun.banka} ${racun.banka.nazivBanke} #{/if}</td>
 		<td class = "klijent">#{if racun.klijent} ${racun.klijent.nazivKlijenta} #{/if}</td>
+		<td class = "brojRacuna">${racun.brojRacuna}</td>
+		<td class = "valuta">#{if racun.valuta} ${racun.valuta.zvanicnaSifra} #{/if}</td>
 		<td class = "datumOtvaranja">${racun.datumOtvaranja}</td>
 		<td class = "vazeci">${racun.vazeci}</td>
 		<td style = "visibility: hidden; max-width: 0px" class = "id">${racun.id}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "klijent_id">
-			#{if racun.klijent} ${racun.klijent.id} #{/if}
-		</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "valuta_id">
-			#{if racun.valuta} ${racun.valuta.id} #{/if}
-		</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "valuta_id">#{if racun.valuta}${racun.valuta.id}#{/if}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "banka_id">#{if racun.banka}${racun.banka.id}#{/if}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "klijent_id">#{if racun.klijent}${racun.klijent.id}#{/if}</td>
 	</tr>
 #{/list}
 </table>
-
+ -->
+ #{TabelaRacuni data : racuni, tableId: 'tabela_racuni', hiddenColumns : '[6,7,8,9]', idColumn:'6'/}
 <div class = "panel">
 	<p>
-		<div><b>Status: ${mode}</b></div> <br>
+		<div><b>Status: ${flash.mode}</b></div> <br>
 			#{set 'action'}
-				#{if mode == 'add'}
-					@{Racuni.create()}
-				#{/if}
-				#{elseif mode == 'edit'}
-					@{Racuni.show("edit")}
-				#{/elseif}
-				#{else}
-					@{Racuni.filter()}
-				#{/else}
+				#{if flash.mode == 'add'}@{Racuni.create()}#{/if}
+				#{else}@{Racuni.filter()}#{/else}
 			#{/set}
 		
-			<form action=${action} method="post">
+			<form action="${action}" method="post">
 				#{field 'id'}
-					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				
-				#{field 'racun.klijent.id'}
-					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				
-				#{field 'racun.valuta.id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				
@@ -117,134 +119,72 @@ function remove(id){
 				#{field 'brojRacuna'}
 					<label for = "${field.id}">Broj računa</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'brojRacuna' /}</span>
 				#{/}
 				</p>
 				<p>
-				#{field 'valuta.zvanicnaSifra'}
+				#{field 'valuta'}
 					<label for = "${field.id}">Šifra valute</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
-					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#valuteModal">...</button>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:valute, as:'valuta'}
+					<option value = "${valuta.id}">${valuta.zvanicnaSifra}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#valute_modal">...</button>
+					
 				#{/}
 				</p>
 				<p>
-				#{field 'banka.nazivBanke'}
+				#{field 'banka'}
 					<label for = "${field.id}">Banka</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:banke, as:'banka'}
+					<option value = "${banka.id}">${banka.nazivBanke}</option>
+					#{/list}
+					</select>
 				#{/}
 				</p>
 				<p>
-				#{field 'klijent.nazivKlijenta'}
+				#{field 'klijent'}
 					<label for = "${field.id}">Klijent</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
-					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#klijentiModal">...</button>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:klijenti, as:'klijent'}
+					<option value = "${klijent.id}">
+					#{if klijent.tipKlijenta == 'P'}
+						${klijent.nazivKlijenta}
+					#{/if}
+					#{else}
+						${klijent.przKlijenta + " " + klijent.imeKlijenta}
+					#{/else}
+					</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#klijenti_modal">...</button>
 				#{/}
 				</p>
 				<p>
 				#{field 'datumOtvaranja'}
 					<label for = "${field.id}">Datum otvaranja</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly"/>
+					<script>
+						$('#datumPrijema').datepicker();
+					</script>
 				#{/}
 				</p>
 				<p>
 				#{field 'vazeci'}
 					<label for = "${field.id}">Važeći</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<input type = "checkbox" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
-					<a href = "@{Racuni.show("edit")}" style="margin-left:1em">Rollback</a>
+					<a href = "@{Racuni.showDefault()}" style="margin-left:1em">Rollback</a>
 				</div>			
 			</form>
 	</p>
 </div>
 </div>
 
-<!-- Modal Klijenti -->
-  <div class="modal fade" id="drzaveModal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-      <div class="modal-header">
-      	Klijenti
-      </div>
-      <div class="modal-body">
-        <table style = "padding:2em">
-	      <tr class = "header">
-	        <th>Tip</th> 
-	        <th>Naziv</th>
-	        <th>Ime</th> 
-	        <th>Prezime</th>
-	        <th>Telefon</th> 
-	        <th>Adresa</th>
-	        <th>Web</th> 
-	        <th>Email</th>
-	        <th>Faks</th> 
-	      </tr>
-          #{list items:klijenti, as:'klijent'}
-	      <tr>
-		    <td class = "tipKlijenta">${klijent.tipKlijenta}</td>
-		    <td class = "nazivKlijenta">${klijent.nazivKlijenta}</td>
-		    <td class = "imeKlijenta">${klijent.imeKlijenta}</td>
-		    <td class = "przKlijenta">${klijent.przKlijenta}</td>
-		    <td class = "telKlijenta">${klijent.telKlijenta}</td>
-		    <td class = "adrKlijenta">${klijent.adrKlijenta}</td>
-		    <td class = "webKlijenta">${klijent.webKlijenta}</td>
-		    <td class = "emailKlijenta">${klijent.emailKlijenta}</td>
-		    <td class = "faksKlijenta">${klijent.faksKlijenta}</td>
-		    <td style = "visibility: hidden; max-width: 0px" class = "id">${klijent.id}</td>
-	      </tr>
-          #{/list}
-        </table>
-	    <table style = "padding:2em">
-		<tr class = "header">
-		   <th>Oznaka</th> 
-		   <th>Naziv</th>
-		</tr>
-		#{list items:drzave, as:'drzava'}
-		<tr>
-			<td class = "oznaka">${drzava.oznaka}</td>
-			<td class = "naziv">${drzava.naziv}</td>
-			<td style = "visibility: hidden; max-width: 0px" class = "dr_id">${drzava.id}</td>
-		</tr>
-		#{/list}
-		</table>
-		<div class="modal-footer">
-			<input id = "drzavaPickup" type = "button" value = "izbor"/>
-		</div>
-		</div>
-      </div>
-    </div>
-   </div>
-</div>
-
-<!-- Modal Valute-->
-  <div class="modal fade" id="drzaveModal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-      <div class="modal-header">
-      	Valute
-      </div>
-      <div class="modal-body">
-	    <table style = "padding:2em">
-		<tr class = "header">
-		   <th>Oznaka</th> 
-		   <th>Naziv</th>
-		</tr>
-		#{list items:drzave, as:'drzava'}
-		<tr>
-			<td class = "oznaka">${drzava.oznaka}</td>
-			<td class = "naziv">${drzava.naziv}</td>
-			<td style = "visibility: hidden; max-width: 0px" class = "dr_id">${drzava.id}</td>
-		</tr>
-		#{/list}
-		</table>
-		<div class="modal-footer">
-			<input id = "drzavaPickup" type = "button" value = "izbor"/>
-		</div>
-		</div>
-      </div>
-    </div>
-   </div>
-</div>
+#{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5]', idColumn:'5' /}
+#{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[2]', idColumn:'2' /}

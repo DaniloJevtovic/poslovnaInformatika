@@ -1,5 +1,8 @@
 package controllers.helpers;
 
+import models.Klijent;
+import play.db.jpa.Model;
+
 public class PomocneOperacije {
 	//provjera da li string kojim se u kontroleru zadaje konfiguracija ima 
 	//dozvoljenu vrijednost

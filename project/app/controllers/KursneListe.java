@@ -34,7 +34,7 @@ public class KursneListe extends Controller {
 	}
 	
 	public static void create(Date datumKursneListe, int brojKursneListe, Date primSeOd, Date primSeDo) {
-		KursnaLista kursnaLista = new KursnaLista(datumKursneListe, brojKursneListe, primSeOd, primSeDo);
+		KursnaLista kursnaLista = new KursnaLista(brojKursneListe, datumKursneListe, primSeOd, primSeDo);
 		kursnaLista.save();
 		show(Konstante.KONF_DODAVANJE);
 	}

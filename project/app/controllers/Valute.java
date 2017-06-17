@@ -4,6 +4,7 @@ import java.util.List;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.validation.ValidacijaValute;
 import models.Valuta;
 import play.mvc.Controller;
 
@@ -30,9 +31,7 @@ public class Valute extends Controller {
 	}
 	
 	public static void create(String zvanicnaSifra, String nazivValute) {
-		validation.required(zvanicnaSifra);
-		validation.match(zvanicnaSifra, "[A-Z]{3}");
-		validation.match(nazivValute, "([a-zA-Z]|č|Č|ć|Ć|đ|Đ|š|Š|ž|Ž| )*");
+		ValidacijaValute.validate(validation, zvanicnaSifra, nazivValute);
 		if(validation.hasErrors()) {
 			validation.keep();
 			show(Konstante.KONF_IZMJENA);
@@ -43,9 +42,7 @@ public class Valute extends Controller {
 	}
 
 	public static void edit(Long id, String zvanicnaSifra, String nazivValute) {
-		validation.required(zvanicnaSifra);
-		validation.match(zvanicnaSifra, "[A-Z]{3}");
-		validation.match(nazivValute, "([a-zA-Z]|č|Č|ć|Ć|đ|Đ|š|Š|ž|Ž| )*");
+		ValidacijaValute.validate(validation, zvanicnaSifra, nazivValute);
 		if(validation.hasErrors()) {
 			validation.keep();
 			show(Konstante.KONF_IZMJENA);

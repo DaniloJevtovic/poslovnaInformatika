@@ -1,0 +1,19 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Sifra</th>
+			<th>Naziv</th>
+			<th>Id</th>
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'valuta'}
+		<tr>
+			<td class="zvanicnaSifra">${valuta.zvanicnaSifra}</td>
+			<td class="nazivValute">${valuta.nazivValute}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id">${valuta.id}</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

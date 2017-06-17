@@ -3,6 +3,7 @@ package models.constants;
 public class KonstanteKlijenta {
 	public static final int MAKSIMALNA_DUZINA_TIP = 1;
 	public static final int MAKSIMALNA_DUZINA_NAZIV = 120;
+	public static final int SIRINA_PIB = 8;
 	public static final int MAKSIMALNA_DUZINA_IME = 50;
 	public static final int MAKSIMALNA_DUZINA_PREZIME = 50;
 	public static final int MAKSIMALNA_DUZINA_TELEFON = 20;
