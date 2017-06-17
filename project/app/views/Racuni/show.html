@@ -142,6 +142,7 @@ function remove(id){
 					<option value = "${banka.id}">${banka.nazivBanke}</option>
 					#{/list}
 					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#banke_modal">...</button>
 				#{/}
 				</p>
 				<p>
@@ -188,3 +189,4 @@ function remove(id){
 
 #{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5]', idColumn:'5' /}
 #{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[2]', idColumn:'2' /}
+#{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[3,4,5,6,7,8,9]', idColumn:'9' /}
