@@ -10,7 +10,7 @@ import play.db.jpa.Model;
 @Entity
 public class Banka extends Model {
 
-	public int idBanke;
+	public String idBanke;
 	public String sifraBanke;
 	public String PIBBanke;
 	public String nazivBanke;
@@ -30,12 +30,12 @@ public class Banka extends Model {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Banka(int idBanke, String sifraBanke, String pIBBanke, String nazivBanke, String adresaBanke,
+	public Banka(String idBanke, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
 			String telefonBanke, String emailBanke, String webBanke, String faksBanke) {
 		super();
 		this.idBanke = idBanke;
 		this.sifraBanke = sifraBanke;
-		PIBBanke = pIBBanke;
+		this.PIBBanke = PIBBanke;
 		this.nazivBanke = nazivBanke;
 		this.adresaBanke = adresaBanke;
 		this.telefonBanke = telefonBanke;
@@ -43,5 +43,4 @@ public class Banka extends Model {
 		this.webBanke = webBanke;
 		this.faksBanke = faksBanke;
 	}
-
 }

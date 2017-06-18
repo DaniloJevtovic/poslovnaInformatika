@@ -2,17 +2,20 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import models.constants.KonstanteValute;
 import play.db.jpa.Model;
 
 @Entity
 public class Valuta extends Model{
 
-	public int idValute;
+	@Column(nullable=false, unique=true, length=KonstanteValute.MAKSIMALNA_DUZINA_SIFRA)
 	public String zvanicnaSifra;
+	@Column(nullable=false, unique=true, length=KonstanteValute.MAKSIMALNA_DUZINA_NAZIV)
 	public String nazivValute;
 	
 	@ManyToOne
@@ -34,9 +37,8 @@ public class Valuta extends Model{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Valuta(int idValute, String zvanicnaSifra, String nazivValute) {
+	public Valuta(String zvanicnaSifra, String nazivValute) {
 		super();
-		this.idValute = idValute;
 		this.zvanicnaSifra = zvanicnaSifra;
 		this.nazivValute = nazivValute;
 	}

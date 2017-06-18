@@ -1,0 +1,49 @@
+<script>
+
+var ${_tableId} = $('#${_tableId}').DataTable({
+	"columnDefs" : [
+		{
+			"targets" : ${_hiddenColumns},
+			"visible" : false,
+			"searchable" : false
+		}
+	]
+});
+
+${_tableId}.on('click', 'tr', function (){
+	if (!$(this).hasClass("header")) {
+		//klasa highlighted postavlja pozadinu na zutu
+		//njenim dodavanjem ili uklanjanjem oznacavamo da neki red
+		//dobija, odnosno gubi selekciju
+		//uklanjamo sa trenutno selektovanog
+		$("#${_tableId} .selected").removeClass("selected");
+		//dodajemo na novi selektovani
+		$(this).addClass("selected");
+		//pozivamo sinhronizaciju, prosledjujemo dati red
+		//sync($(this)); //NE POZIVAMO SINHRONIZACIJU!!!!!!!
+		var data = ${_tableId}.rows('.selected').data()[0]; 
+		#{if _modalId}
+		var id = data[${_idColumn}];
+		MyModals.callback("${_modalId}", id);
+		#{/if}
+		#{else}
+		sync(data);
+		#{/else}
+	}
+});
+#{ifnot _modalId}
+$(document).ready(function() {
+if(highlightedId!="") {
+	${_tableId}.rows().every(function(rowIdx, tableLoop, rowLoop) {
+		var rowData = this.data();
+		if(rowData[${_idColumn}] == highlightedId) {
+			$("#${_tableId} .selected").removeClass("selected");
+			$(this.node()).addClass("selected");
+			sync(rowData);
+		}
+	});
+}
+});
+#{/ifnot}
+
+</script>

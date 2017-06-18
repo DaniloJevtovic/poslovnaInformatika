@@ -1,0 +1,129 @@
+#{extends 'standardForm.html' /}
+#{set title:'Kursne Liste' /}
+
+<script>
+
+function sync(item){
+	datumKursneListe = item.find(".datumKursneListe").html();
+	brojKursneListe = item.find(".brojKursneListe").html();
+	primSeOd = item.find(".primSeOd").html();
+	primSeDo = item.find(".primSeDo").html();
+	
+    $("#datumKursneListe").val(datumKursneListe);
+    $("#brojKursneListe").val(brojKursneListe);
+    $("#primSeOd").val(primSeOd);
+    $("#primSeDo").val(primSeDo);
+    $("#id").val(id);
+}
+/*
+function nextForm(id){
+	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
+}
+*/
+function remove(id){
+	$(location).attr('href', '/KursneListe/delete?id=' +id)
+}
+
+</script>
+
+<p>
+<ul>
+  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  <li><a href="@{KursneListe.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{KursneListe.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="@{KursneListe.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Kursne Liste</h1>
+
+<table class = "maintable">
+	<tr class = "header">
+	   <th>Datum kursne liste</th> 
+	   <th>Broj kursne liste</th>
+	   <th>Primjenjuje se od</th> 
+	   <th>Primjenjuje se do</th>
+	   <th>Banka</th> 
+	</tr>
+#{list items:kursneListe, as:'kursnaLista'}
+	<tr>
+		<td class = "datumKursneListe">${kursnaLista.datumKursneListe}</td>
+		<td class = "brojKursneListe">${kursnaLista.brojKursneListe}</td>
+		<td class = "primSeOd">${kursnaLista.primSeOd}</td>
+		<td class = "primSeDo">${kursnaLista.primSeDo}</td>
+		<td class = "banka">#{if kursnaLista.banka} ${kursnaLista.banka.nazivBanke} #{/if}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${kursnaLista.id}</td>
+	</tr>
+#{/list}
+</table>
+
+<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{KursneListe.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{KursneListe.edit()}
+				#{/elseif}
+				#{else}
+					@{KursneListe.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'datumKursneListe'}
+					<label for = "${field.id}">Datum kursne liste</label>
+					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'brojKursneListe'}
+					<label for = "${field.id}">Broj kursne liste</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'primSeOd'}
+					<label for = "${field.id}">Primjenjuje se od</label>
+					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'primSeDo'}
+					<label for = "${field.id}">Primjenjuje se do</label>
+					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'banka.nazivBanke'}
+					<label for = "${field.id}">Banka</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+	</p>
+</div>
+</div>
+

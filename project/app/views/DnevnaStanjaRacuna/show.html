@@ -1,0 +1,144 @@
+#{extends 'standardForm.html' /}
+#{set title:'Dnevna stanja računa' /}
+
+<script>
+	function sync(item){
+		id = item.find(".id").html()
+		brojIzvoda = item.find(".brojIzvoda").html()
+		datumPrometa = item.find(".datumPrometa").html()
+		predhodnoStanje = item.find(".predhodnoStanje").html()
+		prometUKorist = item.find(".prometUKorist").html()
+		prometNaTeret = item.find(".prometNaTeret").html()
+		novoStanje = item.find(".novoStanje").html()
+
+		$("#id").val(id);
+		$("#brojIzvoda").val(brojIzvoda);
+		$("#datumPrometa").val(datumPrometa);
+		$("#predhodnoStanje").val(predhodnoStanje);
+		$("#prometUKorist").val(prometUKorist);
+		$("#prometNaTeret").val(prometNaTeret);
+		$("#novoStanje").val(novoStanje);
+		
+	}
+
+	function remove(id){
+		$(location).attr('href', '/DnevnaStanjaRacuna/delete?id=' +id)
+	}
+</script>
+
+<p>
+	<ul>
+		<li><a href="/" id = "dnevnaStanjaRacuna"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  		<li><a href="@{DnevnaStanjaRacuna.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  		<li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  		<li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  		<li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  		<li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  		<li><a href="@{DnevnaStanjaRacuna.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  		<li><a href="@{DnevnaStanjaRacuna.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+	</ul>
+</p>
+
+<div class = "container-fluid">
+	<h1>Dnevna stanja računa</h1>
+
+	<table class = "maintable">
+		<tr class = "header">
+	   		<th>Broj izvoda</th> 
+	   		<th>Datum prometa</th>
+	  		<th>Predhodno stanje</th>
+	   		<th>Promet u korist</th>
+	   		<th>Promet na teret</th>
+	   		<th>Novo stanje</th>
+		</tr>
+		#{list items:dnevnaStanjaRacuna, as:'dnevnoStanjeRacuna'}
+		<tr>
+			<td class = "brojIzvoda">${dnevnoStanjeRacuna.brojIzvoda}</td>
+			<td class = "datumPrometa">${dnevnoStanjeRacuna.datumPrometa.format('dd.MM.yyyy')}</td> <!-- format('dd-MM-yyyy') -->
+			<!-- <td class = "datumPrometa">${dnevnoStanjeRacuna.datumPrometa}</td> -->
+			<td class = "predhodnoStanje">${dnevnoStanjeRacuna.predhodnoStanje}</td>
+			<td class = "prometUKorist">${dnevnoStanjeRacuna.prometUKorist}</td>
+			<td class = "prometNaTeret">${dnevnoStanjeRacuna.prometNaTeret}</td>
+			<td class = "novoStanje">${dnevnoStanjeRacuna.novoStanje}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${dnevnoStanjeRacuna.id}</td>
+		</tr>
+		#{/list}
+	</table>
+	
+	<div class = "panel">
+	<p>
+		<div><b>Status: ${mode}</b></div> <br>
+			#{set 'action'}
+				#{if mode == 'add'}
+					@{DnevnaStanjaRacuna.create()}
+				#{/if}
+				#{elseif mode == 'edit'}
+					@{DnevnaStanjaRacuna.edit()}
+				#{/elseif}
+				#{else}
+					@{DnevnaStanjaRacuna.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'brojIzvoda'}
+					<label for = "${field.id}">Broj izvoda:</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumPrometa'}
+					<label for = "${field.id}">Datum prometa:</label>
+					<!-- <input type="text" id="datepicker" name = "${field.name}"> --> 
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly"/> <!-- readonly="readonly" -->
+					
+					<script>
+						$('#datumPrometa').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'predhodnoStanje'}
+					<label for = "${field.id}">Predhodno stanje:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'prometUKorist'}
+					<label for = "${field.id}">Promet u korist:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'prometNaTeret'}
+					<label for = "${field.id}">Promet na teret:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}" />
+				#{/}
+				</p>
+				<p>
+				#{field 'novoStanje'}
+					<label for = "${field.id}">Novo stanje:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+		</p>
+	</div>
+	
+</div>
+	

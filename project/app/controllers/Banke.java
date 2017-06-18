@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Banka;
+import models.Drzava;
 import play.mvc.Controller;
 
 /*
@@ -21,21 +22,21 @@ public class Banke extends Controller {
 		render(banke, mode);
 	}
 	
-	public static void create(int idBanke, String sifraBanke, String pIBBanke, String nazivBanke, String adresaBanke,
+	public static void create(String idBanke, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
 			String telefonBanke, String emailBanke, String webBanke, String faksBanke){
 
-		Banka banka = new Banka(idBanke, sifraBanke, pIBBanke, nazivBanke, adresaBanke, telefonBanke, emailBanke, webBanke, faksBanke);
+		Banka banka = new Banka(idBanke, sifraBanke, PIBBanke, nazivBanke, adresaBanke, telefonBanke, emailBanke, webBanke, faksBanke);
 		banka.save();		
 		show("add");
 	}
 	
-	public static void edit(int idBanke, String sifraBanke, String pIBBanke, String nazivBanke, String adresaBanke,
+	public static void edit(Long id, String idBanke, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
 			String telefonBanke, String emailBanke, String webBanke, String faksBanke){
 		
-		Banka banka = Banka.findById(idBanke);
+		Banka banka = Banka.findById(id);
 		banka.idBanke = idBanke;
 		banka.sifraBanke = sifraBanke;
-		banka.PIBBanke = pIBBanke;
+		banka.PIBBanke = PIBBanke;
 		banka.nazivBanke = nazivBanke;
 		banka.adresaBanke = adresaBanke;
 		banka.telefonBanke = telefonBanke;
@@ -47,11 +48,16 @@ public class Banke extends Controller {
 		show("edit");
 	}
 	
-	public static void filter(int idBanke, String sifraBanke, String pIBBanke, String nazivBanke, String adresaBanke,
+	public static void filter(String idBanke, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
 			String telefonBanke, String emailBanke, String webBanke, String faksBanke){
-		List<Banka> banke = Banka.find("byidBankeLikeAndsifraBankeLike", "%" + idBanke + "%", "%" + sifraBanke + "%").fetch();
+		
+		List<Banka> banke = Banka.find("byIdBankeLikeAndSifraBankeLikeAndPIBBankeLikeAndNazivBankeLikeAndAdresaBankeLike"
+				+ "AndTelefonBankeLikeAndEmailBankeLikeAndWebBankeLikeAndFaksBankeLike", 
+				"%" + idBanke + "%", "%" + sifraBanke + "%", "%" + PIBBanke + "%", "%" + nazivBanke + "%", "%" + adresaBanke + "%",
+				"%" + telefonBanke + "%","%" + emailBanke + "%", "%" + webBanke + "%", "%" + faksBanke + "%").fetch();
+	
 		String mode = "edit";
-		renderTemplate("Drzave/show.html", banke, mode);
+		renderTemplate("Banke/show.html", banke, mode);
 	}
 	
 	public static void delete(Long id){

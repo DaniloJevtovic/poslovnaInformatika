@@ -1,0 +1,53 @@
+Klijent(jovo):
+ tipKlijenta : F
+ imeKlijenta : Jovo
+ przKlijenta : Jovic
+ telKlijenta : 45454545
+ adrKlijenta : Adresa A bb
+ emailKlijenta : jovo@provider.com
+ faksKlijenta : 5656565222
+
+Klijent(miro):
+ tipKlijenta : F
+ imeKlijenta : Miro
+ przKlijenta : Miric
+ telKlijenta : 363636363
+ adrKlijenta : Adresa A bb
+ emailKlijenta : pero@nesto.com
+ faksKlijenta : 7894567846
+
+Klijent(ziko):
+ tipKlijenta : F
+ imeKlijenta : Ziko
+ przKlijenta : Zikic
+ telKlijenta : 252525252
+ adrKlijenta : Adresa A bb
+ webKlijenta : www.ziko.com
+ emailKlijenta : ziko@nesto.com
+ faksKlijenta : 7899246546
+
+Klijent(preduzeceA):
+ tipKlijenta : P
+ nazivKlijenta : Preduzece A
+ pibKlijenta : 12345678
+ imeKlijenta : Pero
+ przKlijenta : Peric
+ telKlijenta : 444444444
+ adrKlijenta : Adresa Preduzeca A 45
+ webKlijenta : www.preduzecea.com
+ emailKlijenta : preduzecea@provider.com
+ faksKlijenta : 5555555554
+
+Klijent(preduzeceB):
+ tipKlijenta : P
+ nazivKlijenta : Preduzece B
+ pibKlijenta : 12345679
+ imeKlijenta : Miko
+ przKlijenta : Mikic
+ telKlijenta : 777777777
+ adrKlijenta : Adresa Preduzeca B 78
+ webKlijenta : www.preduzeceb.com
+ emailKlijenta : preduzeceb@provider.com
+ faksKlijenta : 8888888880
+ 
+ 

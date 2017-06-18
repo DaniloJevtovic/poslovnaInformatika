@@ -1,7 +1,6 @@
 package models;
 
-import java.sql.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -12,22 +11,23 @@ import play.db.jpa.Model;
 @Entity
 public class AnalitikaIzvoda extends Model {
 
-	public long brojStavke;
-	public String duzNalogodavac;
+	public Long brojStavke;
+	public String duzNalogodavac;		//duznik - nalogodavac
 	public String svrhaPlacanja;
-	public String povjerPrimalac;
+	public String povjerPrimalac;		//povjerilac - primalac
 	public Date datumPrijema;
 	public Date datumValute;
 	public String racunDuznika;
-	public int modelZaduzenja;
+	public Integer modelZaduzenja;
 	public String pozNaBrojZaduzenja;
 	public String racunPovjerioca;
-	public int modelOdobrenja;
+	public Integer modelOdobrenja;
 	public String pozNaBrojOdobrenja;
-	public boolean hitno;
-	public long iznos;
-	public int tipGreske;
-	public char status;
+	public Boolean hitno;
+	public Long iznos;
+	public Integer tipGreske;
+	public Character status;
+	
 	
 	@ManyToOne
 	public VrstaPlacanja vrstaPlacanja;
@@ -44,18 +44,18 @@ public class AnalitikaIzvoda extends Model {
 	@OneToMany(mappedBy = "analitikaIzvoda")
 	public List<StavkaKliringa> stavkeKliringa;
 	
-	
 	public AnalitikaIzvoda() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public AnalitikaIzvoda(long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
-			Date datumPrijema, Date datumValute, String racunDuznika, int modelZaduzenja, String pozNaBrojZaduzenja,
-			String racunPovjerioca, int modelOdobrenja, String pozNaBrojOdobrenja, boolean hitno, long iznos,
-			int tipGreske, char status) {
+
+	public AnalitikaIzvoda(Long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
+			Date datumPrijema, Date datumValute, String racunDuznika, Integer modelZaduzenja, String pozNaBrojZaduzenja,
+			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, Long iznos,
+			Integer tipGreske, Character status) {
 		super();
 		this.brojStavke = brojStavke;
 		this.duzNalogodavac = duzNalogodavac;
+		this.svrhaPlacanja = svrhaPlacanja;
 		this.povjerPrimalac = povjerPrimalac;
 		this.datumPrijema = datumPrijema;
 		this.datumValute = datumValute;
@@ -70,6 +70,6 @@ public class AnalitikaIzvoda extends Model {
 		this.tipGreske = tipGreske;
 		this.status = status;
 	}
-
+	
 
 }

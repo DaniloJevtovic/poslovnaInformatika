@@ -1,0 +1,33 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>ID Banke</th> 
+	   		<th>Sifra banke</th>
+	  		<th>PIB banke</th>
+	   		<th>Naziv banke</th>
+	   		<th>Adresa banke</th>
+	   		<th>Telefon banke</th>
+	   		<th>E-mail banke</th>
+	   		<th>Web banke</th>
+	   		<th>Faks banke</th>
+	   		<th>Id</th>
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'banka'}
+		<tr>
+			<td class = "idBanke">${banka.idBanke}</td>
+			<td class = "sifraBanke">${banka.sifraBanke}</td>
+			<td class = "PIBBanke">${banka.PIBBanke}</td>
+			<td class = "nazivBanke">${banka.nazivBanke}</td>
+			<td class = "adresaBanke">${banka.adresaBanke}</td>
+			<td class = "telefonBanke">${banka.telefonBanke}</td>
+			<td class = "emailBanke">${banka.emailBanke}</td>
+			<td class = "webBanke">${banka.webBanke}</td>
+			<td class = "faksBanke">${banka.faksBanke}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${banka.id}</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

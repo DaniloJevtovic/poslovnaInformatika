@@ -1,0 +1,33 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Banka</th>
+			<th>Klijent</th>
+			<th>Broj računa</th>
+			<th>Šifra valute</th>
+			<th>Datum otvaranja</th>
+			<th>Važeći</th>
+			<th>Id</th>
+			<th>Id Valute</th>
+			<th>ID Banke</th>
+			<th>Id Klijenta</th>
+		</tr>
+	</thead>
+	<tbody>
+		#{list items:_data, as:'racun'}
+		<tr>
+			<td class="banka">#{if racun.banka} ${racun.banka.nazivBanke}#{/if}</td>
+			<td class="klijent">#{if racun.klijent}${racun.klijent.nazivKlijenta} #{/if}</td>
+			<td class="brojRacuna">${racun.brojRacuna}</td>
+			<td class="valuta">#{if racun.valuta}${racun.valuta.zvanicnaSifra} #{/if}</td>
+			<td class="datumOtvaranja">${racun.datumOtvaranja}</td>
+			<td class="vazeci">${racun.vazeci}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id">${racun.id}</td>
+			<td style="visibility: hidden; max-width: 0px" class="valuta_id">#{if racun.valuta}${racun.valuta.id}#{/if}</td>
+			<td style="visibility: hidden; max-width: 0px" class="banka_id">#{if racun.banka}${racun.banka.id}#{/if}</td>
+			<td style="visibility: hidden; max-width: 0px" class="klijent_id">#{if racun.klijent}${racun.klijent.id}#{/if}</td>
+		</tr>
+		#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

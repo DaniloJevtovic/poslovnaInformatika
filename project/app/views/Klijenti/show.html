@@ -1,0 +1,228 @@
+#{extends 'standardForm.html' /}
+#{set title:'Klijenti' /}
+<script>
+
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+	#{if flash.highlightedId}
+	var items = $(".maintable tr");
+	$(".highlighted").removeClass("highlighted");
+	for(var i = 0; i < items.length; i++) {
+		var item = $(items[i]);
+		var id = item.find(".id").html();
+		if(id == highlightedId) {
+			item.addClass("highlighted")
+			sync(item);
+			break;
+		}
+	}
+	#{/if}
+	$("#search").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#edit").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Klijenti.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+function sync(item){
+	var tip = item.find(".tipKlijenta").html();
+	var naziv = item.find(".nazivKlijenta").html();
+	var pib = item.find(".pibKlijenta").html();
+	var ime = item.find(".imeKlijenta").html();
+	var prezime = item.find(".przKlijenta").html();
+	var telefon = item.find(".telKlijenta").html();
+	var adresa = item.find(".adrKlijenta").html();
+	var web = item.find(".webKlijenta").html();
+	var email = item.find(".emailKlijenta").html();
+	var faks = item.find(".faksKlijenta").html();
+    var id = item.find(".id").html();
+    
+    $("#tipKlijenta").val(tip);
+    $("#nazivKlijenta").val(naziv);
+    $("#pibKlijenta").val(pib);
+    $("#imeKlijenta").val(ime);
+    $("#przKlijenta").val(prezime);
+    $("#telKlijenta").val(telefon);
+    $("#adrKlijenta").val(adresa);
+    $("#webKlijenta").val(web);
+    $("#emailKlijenta").val(email);
+    $("#faksKlijenta").val(faks);
+    $("#id").val(id);
+    highlightedId = id;
+}
+
+function nextForm(id){
+	$(location).attr('href', '/Racun/nextForm?klijent_id=' +id);	
+}
+
+function remove(id){
+	$(location).attr('href', '/Klijenti/delete?id=' + highlightedId)
+}
+
+</script>
+
+<p>
+<ul>
+  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
+  
+  <li><a href="#" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="#" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Klijenti</h1>
+
+<table class = "maintable">
+	<tr class = "header">
+	   <th>Tip</th> 
+	   <th>Naziv</th>
+	   <th>Pib</th>
+	   <th>Ime</th> 
+	   <th>Prezime</th>
+	   <th>Telefon</th> 
+	   <th>Adresa</th>
+	   <th>Web</th> 
+	   <th>Email</th>
+	   <th>Faks</th> 
+	</tr>
+#{list items:klijenti, as:'klijent'}
+	<tr #{if klijent.id == highlightedId} class = "highlighted" #{/if}>
+		<td class = "tipKlijenta">${klijent.tipKlijenta}</td>
+		<td class = "nazivKlijenta">${klijent.nazivKlijenta}</td>
+		<td class = "pibKlijenta">${klijent.pibKlijenta}</td>
+		<td class = "imeKlijenta">${klijent.imeKlijenta}</td>
+		<td class = "przKlijenta">${klijent.przKlijenta}</td>
+		<td class = "telKlijenta">${klijent.telKlijenta}</td>
+		<td class = "adrKlijenta">${klijent.adrKlijenta}</td>
+		<td class = "webKlijenta">${klijent.webKlijenta}</td>
+		<td class = "emailKlijenta">${klijent.emailKlijenta}</td>
+		<td class = "faksKlijenta">${klijent.faksKlijenta}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${klijent.id}</td>
+	</tr>
+#{/list}
+</table>
+
+<div class = "panel">
+	<p>
+		<div><b>Status: ${flash.mode}</b></div> <br>
+			#{set 'action'}
+				#{if flash.mode == 'add'}
+					@{Klijenti.create()}
+				#{/if}
+				#{elseif flash.mode == 'edit'}
+					@{Klijenti.edit()}
+				#{/elseif}
+				#{else}
+					@{Klijenti.filter()}
+				#{/else}
+			#{/set}
+		
+			<form action=${action} method="post">
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'tipKlijenta'}
+					<label for = "${field.id}">Tip</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					  <option value = "P">Pravno Lice</option>
+					  <option value = "F">Fizičko Lice</option>
+					</select>
+					<span class="error">#{error 'tipKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'nazivKlijenta'}
+					<label for = "${field.id}">Naziv</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'nazivKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'pibKlijenta'}
+					<label for = "${field.id}">Pib</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'pibKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'imeKlijenta'}
+					<label for = "${field.id}">Ime</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'imeKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'przKlijenta'}
+					<label for = "${field.id}">Prezime</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'przKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'telKlijenta'}
+					<label for = "${field.id}">Telefon</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'telKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'adrKlijenta'}
+					<label for = "${field.id}">Adresa</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'adrKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'webKlijenta'}
+					<label for = "${field.id}">Web</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'webKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'emailKlijenta'}
+					<label for = "${field.id}">Email</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'emailKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'faksKlijenta'}
+					<label for = "${field.id}">Faks</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'faksKlijenta' /}</span>
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{Klijenti.showDefault()}" style="margin-left:1em">Rollback</a>
+				</div>			
+			</form>
+	</p>
+</div>
+</div>
+
