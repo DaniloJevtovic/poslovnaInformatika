@@ -15,11 +15,14 @@ function sync(item){
 /*function nextForm(id){
 	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
 }
-
+*/
 function remove(id){
-	$(location).attr('href', '/Drzave/delete?id=' +id)
-}*/
+	$(location).attr('href', '/Ukidanja/delete?id=' +id)
+}
 
+$(document).ready(function() {
+	$( "#datepicker" ).datepicker();
+});
 </script>
 
 <p>
@@ -51,6 +54,7 @@ function remove(id){
 	</tr>
 #{list items:ukidanje, as:'ukidanja'}
 	<tr>
+		<tr #{if ukidanja.id == selected} class = "highlighted" #{/if}>
 		<td class = "datumUkidanja">${ukidanja.datumUkidanja}</td>
 		<td class = "sredSePrenNaRacun">${ukidanja.sredSePrenNaRacun}</td>
 		<td style = "visibility: hidden; max-width: 0px" class = "id">${ukidanja.id}</td>
@@ -80,7 +84,7 @@ function remove(id){
 				<p>
 				#{field 'datumUkidanja'}
 					<label for = "${field.id}">Datum ukidanja</label>
-					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
+					<input type="text"  id="datepicker">				
 				#{/}
 				</p>
 				<p>

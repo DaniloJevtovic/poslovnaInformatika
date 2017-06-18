@@ -10,7 +10,7 @@ import play.db.jpa.Model;
 @Entity
 public class VrstaPlacanja extends Model {
 
-	public int oznakaVrste;
+	public String oznakaVrste;
 	public String nazivVrstePlacanja;
 	
 	@OneToMany(mappedBy = "vrstaPlacanja")
@@ -21,7 +21,7 @@ public class VrstaPlacanja extends Model {
 		// TODO Auto-generated constructor stub
 	}
 
-	public VrstaPlacanja(int oznakaVrste, String nazivVrstePlacanja) {
+	public VrstaPlacanja(String oznakaVrste, String nazivVrstePlacanja) {
 		super();
 		this.oznakaVrste = oznakaVrste;
 		this.nazivVrstePlacanja = nazivVrstePlacanja;
