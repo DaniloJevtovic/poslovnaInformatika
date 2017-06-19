@@ -5,19 +5,7 @@
 
 $(document).ready(function() {
 	highlightedId = "${flash.highlightedId}";
-	#{if flash.highlightedId}
-	var items = $(".maintable tr");
-	$(".highlighted").removeClass("highlighted");
-	for(var i = 0; i < items.length; i++) {
-		var item = $(items[i]);
-		var id = item.find(".id").html();
-		if(id == highlightedId) {
-			item.addClass("highlighted")
-			sync(item);
-			break;
-		}
-	}
-	#{/if}
+
 	$("#search").click(function() {
 		var loc = '@{Racuni.show()}' + '?mode=search&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
@@ -35,7 +23,7 @@ $(document).ready(function() {
 function sync(data){
 	$("#brojRacuna").val(data[2]);
     $("#datumOtvaranja").val(data[4]);
-    $("#vazeci").val(data[2]);
+    $("#vazeci").prop('checked', data[2]);
     $("#id").val(data[6]);
     $("#valuta").val(data[7]);
     $("#klijent").val(data[9]);
@@ -54,53 +42,10 @@ function remove(id){
 
 </script>
 
-<p>
-<ul>
-  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
-  
-  <li><a href="#" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
-  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
-  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
-  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
-  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
-  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="#" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
-</ul>
-</p>
+#{StandardFormToolbar /}
 
 <div class = "container-fluid">
 <h1>Računi</h1>
-<!-- 
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Banka</th>
-	   <th>Klijent</th>
-	   <th>Broj računa</th> 
-	   <th>Šifra valute</th>
-	   <th>Datum otvaranja</th>
-	   <th>Važeći</th> 
-	</tr>
-#{list items:racuni, as:'racun'}
-	<tr>
-		<td class = "banka">#{if racun.banka} ${racun.banka.nazivBanke} #{/if}</td>
-		<td class = "klijent">#{if racun.klijent} ${racun.klijent.nazivKlijenta} #{/if}</td>
-		<td class = "brojRacuna">${racun.brojRacuna}</td>
-		<td class = "valuta">#{if racun.valuta} ${racun.valuta.zvanicnaSifra} #{/if}</td>
-		<td class = "datumOtvaranja">${racun.datumOtvaranja}</td>
-		<td class = "vazeci">${racun.vazeci}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${racun.id}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "valuta_id">#{if racun.valuta}${racun.valuta.id}#{/if}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "banka_id">#{if racun.banka}${racun.banka.id}#{/if}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "klijent_id">#{if racun.klijent}${racun.klijent.id}#{/if}</td>
-	</tr>
-#{/list}
-</table>
- -->
  #{TabelaRacuni data : racuni, tableId: 'tabela_racuni', hiddenColumns : '[6,7,8,9]', idColumn:'6'/}
 <div class = "panel">
 	<p>
@@ -118,7 +63,7 @@ function remove(id){
 				<p>
 				#{field 'brojRacuna'}
 					<label for = "${field.id}">Broj računa</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}" disabled="disabled"/>
 					<span class="error">#{error 'brojRacuna' /}</span>
 				#{/}
 				</p>
@@ -166,16 +111,16 @@ function remove(id){
 				<p>
 				#{field 'datumOtvaranja'}
 					<label for = "${field.id}">Datum otvaranja</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly" disabled="disabled"/>
 					<script>
-						$('#datumPrijema').datepicker();
+						$('#${field.id}').datepicker();
 					</script>
 				#{/}
 				</p>
 				<p>
 				#{field 'vazeci'}
 					<label for = "${field.id}">Važeći</label>
-					<input type = "checkbox" name = "${field.name}" id = "${field.id}"/>
+					<input type = "checkbox" name = "${field.name}" id = "${field.id}" disabled="disabled"/>
 				#{/}
 				</p>
 				<div id = "formActions">
@@ -188,5 +133,5 @@ function remove(id){
 </div>
 
 #{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5]', idColumn:'5' /}
-#{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[2]', idColumn:'2' /}
+#{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[3,4]', idColumn:'3' /}
 #{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[3,4,5,6,7,8,9]', idColumn:'9' /}

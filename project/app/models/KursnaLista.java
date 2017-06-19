@@ -1,19 +1,19 @@
 package models;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.OneToMany;
 
 import models.constants.KonstanteKursneListe;
 import play.db.jpa.Model;
 
 @Entity
 public class KursnaLista extends Model{
-	@Column(nullable=false, unique=true, precision=KonstanteKursneListe.SIRINA_BROJA)
+	@Column(nullable=false, precision=KonstanteKursneListe.SIRINA_BROJA)
 	public int brojKursneListe;
 	@Column(nullable=false)
 	public Date datumKursneListe;
@@ -24,6 +24,9 @@ public class KursnaLista extends Model{
 	
 	@ManyToOne(optional=false)
 	public Banka banka;
+	
+	@OneToMany(mappedBy = "kursnaLista")
+	public List<KursUValuti> kursevi;
 	
 	public KursnaLista() {
 		// TODO Auto-generated constructor stub

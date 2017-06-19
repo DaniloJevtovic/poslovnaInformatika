@@ -1,6 +1,6 @@
 package controllers;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -40,54 +40,43 @@ public class Racuni extends Controller {
 		}
 	}
 	
-	public static void create(String brojRacuna, Long klijent, Long banka, Long valuta) {
-		ValidacijaRacuna.validate(validation, brojRacuna, klijent, banka, valuta);
-		
+	public static void create(Long klijent, Long banka, Long valuta) {
+		ValidacijaRacuna.validate(validation, klijent, banka, valuta);
+		Klijent _klijent = Klijent.findById(klijent);
+		if(_klijent==null) {
+			validation.addError("klijent", "Nepostojeci klijent");
+		}
+		Banka _banka = Banka.findById(banka);
+		if(_banka==null) {
+			validation.addError("banka", "Nepostojeca banka");
+		}
+		Valuta _valuta = Valuta.findById(valuta);
+		if(_valuta==null) {
+			validation.addError("valuta", "Nepostojeca valuta");
+		}
 		if(validation.hasErrors()) {
 			validation.keep();
-			/*validation.errorsMap().forEach(new BiConsumer<String, List<play.data.validation.Error>>() {
-
-				@Override
-				public void accept(String t, List<play.data.validation.Error> u) {
-					System.out.println("Greska: " + t);
-					System.out.println(u.get(0).message());
-				}
-				
-			});*/
 			show(Konstante.KONF_DODAVANJE, "");
 		} else {
-			String dijelovi[] = brojRacuna.split("-");
-			int kontrolneCifre = Integer.parseInt(dijelovi[2]);
-			long glavnina = Long.parseLong(dijelovi[0] + dijelovi[1] + dijelovi[2]) - kontrolneCifre;
-			System.out.println("Glavnina: " + glavnina);
-			System.out.println("Kontrolne cifre: " + kontrolneCifre);
-			System.out.println("Glavnina mod 97: " + (glavnina % 97));
-			System.out.println("Provjera: " + ( 98 - (glavnina%97)));
-			if(kontrolneCifre != (98 - (glavnina % 97))) {
-				validation.addError("brojRacuna", "Nije validan po modelu 97");
-			}
-			Klijent _klijent = Klijent.findById(klijent);
-			if(_klijent==null) {
-				validation.addError("klijent", "Nepostojeci klijent");
-			}
-			Banka _banka = Banka.findById(banka);
-			if(_banka==null) {
-				validation.addError("banka", "Nepostojeca banka");
-			}
-			if(!_banka.sifraBanke.equals(dijelovi[0])) {
-				validation.addError("banka", "Sifra banke ne odgovara strukturi broja racuna");
-			}
-			Valuta _valuta = Valuta.findById(valuta);
-			if(_valuta==null) {
-				validation.addError("valuta", "Nepostojeca valuta");
-			}
 			if(validation.hasErrors()) {
 				validation.keep();
 				show(Konstante.KONF_DODAVANJE, "");
 			} else {
-				java.util.Date sada = new java.util.Date();
-				Date datumOtvaranja = new Date(sada.getTime());
-				Racun racun = new Racun(brojRacuna, datumOtvaranja, true);
+				String _sifraBankePocetna = _banka.sifraBanke;
+				StringBuilder _sifraBanke = new StringBuilder(_sifraBankePocetna);
+				while(_sifraBanke.charAt(0)=='0') {
+					_sifraBanke.delete(0, 0);
+				}
+				StringBuilder _brojRacuna = new StringBuilder(((Long)Racun.count("banka = ?", _banka)).toString());
+				while(_brojRacuna.length()<13) {
+					_brojRacuna.insert(0, "0");
+				}
+				String _brojRacunaPravi = _brojRacuna.toString();
+				long glavnina = Long.parseLong(_sifraBanke.toString() + _brojRacunaPravi) * 100;
+				long kontrolneCifre = 98 - (glavnina % 97);
+				String brojRacuna = _sifraBankePocetna + "-" + _brojRacunaPravi + "-" + kontrolneCifre; 
+				Date sada = new Date();
+				Racun racun = new Racun(brojRacuna, sada, true);
 				racun.valuta = _valuta;
 				racun.banka = _banka;
 				racun.klijent = _klijent;

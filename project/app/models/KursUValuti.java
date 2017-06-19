@@ -21,6 +21,10 @@ public class KursUValuti extends Model {
 	@ManyToOne
 	public Valuta premaValuti;
 	
+
+	@ManyToOne
+	public KursnaLista kursnaLista;
+
 	
 	public KursUValuti() {
 		// TODO Auto-generated constructor stub

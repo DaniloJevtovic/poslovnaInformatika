@@ -3,7 +3,9 @@
 		<tr>
 			<th>Sifra</th>
 			<th>Naziv</th>
+			<th>Drzava</th>
 			<th>Id</th>
+			<th>Id Drzave</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -11,7 +13,9 @@
 		<tr>
 			<td class="zvanicnaSifra">${valuta.zvanicnaSifra}</td>
 			<td class="nazivValute">${valuta.nazivValute}</td>
+			<td class="nazivDrzave">#{if valuta.drzava}${valuta.drzava.naziv}#{/if}</td>
 			<td style="visibility: hidden; max-width: 0px" class="id">${valuta.id}</td>
+			<td class="drzava_id">#{if valuta.drzava}${valuta.drzava.id}#{/if}</td>
 		</tr>
 	#{/list}
 	</tbody>

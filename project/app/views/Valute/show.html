@@ -3,14 +3,31 @@
 
 <script>
 
-function sync(item){
-	zvanicnaSifra = item.find(".zvanicnaSifra").html();
-	nazivValute = item.find(".nazivValute").html();
-	id = item.find(".id").html();
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+	
+	$("#search").click(function() {
+		var loc = '@{Valute.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{Valute.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Valute.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+function sync(data){
     
-    $("#zvanicnaSifra").val(zvanicnaSifra);
-    $("#nazivValute").val(nazivValute);
-    $("#id").val(id);
+    $("#zvanicnaSifra").val(data[0]);
+    $("#nazivValute").val(data[1]);
+    $("#id").val(data[3]);
+    $("#drzava").val(data[4]);
+    
+    highlightedId = data[3];
 }
 /*
 function nextForm(id){
@@ -23,28 +40,11 @@ function remove(id){
 
 </script>
 
-<p>
-<ul>
-  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
-  
-  <li><a href="@{Valute.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
-  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
-  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
-  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
-  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
-  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{Valute.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{Valute.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
-</ul>
-</p>
+#{StandardFormToolbar /}
 
 <div class = "container-fluid">
 <h1>Valute</h1>
-
+<!--
 <table class = "maintable">
 	<tr class = "header">
 	   <th>Sifra</th> 
@@ -58,20 +58,15 @@ function remove(id){
 	</tr>
 #{/list}
 </table>
-
+-->
+#{TabelaValute data : valute, tableId: 'tabela_valute', hiddenColumns : '[3,4]', idColumn:'3' /}
 <div class = "panel">
 	<p>
 		<div><b>Status: ${mode}</b></div> <br>
 			#{set 'action'}
-				#{if mode == 'add'}
-					@{Valute.create()}
-				#{/if}
-				#{elseif mode == 'edit'}
-					@{Valute.edit()}
-				#{/elseif}
-				#{else}
-					@{Valute.filter()}
-				#{/else}
+				#{if flash.mode == 'add'}@{Valute.create()}#{/if}
+				#{elseif flash.mode == 'edit'}@{Valute.edit()}#{/elseif}
+				#{else}@{Valute.filter()}#{/else}
 			#{/set}
 		
 			<form action=${action} method="post">
@@ -93,6 +88,18 @@ function remove(id){
 					<span class="error">#{error 'nazivValute' /}</span>
 				#{/}
 				</p>
+				<p>
+				#{field 'drzava'}
+					<label for = "${field.id}">Država</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:drzave, as:'drzava'}
+					<option value = "${drzava.id}">${drzava.naziv}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#drzave_modal">...</button>
+					<span class="error">#{error 'drzava' /}</span>
+				#{/}
+				</p>
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
 					<a href = "@{Valute.show("edit")}" style="margin-left:1em">Rollback</a>
@@ -101,4 +108,4 @@ function remove(id){
 	</p>
 </div>
 </div>
-
+#{ModalTemplate modalId : 'drzave_modal', modalTitle : 'Drzave', selectId : 'drzava', table : 'tags/TabelaDrzave.html', data : drzave, tableId: 'tabela_drzave', hiddenColumns : '[2]', idColumn:'2' /}
