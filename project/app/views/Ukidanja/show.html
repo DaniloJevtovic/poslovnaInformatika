@@ -84,7 +84,10 @@ $(document).ready(function() {
 				<p>
 				#{field 'datumUkidanja'}
 					<label for = "${field.id}">Datum ukidanja</label>
-					<input type="text"  id="datepicker">				
+					<input type="text"  id="${field.id}" name="${field.name}">
+					<script>
+					$("#${field.id}").datepicker();
+					</script>				
 				#{/}
 				</p>
 				<p>
