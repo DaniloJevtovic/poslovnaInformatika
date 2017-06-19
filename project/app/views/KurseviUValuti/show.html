@@ -4,10 +4,12 @@
 <script>
 
 function sync(item){
+    redniBroj=item.find("redniBroj").html()
     kupovni = item.find(".kupovni").html()
     srednji= item.find(".srednji").html()
     prodajni= item.find(".prodajni").html()
     id = item.find(".id").html()
+    $("#redniBroj").val(redniBroj);
     $("#kupovni").val(kupovni);
     $("#srednji").val(srednji);
     $("#prodajni").val(prodajni);
@@ -17,11 +19,11 @@ function sync(item){
 /*function nextForm(id){
 	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
 }
-
+*/
 function remove(id){
-	$(location).attr('href', '/Drzave/delete?id=' +id)
-}*/
+	$(location).attr('href', '/KurseviUValuti/delete?id=' +id)
 
+}
 </script>
 
 <p>
@@ -48,12 +50,15 @@ function remove(id){
 
 <table class = "maintable">
 	<tr class = "header">
+	   <th>Redni broj</th>
 	   <th>Kupovni</th>
 	   <th>Srednji</th>
 	   <th>Prodajni</th>
 	</tr>
 #{list items:kursevi, as:'kurs'}
 	<tr>
+		<tr #{if kurs.id == selected} class = "highlighted" #{/if}>
+		<td class = "redniBroj">${kurs.redniBroj}</td>
 		<td class = "kupovni">${kurs.kupovni}</td>
 		<td class = "srednji">${kurs.srednji}</td>
 		<td class = "prodajni">${kurs.prodajni}</td>
@@ -82,22 +87,28 @@ function remove(id){
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 					
 				#{/}
+								<p>
+				#{field 'redniBroj'}
+					<label for = "${field.id}">Redni broj</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
+				#{/}
+				</p>
 				<p>
 				#{field 'kupovni'}
 					<label for = "${field.id}">Kupovni</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
 								<p>
 				#{field 'srednji'}
 					<label for = "${field.id}">Srednji</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
 								<p>
 				#{field 'prodajni'}
 					<label for = "${field.id}">Prodajni</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
 				<div id = "formActions">
