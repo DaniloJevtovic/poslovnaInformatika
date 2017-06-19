@@ -24,12 +24,32 @@ public class Racuni extends Controller {
 	}
 	
 	public static void showDefault() {
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_RACUN, KonstanteSesije.FILTRI_RACUNA)) {
+			KonstanteSesije.resetSession(flash);
+		}
 		show(Konstante.KONF_DODAVANJE, "");
 	}
 	
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
-			List<Racun> racuni = Racun.findAll();
+			List<Racun> racuni;
+			if(flash.get(KonstanteSesije.FILTER_ENTITY).equals(Konstante.IME_ENTITETA_RACUN)) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_BANKA:
+					query = "select r from Racun r where r.banka.id = ?";
+					break;
+				case Konstante.IME_ENTITETA_KLIJENT:
+					query = "select r from Racun r where r.klijent.id = ?";
+					break;
+				case Konstante.IME_ENTITETA_VALUTA:
+					query = "select r from Racun r where r.valuta.id = ?";
+					break;
+				}
+				racuni = Racun.find(query, flash.get(KonstanteSesije.FILTER_ID)).fetch();
+			} else {
+				racuni = Racun.findAll();
+			}
 			List<Klijent> klijenti = Klijent.find("select k from Klijent k order by k.tipKlijenta desc, k.nazivKlijenta, k.przKlijenta, k.imeKlijenta").fetch();
 			List<Banka> banke = Banka.findAll();
 			List<Valuta> valute = Valuta.find("select v from Valuta v order by v.zvanicnaSifra").fetch();

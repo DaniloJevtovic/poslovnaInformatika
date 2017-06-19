@@ -23,6 +23,7 @@ public class Klijenti extends Controller {
 	}
 	
 	public static void showDefault() {
+		KonstanteSesije.resetSession(flash);
 		show(Konstante.KONF_IZMJENA, "");
 	}
 	

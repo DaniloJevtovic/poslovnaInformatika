@@ -1,5 +1,6 @@
 package controllers.session;
 
+import controllers.helpers.Konstante;
 import play.mvc.Scope.Flash;
 import play.mvc.Scope.Session;
 
@@ -7,29 +8,55 @@ public class KonstanteSesije {
 	public static final String MODE = "mode";
 	public static final String HIGHLIGHTED_ID = "highlightedId";
 	
-	public static final String KONF_DODAVANJE = "add";
-	public static final String KONF_IZMJENA = "edit";
-	public static final String KONF_PRETRAGA = "search";
+	public static final String TARGET_ENTITY = "targetEntity";
+	public static final String FILTER_ENTITY = "filterEntity";
+	public static final String FILTER_ID = "filterId";
+	
+	public static final String[] FILTRI_RACUNA = {Konstante.IME_ENTITETA_BANKA, Konstante.IME_ENTITETA_KLIJENT, Konstante.IME_ENTITETA_VALUTA};
+	public static final String[] FILTRI_VALUTE = {Konstante.IME_ENTITETA_DRZAVA};
+	public static final String[] FILTRI_KURSNE_LISTE = {Konstante.IME_ENTITETA_BANKA};
+	
 	public static final String[] DOZVOLJENE_KONFIGURACIJE = 
-		{ KONF_DODAVANJE, KONF_IZMJENA, KONF_PRETRAGA };
+		{ Konstante.KONF_DODAVANJE, Konstante.KONF_IZMJENA, Konstante.KONF_PRETRAGA };
 	
 	public static void fillFlash(Flash flash, String mode, String highlightedId) {
-		flash.clear();
+		clearFlashConfig(flash);
 		flash.put(MODE, mode);
 		if((highlightedId!=null) && (!highlightedId.equals(""))) {
 			flash.put(HIGHLIGHTED_ID, highlightedId);
 		} else {
 			flash.remove(HIGHLIGHTED_ID);
 		}
-		
 	}
+	
+	public static void clearFlashConfig(Flash flash) {
+		flash.remove(MODE);
+		flash.remove(HIGHLIGHTED_ID);
+	}
+	
+	public static void clearFlashFilter(Flash flash) {
+		flash.remove(TARGET_ENTITY);
+		flash.remove(FILTER_ENTITY);
+		flash.remove(FILTER_ID);
+	}
+	
+	public static boolean filterIsValid(Flash flash, String target, String[] allowedFilters ) {
+		boolean result = false;
+		if(flash.get(TARGET_ENTITY).equals(target)) {
+			String filterEntity = flash.get(FILTER_ENTITY);
+			for(int i = 0; i < allowedFilters.length; i++) {
+				if(filterEntity.equals(allowedFilters[i])) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
+	}
+	
 	public static void resetSession(Flash flash) {
 		flash.clear();
-		flash.put(MODE, KONF_IZMJENA);
+		flash.put(MODE, Konstante.KONF_IZMJENA);
 	}
 	
-	
-	public static void deleteMode(Flash flash, String highlightedId) {
-		flash.put(HIGHLIGHTED_ID, highlightedId);
-	}
 }

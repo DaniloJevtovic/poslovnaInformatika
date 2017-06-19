@@ -8,6 +8,7 @@ import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaValute;
 import models.Drzava;
 import models.Klijent;
+import models.Racun;
 import models.Valuta;
 import play.mvc.Controller;
 
@@ -21,12 +22,26 @@ public class Valute extends Controller {
 	}
 	
 	public static void showDefault() {
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_VALUTA, KonstanteSesije.FILTRI_VALUTE)) {
+			KonstanteSesije.resetSession(flash);
+		}
 		show(Konstante.KONF_IZMJENA, "");
 	}
 	
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
-			List<Valuta> valute = Valuta.findAll();
+			List<Valuta> valute;
+			if(flash.get(KonstanteSesije.FILTER_ENTITY).equals(Konstante.IME_ENTITETA_VALUTA)) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_DRZAVA:
+					query = "select v from Valuta v where v.drzava.id = ?";
+					break;
+				}
+				valute = Valuta.find(query, flash.get(KonstanteSesije.FILTER_ID)).fetch();
+			} else {
+				valute = Valuta.findAll();
+			}
 			List<Drzava> drzave = Drzava.findAll();
 			KonstanteSesije.fillFlash(flash, mode, highlightedId);
 			render(mode, valute, drzave);

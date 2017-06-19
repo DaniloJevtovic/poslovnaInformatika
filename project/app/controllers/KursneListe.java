@@ -25,12 +25,26 @@ public class KursneListe extends Controller {
 	}
 	
 	public static void showDefault() {
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_KURSNA_LISTA, KonstanteSesije.FILTRI_KURSNE_LISTE)) {
+			KonstanteSesije.resetSession(flash);
+		}
 		show(Konstante.KONF_IZMJENA, "");
 	}
 	
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
-			List<KursnaLista> kursneListe = KursnaLista.findAll();
+			List<KursnaLista> kursneListe;
+			if(flash.get(KonstanteSesije.FILTER_ENTITY).equals(Konstante.IME_ENTITETA_KURSNA_LISTA)) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_BANKA:
+					query = "select kl from KursnaLista kl where kl.banka.id = ?";
+					break;
+				}
+				kursneListe = Valuta.find(query, flash.get(KonstanteSesije.FILTER_ID)).fetch();
+			} else {
+				kursneListe = KursnaLista.findAll();
+			}
 			List<Banka> banke = Banka.findAll();
 			KonstanteSesije.fillFlash(flash, mode, highlightedId);
 			render(mode, kursneListe, banke);
