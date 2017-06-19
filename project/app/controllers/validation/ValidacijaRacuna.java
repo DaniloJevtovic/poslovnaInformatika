@@ -13,4 +13,11 @@ public class ValidacijaRacuna {
 		validation.required(racun_banka_id);
 		validation.required(racun_valuta_id);
 	}
+	
+	public static void validate(Validation validation, Long racun_klijent_id,
+			Long racun_banka_id, Long racun_valuta_id) {
+		validation.required(racun_klijent_id);
+		validation.required(racun_banka_id);
+		validation.required(racun_valuta_id);
+	}
 }

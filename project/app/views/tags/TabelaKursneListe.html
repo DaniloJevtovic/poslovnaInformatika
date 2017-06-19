@@ -1,0 +1,27 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Banka</th>
+			<th>Broj kursne liste</th>
+			<th>Datum kursne liste</th>
+			<th>Primjenjuje se od</th>
+			<th>Primjenjuje se do</th>
+			<th>Id</th>
+			<th>Id Banke</th>
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'kursnaLista'}
+		<tr>
+			<td class = "banka">${kursnaLista.banka.nazivBanke}</td>
+			<td class = "brojKursneListe">${kursnaLista.brojKursneListe}</td>
+			<td class = "datumKursneListe">${kursnaLista.datumKursneListe}</td>
+			<td class = "primSeOd">${kursnaLista.primSeOd}</td>
+			<td class = "primSeDo">${kursnaLista.primSeDo}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${kursnaLista.id}</td>
+			<td class = "banka_id">${kursnaLista.banka.id}</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

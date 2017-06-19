@@ -1,3 +1,83 @@
+Drzava(bih):
+ oznaka : BIH
+ naziv : Bosna i Hercegovina
+ 
+Drzava(srb):
+ oznaka : SRB
+ naziv : Srbija
+
+Drzava(usa):
+ oznaka : USA
+ naziv : Sjedinjene Američke Države
+
+Drzava(njm):
+ oznaka : DEU
+ naziv : Njemačka
+
+Drzava(rus):
+ oznaka : RUS
+ naziv : Rusija
+
+Valuta(marka):
+ zvanicnaSifra : BAM
+ nazivValute : Marka
+ drzava : bih
+
+Valuta(dinar):
+ zvanicnaSifra : RSD
+ nazivValute : Dinar
+ drzava : srb
+ 
+Valuta(euro):
+ zvanicnaSifra : EUR
+ nazivValute : Euro
+ drzava : njm
+ 
+Valuta(dolar):
+ zvanicnaSifra : USD
+ nazivValute : Dolar
+ drzava : usa
+ 
+Banka(bankaA):
+ sifraBanke : 123
+ PIBBanke : 20000001
+ nazivBanke : Banka A
+ adresaBanke : Adresa Banke A 78
+ telefonBanke : 789654123
+ emailBanke : bankaA@noresponse.com
+ webBanke : https://www.bankaa.com
+ faksBanke : 456456456
+ 
+Banka(bankaB):
+ sifraBanke : 124
+ PIBBanke : 20000002
+ nazivBanke : Banka B
+ adresaBanke : Adresa Banke B 458
+ telefonBanke : 785684123
+ emailBanke : bankaB@noresponse.com
+ webBanke : https://www.bankab.com
+ faksBanke : 697696456
+
+Banka(bankaC):
+ sifraBanke : 125
+ PIBBanke : 20000003
+ nazivBanke : Banka C
+ adresaBanke : Adresa Banke C 245
+ telefonBanke : 369894960
+ emailBanke : bankaC@noresponse.com
+ webBanke : https://www.bankac.com
+ faksBanke : 2500001156
+ 
+Banka(bankaD):
+ sifraBanke : 126
+ PIBBanke : 20000004
+ nazivBanke : Banka D
+ adresaBanke : Adresa Banke D 129
+ telefonBanke : 015654123
+ emailBanke : bankaD@noresponse.com
+ webBanke : https://www.bankad.com
+ faksBanke : 136422226
+
 Klijent(jovo):
  tipKlijenta : F
  imeKlijenta : Jovo

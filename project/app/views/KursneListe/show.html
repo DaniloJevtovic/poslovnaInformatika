@@ -3,17 +3,34 @@
 
 <script>
 
-function sync(item){
-	datumKursneListe = item.find(".datumKursneListe").html();
-	brojKursneListe = item.find(".brojKursneListe").html();
-	primSeOd = item.find(".primSeOd").html();
-	primSeDo = item.find(".primSeDo").html();
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+
+	$("#search").click(function() {
+		var loc = '@{KursneListe.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{KursneListe.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{KursneListe.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+function sync(data){
 	
-    $("#datumKursneListe").val(datumKursneListe);
-    $("#brojKursneListe").val(brojKursneListe);
-    $("#primSeOd").val(primSeOd);
-    $("#primSeDo").val(primSeDo);
-    $("#id").val(id);
+	
+    $("#datumKursneListe").val(data[2]);
+    $("#brojKursneListe").val(data[1]);
+    $("#primSeOd").val(data[3]);
+    $("#primSeDo").val(data[4]);
+    $("#id").val(data[5]);
+    $("#banka").val(data[6]);
+    
+    highlightedId = data[6];
 }
 /*
 function nextForm(id){
@@ -27,27 +44,11 @@ function remove(id){
 </script>
 
 <p>
-<ul>
-  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
-  
-  <li><a href="@{KursneListe.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
-  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
-  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
-  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
-  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
-  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{KursneListe.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{KursneListe.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
-</ul>
-</p>
+#{StandardFormToolbar /}
 
 <div class = "container-fluid">
 <h1>Kursne Liste</h1>
-
+<!--
 <table class = "maintable">
 	<tr class = "header">
 	   <th>Datum kursne liste</th> 
@@ -67,37 +68,42 @@ function remove(id){
 	</tr>
 #{/list}
 </table>
-
+-->
+#{TabelaKursneListe data : kursneListe, tableId: 'tabela_kursne_liste', hiddenColumns : '[4,6]', idColumn:'5'/}
 <div class = "panel">
 	<p>
 		<div><b>Status: ${mode}</b></div> <br>
 			#{set 'action'}
-				#{if mode == 'add'}
-					@{KursneListe.create()}
-				#{/if}
-				#{elseif mode == 'edit'}
-					@{KursneListe.edit()}
-				#{/elseif}
-				#{else}
-					@{KursneListe.filter()}
-				#{/else}
+				#{if flash.mode == 'add'}@{KursneListe.create()}#{/if}
+				#{elseif flash.mode == 'edit'}@{KursneListe.edit()}#{/elseif}
+				#{else}@{KursneListe.filter()}#{/else}
 			#{/set}
 		
 			<form action=${action} method="post">
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
-				
 				<p>
-				#{field 'datumKursneListe'}
-					<label for = "${field.id}">Datum kursne liste</label>
-					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+				#{field 'banka'}
+					<label for = "${field.id}">Banka</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:banke, as:'banka'}
+					<option value = "${banka.id}">${banka.nazivBanke}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#banke_modal">...</button>
 				#{/}
 				</p>
 				<p>
 				#{field 'brojKursneListe'}
 					<label for = "${field.id}">Broj kursne liste</label>
 					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumKursneListe'}
+					<label for = "${field.id}">Datum kursne liste</label>
+					<input type = "date" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
 				<p>
@@ -112,12 +118,6 @@ function remove(id){
 					<input type = "date" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
-				<p>
-				#{field 'banka.nazivBanke'}
-					<label for = "${field.id}">Banka</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
 					<a href = "#" style="margin-left:1em">Rollback</a>
@@ -126,4 +126,4 @@ function remove(id){
 	</p>
 </div>
 </div>
-
+#{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[3,4,5,6,7,8,9]', idColumn:'9' /}
