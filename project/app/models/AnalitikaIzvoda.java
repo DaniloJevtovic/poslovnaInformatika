@@ -26,7 +26,7 @@ public class AnalitikaIzvoda extends Model {
 	public Boolean hitno;
 	public Long iznos;
 	public Integer tipGreske;
-	public Character status;
+	public String status;
 	
 	
 	@ManyToOne
@@ -51,7 +51,7 @@ public class AnalitikaIzvoda extends Model {
 	public AnalitikaIzvoda(Long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
 			Date datumPrijema, Date datumValute, String racunDuznika, Integer modelZaduzenja, String pozNaBrojZaduzenja,
 			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, Long iznos,
-			Integer tipGreske, Character status) {
+			Integer tipGreske, String status) {
 		super();
 		this.brojStavke = brojStavke;
 		this.duzNalogodavac = duzNalogodavac;
