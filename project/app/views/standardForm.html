@@ -111,8 +111,24 @@
                 id = highlighted.find(".id").html();
                 nextForm(id);
             }
-    
+			else{
+				alert("Niste selektovali slog u tabeli");
+			}
         });
+		
+		
+		$(".nextform2").on('click', function(){	  	//ukoliko ima vise next formi
+			highlighted = $(".highlighted");
+			path = $(this).attr('id');
+			if (highlighted.length != 0) {
+				id = highlighted.find(".id").html();
+				nextForm(id, path);
+			}
+			else{
+				alert("Niste selektovali slog u tabeli");
+			}
+		});
+		
 		MyModals = {};
 		(function(MyModals) {
 			var callbacks = {};
@@ -162,6 +178,7 @@
 
 	    } ) );
 	  });
+
 
 </script>
 
