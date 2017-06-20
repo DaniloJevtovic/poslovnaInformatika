@@ -89,3 +89,18 @@ input[type=submit] {
     border-radius: 5px; 
 }
 */
+
+
+ul.dropdown {
+	overflow: visible;
+	display: flex;
+
+    height: 100%;
+	cursor: pointer;
+}
+
+div.dropdown div.dropdown-menu a.dropdown-item {
+	position: relative;
+}
+
+
