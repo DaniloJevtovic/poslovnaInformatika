@@ -30,10 +30,14 @@
 	function remove(id){
 		$(location).attr('href', '/Banke/delete?id=' +id)
 	}
+	
+	function nextForm(id, path) {
+		$(location).attr('href', '/'+ path +'/nextForm?banka_id='+id);
+	}
 </script>
 
 <p>
-	<ul>
+	<ul class="dropdown">
 		<li><a href="/" id = "banke"><img src="@{'/public/images/home.png'}"/></a></li>
   
   		<li><a href="@{Banke.show('search')}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
@@ -47,7 +51,21 @@
   		<li><a href="@{Banke.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
   		<li><a href="@{Banke.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  		<!-- <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li> -->
+  		
+  		<li>
+		<div class="dropdown show">
+			<a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<img src="@{'/public/images/nextform.gif'}" />
+			</a>
+
+			<div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+				<a class="dropdown-item nextform2" id="KursneListe">Kursne liste</a>
+				<a class="dropdown-item nextform2" id="Racuni">Racuni</a>
+			</div>
+		</div>
+		</li>
+  		
 	</ul>
 </p>
 
