@@ -30,4 +30,11 @@ public class PomocneOperacije {
 			return "%%";
 		}
 	}
+	
+	public static final boolean isNullOrEmpty(String string) {
+		if(string == null) {
+			return true;
+		}
+		return (string.trim().equals(""));
+	}
 }

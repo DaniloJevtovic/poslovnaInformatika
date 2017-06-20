@@ -21,16 +21,27 @@ $(document).ready(function() {
 });
 
 function sync(data){
-	
-	
-    $("#datumKursneListe").val(data[2]);
+	#{ifnot flash.mode == 'search'}
+	$("#datumKursneListe").val(data[2]);
     $("#brojKursneListe").val(data[1]);
     $("#primSeOd").val(data[3]);
     $("#primSeDo").val(data[4]);
     $("#id").val(data[5]);
     $("#banka").val(data[6]);
+	#{/ifnot}
+	#{else}
+	$("#brojKursneListeManjeJednako").val(data[1]);
+    $("#brojKursneListeVeceJednako").val(data[1]);
+	$("#datumKursneListeManjeJednako").val(data[2]);
+    $("#datumKursneListeVeceJednako").val(data[2]);
+    $("#primSeOdManjeJednako").val(data[3]);
+    $("#primSeOdVeceJednako").val(data[3]);
+    $("#primSeDoManjeJednako").val(data[4]);
+    $("#primSeDoVeceJednako").val(data[4]);
+	#{/else}
+	
     
-    highlightedId = data[6];
+    highlightedId = data[5];
 }
 /*
 function nextForm(id){
@@ -47,28 +58,9 @@ function remove(id){
 
 <div class = "container-fluid">
 <h1>Kursne Liste</h1>
-<!--
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Datum kursne liste</th> 
-	   <th>Broj kursne liste</th>
-	   <th>Primjenjuje se od</th> 
-	   <th>Primjenjuje se do</th>
-	   <th>Banka</th> 
-	</tr>
-#{list items:kursneListe, as:'kursnaLista'}
-	<tr>
-		<td class = "datumKursneListe">${kursnaLista.datumKursneListe}</td>
-		<td class = "brojKursneListe">${kursnaLista.brojKursneListe}</td>
-		<td class = "primSeOd">${kursnaLista.primSeOd}</td>
-		<td class = "primSeDo">${kursnaLista.primSeDo}</td>
-		<td class = "banka">#{if kursnaLista.banka} ${kursnaLista.banka.nazivBanke} #{/if}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${kursnaLista.id}</td>
-	</tr>
-#{/list}
-</table>
--->
-#{TabelaKursneListe data : kursneListe, tableId: 'tabela_kursne_liste', hiddenColumns : '[4,6]', idColumn:'5'/}
+
+#{TabelaKursneListe data : kursneListe, tableId: 'tabela_kursne_liste', hiddenColumns : '[5,6]', idColumn:'5'/}
+
 <div class = "panel">
 	<p>
 		<div><b>Status: ${mode}</b></div> <br>
@@ -79,6 +71,7 @@ function remove(id){
 			#{/set}
 		
 			<form action=${action} method="post">
+				#{ifnot flash.mode == 'search'}
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
@@ -91,32 +84,115 @@ function remove(id){
 					#{/list}
 					</select>
 					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#banke_modal">...</button>
+					<span class="error">#{error 'banka' /}</span>
 				#{/}
 				</p>
 				<p>
 				#{field 'brojKursneListe'}
 					<label for = "${field.id}">Broj kursne liste</label>
 					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'brojKursneListe' /}</span>
 				#{/}
 				</p>
 				<p>
 				#{field 'datumKursneListe'}
 					<label for = "${field.id}">Datum kursne liste</label>
-					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					<span class="error">#{error 'datumKursneListe' /}</span>
 				#{/}
 				</p>
 				<p>
 				#{field 'primSeOd'}
 					<label for = "${field.id}">Primjenjuje se od</label>
-					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					<span class="error">#{error 'primSeOd' /}</span>
 				#{/}
 				</p>
 				<p>
 				#{field 'primSeDo'}
 					<label for = "${field.id}">Primjenjuje se do</label>
-					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					<span class="error">#{error 'primSeDo' /}</span>
 				#{/}
 				</p>
+				#{/ifnot}
+				#{else}
+				<p>
+				#{field 'brojKursneListeVeceJednako'}
+					<label for = "${field.id}">Broj kursne liste &gt=</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'brojKursneListeManjeJednako'}
+					<label for = "${field.id}">Broj kursne liste &lt=</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumKursneListeVeceJednako'}
+					<label for = "${field.id}">Datum kursne liste &gt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumKursneListeManjeJednako'}
+					<label for = "${field.id}">Datum kursne liste &lt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'primSeOdVeceJednako'}
+					<label for = "${field.id}">Primjenjuje se od &gt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'primSeOdManjeJednako'}
+					<label for = "${field.id}">Primjenjuje se od &lt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'primSeDoVeceJednako'}
+					<label for = "${field.id}">Primjenjuje se do &gt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'primSeDoManjeJednako'}
+					<label for = "${field.id}">Primjenjuje se do &lt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				#{/else}
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
 					<a href = "#" style="margin-left:1em">Rollback</a>

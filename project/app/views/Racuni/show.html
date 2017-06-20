@@ -22,8 +22,15 @@ $(document).ready(function() {
 
 function sync(data){
 	$("#brojRacuna").val(data[2]);
+	#{ifnot flash.mode == 'search'}
     $("#datumOtvaranja").val(data[4]);
-    $("#vazeci").prop('checked', data[2]);
+    $("#vazeci").prop('checked', data[5]);
+    #{/ifnot}
+    #{else}
+    $("#datumOtvaranjaManjeJednako").val(data[4]);
+    $("#datumOtvaranjaVeceJednako").val(data[4]);
+    $("#vazeci").val(data[5]);
+    #{/else}
     $("#id").val(data[6]);
     $("#valuta").val(data[7]);
     $("#klijent").val(data[9]);
@@ -56,10 +63,10 @@ function remove(id){
 			#{/set}
 		
 			<form action="${action}" method="post">
+				#{ifnot flash.mode == 'search'}
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
-				
 				<p>
 				#{field 'brojRacuna'}
 					<label for = "${field.id}">Broj računa</label>
@@ -123,6 +130,44 @@ function remove(id){
 					<input type = "checkbox" name = "${field.name}" id = "${field.id}" disabled="disabled"/>
 				#{/}
 				</p>
+				#{/ifnot}
+				#{else}
+				<p>
+				#{field 'brojRacuna'}
+					<label for = "${field.id}">Broj računa</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'brojRacuna' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumOtvaranjaManjeJednako'}
+					<label for = "${field.id}">Datum otvaranja &lt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'datumOtvaranjaVeceJednako'}
+					<label for = "${field.id}">Datum otvaranja &gt=</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+				#{/}
+				</p>
+				<p>
+				#{field 'vazeci'}
+					<label for = "${field.id}">Važeći</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					<option value = "">Oboje</option>
+					<option value = "true">Da</option>
+					<option value = "false">Ne</option>
+					</select>
+				#{/}
+				</p>
+				#{/else}
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
 					<a href = "@{Racuni.showDefault()}" style="margin-left:1em">Rollback</a>
@@ -132,6 +177,6 @@ function remove(id){
 </div>
 </div>
 
-#{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5]', idColumn:'5' /}
+#{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5,6,7,8,9,10]', idColumn:'10' /}
 #{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[3,4]', idColumn:'3' /}
 #{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[3,4,5,6,7,8,9]', idColumn:'9' /}

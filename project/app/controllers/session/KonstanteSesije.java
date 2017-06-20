@@ -42,7 +42,7 @@ public class KonstanteSesije {
 	
 	public static boolean filterIsValid(Flash flash, String target, String[] allowedFilters ) {
 		boolean result = false;
-		if(flash.get(TARGET_ENTITY).equals(target)) {
+		if(target.equals(flash.get(TARGET_ENTITY))) {
 			String filterEntity = flash.get(FILTER_ENTITY);
 			for(int i = 0; i < allowedFilters.length; i++) {
 				if(filterEntity.equals(allowedFilters[i])) {

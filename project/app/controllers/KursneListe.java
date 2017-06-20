@@ -1,18 +1,21 @@
 package controllers;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaKursneListe;
 import models.Banka;
-import models.Drzava;
 import models.KursnaLista;
 import models.Valuta;
+import play.data.binding.As;
 import play.mvc.Controller;
 
 /*
@@ -34,7 +37,7 @@ public class KursneListe extends Controller {
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
 			List<KursnaLista> kursneListe;
-			if(flash.get(KonstanteSesije.FILTER_ENTITY).equals(Konstante.IME_ENTITETA_KURSNA_LISTA)) {
+			if(Konstante.IME_ENTITETA_KURSNA_LISTA.equals(flash.get(KonstanteSesije.FILTER_ENTITY))) {
 				String query = "";
 				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
 				case Konstante.IME_ENTITETA_BANKA:
@@ -108,8 +111,27 @@ public class KursneListe extends Controller {
 		}
 	}
 	
-	public static void filter() {
-		throw new NotImplementedException();
+	public static void filter(
+			Integer brojKursneListeManjeJednako, 
+			Integer brojKursneListeVeceJednako,
+			Date datumKursneListeManjeJednako,
+			Date datumKursneListeVeceJednako,
+			Date primSeOdManjeJednako,
+			Date primSeOdVeceJednako,
+			Date primSeDoManjeJednako,
+			Date primSeDoVeceJednako) {
+		flash.clear();
+		QueryBuilder queryBuilder = new QueryBuilder();
+		queryBuilder.buildLessThanEqualsQuery("BrojKursneListe", brojKursneListeManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("BrojKursneListe", brojKursneListeVeceJednako);
+		queryBuilder.buildLessThanEqualsQuery("DatumKursneListe", datumKursneListeManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("DatumKursneListe", datumKursneListeVeceJednako);
+		queryBuilder.buildLessThanEqualsQuery("PrimSeOd", primSeOdManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("PrimSeOd", primSeOdVeceJednako);
+		queryBuilder.buildLessThanEqualsQuery("PrimSeDo", primSeDoManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("PrimSeDo", primSeDoVeceJednako);
+		List<KursnaLista> kursneListe = KursnaLista.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
+		renderTemplate("KursneListe/show.html", kursneListe);
 	}
 
 }

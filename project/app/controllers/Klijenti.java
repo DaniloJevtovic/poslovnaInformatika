@@ -1,9 +1,11 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaKlijenta;
 import models.Klijent;
@@ -103,31 +105,24 @@ public class Klijenti extends Controller {
 		}
 	}
 	
-	public static void filter(String tipKlijenta, String nazivKlijenta, String imeKlijenta, String przKlijenta,
-			String telKlijenta, String adrKlijenta, String webKlijenta, String emailKlijenta,
-			String faksKlijenta) {
-		//"byTipKlijentaLikeAndNazivKlijentaLike"
-		JPAQuery q = Klijent.find(
-				"byTipKlijentaLikeAnd" + 
-				"NazivKlijentaLikeAnd" + 
-				"ImeKlijentaLikeAnd" + 
-				"PrzKlijentaLikeAnd" + 
-				"TelKlijentaLikeAnd" + 
-				"AdrKlijentaLikeAnd" + 
-				"WebKlijentaLikeAnd" + 
-				"EmailKlijentaLikeAnd"+
-				"FaksKlijentaLike", 
-				PomocneOperacije.dataToQueryParam(tipKlijenta),
-				PomocneOperacije.dataToQueryParam(nazivKlijenta),
-				PomocneOperacije.dataToQueryParam(imeKlijenta),
-				PomocneOperacije.dataToQueryParam(przKlijenta),
-				PomocneOperacije.dataToQueryParam(telKlijenta),
-				PomocneOperacije.dataToQueryParam(adrKlijenta),
-				PomocneOperacije.dataToQueryParam(webKlijenta),
-				PomocneOperacije.dataToQueryParam(emailKlijenta),
-				PomocneOperacije.dataToQueryParam(faksKlijenta)
-				);
-		List<Klijent> klijenti  = q.fetch();
+	public static void filter(String tipKlijenta, String nazivKlijenta,
+			Integer pibManjeJednako, Integer pibVeceJednako, String imeKlijenta,
+			String przKlijenta, String telKlijenta, String adrKlijenta,
+			String webKlijenta, String emailKlijenta, String faksKlijenta) {
+		flash.clear();
+		QueryBuilder queryBuilder = new QueryBuilder();
+		queryBuilder.buildLikeQuery("TipKlijenta", tipKlijenta);
+		queryBuilder.buildLikeQuery("NazivKlijenta", nazivKlijenta);
+		queryBuilder.buildLessThanEqualsQuery("PibKlijenta", pibManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("PibKlijenta", pibVeceJednako);
+		queryBuilder.buildLikeQuery("ImeKlijenta", imeKlijenta);
+		queryBuilder.buildLikeQuery("PrzKlijenta", przKlijenta);
+		queryBuilder.buildLikeQuery("TelKlijenta", telKlijenta);
+		queryBuilder.buildLikeQuery("AdrKlijenta", adrKlijenta);
+		queryBuilder.buildLikeQuery("WebKlijenta", webKlijenta);
+		queryBuilder.buildLikeQuery("EmailKlijenta", emailKlijenta);
+		queryBuilder.buildLikeQuery("FaksKlijenta", faksKlijenta);
+		List<Klijent> klijenti  = Klijent.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("Klijenti/show.html", Konstante.KONF_IZMJENA, klijenti);
 	}
 }

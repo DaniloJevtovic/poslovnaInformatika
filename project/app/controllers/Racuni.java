@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaRacuna;
 import models.Banka;
@@ -33,7 +34,7 @@ public class Racuni extends Controller {
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
 			List<Racun> racuni;
-			if(flash.get(KonstanteSesije.FILTER_ENTITY).equals(Konstante.IME_ENTITETA_RACUN)) {
+			if(Konstante.IME_ENTITETA_RACUN.equals(flash.get(KonstanteSesije.FILTER_ENTITY))) {
 				String query = "";
 				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
 				case Konstante.IME_ENTITETA_BANKA:
@@ -127,8 +128,15 @@ public class Racuni extends Controller {
 		}
 	}
 	
-	public static void filter(String brojRacuna, Date datumOtvaranja, boolean vazeci) {
-		List<Racun> racuni = Racun.find("byBrojRacunaAndDatumOtvaranjaAndVazeci", brojRacuna, datumOtvaranja, vazeci).fetch();
+	public static void filter(String brojRacuna, Date datumOtvaranjaManjeJednako,
+			Date datumOtvaranjaVeceJednako, boolean vazeci) {
+		flash.clear();
+		QueryBuilder queryBuilder = new QueryBuilder();
+		queryBuilder.buildLikeQuery("BrojRacuna", brojRacuna);
+		queryBuilder.buildLessThanEqualsQuery("DatumOtvaranja", datumOtvaranjaManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("DatumOtvaranja", datumOtvaranjaVeceJednako);
+		queryBuilder.buildSimpleQuery("Vazeci", vazeci);
+		List<Racun> racuni = Racun.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("Racuni/show.html", Konstante.KONF_IZMJENA, racuni);
 	}
 	
