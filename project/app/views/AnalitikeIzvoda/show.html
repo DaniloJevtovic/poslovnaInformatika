@@ -44,6 +44,11 @@
 		$(location).attr('href', '/AnalitikeIzvoda/delete?id=' +id)
 	}
 	
+	function openFileOption()
+	{
+	  document.getElementById("load").click();
+	}
+
 </script>
 
 <p>
@@ -58,10 +63,17 @@
   		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  		<li><a href="@{AnalitikeIzvoda.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  		<li><a href="@{AnalitikeIzvoda.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  		<!--<li><a href="@{AnalitikeIzvoda.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li> -->
+  		<!--<li><a href="@{AnalitikeIzvoda.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li> -->
   		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  		<!-- <li><a href="#" id = "load"><img src="@{'/public/images/file.png'}"/></a></li> -->
+  		
+  		<li>
+  			<input type="file" id="load" style="display:none">
+     		<a href="@{AnalitikeIzvoda.load()}" onclick="openFileOption();return;"><img src="@{'/public/images/file.png'}"/></a>
+  		</li>
+  		
 	</ul>
 </p>
 
@@ -110,6 +122,8 @@
 		</tr>
 		#{/list}
 	</table>
+	
+	<!--  
 	
 	<div class = "panel">
 	<p>
@@ -242,6 +256,8 @@
 			</form>
 		</p>
 	</div>
+	
+	-->
 	
 </div>
 	
