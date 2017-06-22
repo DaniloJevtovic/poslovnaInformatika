@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<analitika_izvoda xmlns="http://www.ftn.uns.ac.rs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.ftn.uns.ac.rs file:C:/Users/Lemur/Desktop/analitika_izvoda2.xsd">
+    <broj_stavke>444333</broj_stavke>
+    <duznik>duznk323</duznik>
+    <svhra_placanja>svrha21321</svhra_placanja>
+    <primalac>primalac32f</primalac>
+    <datum_prijema>12.12.1234</datum_prijema>
+    <datum_valute>10.5.2017</datum_valute>
+    <racun_duznika>4353453453</racun_duznika>
+    <model_zaduzenja>97</model_zaduzenja>
+    <poz_na_broj_zaduzenja>14</poz_na_broj_zaduzenja>
+    <racun_povjerioca>23423423423</racun_povjerioca>
+    <model_odobrenja>97</model_odobrenja>
+	<poz_na_br_odobrenja>1123</poz_na_br_odobrenja>
+    <hitno>true</hitno>
+    <iznos>32423</iznos>
+    <tip_greske>1</tip_greske>
+    <status>1</status>
+</analitika_izvoda>
