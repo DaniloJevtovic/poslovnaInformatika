@@ -27,6 +27,7 @@ public class AnalitikaIzvoda extends Model {
 	public Long iznos;
 	public Integer tipGreske;
 	public String status;
+	public String smjer;	//smjer moze biti u koristi ili na teret
 	
 	
 	@ManyToOne
@@ -51,7 +52,7 @@ public class AnalitikaIzvoda extends Model {
 	public AnalitikaIzvoda(Long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
 			Date datumPrijema, Date datumValute, String racunDuznika, Integer modelZaduzenja, String pozNaBrojZaduzenja,
 			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, Long iznos,
-			Integer tipGreske, String status) {
+			Integer tipGreske, String status, String smjer) {
 		super();
 		this.brojStavke = brojStavke;
 		this.duzNalogodavac = duzNalogodavac;
@@ -69,7 +70,6 @@ public class AnalitikaIzvoda extends Model {
 		this.iznos = iznos;
 		this.tipGreske = tipGreske;
 		this.status = status;
+		this.smjer = smjer;
 	}
-	
-
 }

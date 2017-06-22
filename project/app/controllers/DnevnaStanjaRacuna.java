@@ -6,6 +6,7 @@ import java.util.*;
 
 import javafx.scene.control.DatePicker;
 import models.DnevnoStanjeRacuna;
+import models.Racun;
 import play.mvc.Controller;
 
 /*
@@ -24,7 +25,7 @@ public class DnevnaStanjaRacuna extends Controller {
 		render(dnevnaStanjaRacuna, mode);
 	}
 	
-	public static void create(Long brojIzvoda, String datumPrometa, Long predhodnoStanje, Long prometUKorist,
+	public static void create(Long brojIzvoda, Racun racun, String datumPrometa, Long predhodnoStanje, Long prometUKorist,
 			Long prometNaTeret, Long novoStanje){
 		
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -36,13 +37,13 @@ public class DnevnaStanjaRacuna extends Controller {
 			System.out.println("Greska!");
 		}
 		
-		DnevnoStanjeRacuna dnevnoStanjeRacuna = new DnevnoStanjeRacuna(brojIzvoda, datum, predhodnoStanje, prometUKorist,
+		DnevnoStanjeRacuna dnevnoStanjeRacuna = new DnevnoStanjeRacuna(brojIzvoda, racun, datum, predhodnoStanje, prometUKorist,
 				prometNaTeret, novoStanje);
 		dnevnoStanjeRacuna.save();		
 		show("add");
 	}
 	
-	public static void edit(Long id, Long brojIzvoda, String datumPrometa, Long predhodnoStanje, Long prometUKorist,
+	public static void edit(Long id, Racun racun, Long brojIzvoda, String datumPrometa, Long predhodnoStanje, Long prometUKorist,
 			Long prometNaTeret, Long novoStanje){
 		
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -56,6 +57,7 @@ public class DnevnaStanjaRacuna extends Controller {
 		
 		DnevnoStanjeRacuna dnevnoStanjeRacuna = DnevnoStanjeRacuna.findById(id);	
 		dnevnoStanjeRacuna.brojIzvoda = brojIzvoda;
+		dnevnoStanjeRacuna.racun = racun;
 		dnevnoStanjeRacuna.datumPrometa = datum;
 		dnevnoStanjeRacuna.predhodnoStanje = predhodnoStanje;
 		dnevnoStanjeRacuna.prometUKorist = prometUKorist;
@@ -66,10 +68,10 @@ public class DnevnaStanjaRacuna extends Controller {
 		show("edit");
 	}
 	
-	public static void filter(String brojIzvoda, String datumPrometa, String predhodnoStanje, String prometUKorist,
+	public static void filter(String brojIzvoda, String racun, String datumPrometa, String predhodnoStanje, String prometUKorist,
 			String prometNaTeret, String novoStanje){
-		List<DnevnoStanjeRacuna> dnevnaStanjaRacuna =DnevnoStanjeRacuna.find("byBrojIzvodaLikeAndPredhodnoStanjeLikeAndPrometUKoristLikeAndPrometNaTeretLikeAndNovoStanjeLike", 
-				"%" + brojIzvoda + "%", "%" + predhodnoStanje + "%", "%" + prometUKorist + "%", "%" + prometNaTeret + "%", "%" + novoStanje + "%").fetch();
+		List<DnevnoStanjeRacuna> dnevnaStanjaRacuna =DnevnoStanjeRacuna.find("byBrojIzvodaLikeAndRacunLikeAndPredhodnoStanjeLikeAndPrometUKoristLikeAndPrometNaTeretLikeAndNovoStanjeLike", 
+				"%" + brojIzvoda + "%", "%" + racun + "%", "%" + predhodnoStanje + "%", "%" + prometUKorist + "%", "%" + prometNaTeret + "%", "%" + novoStanje + "%").fetch();
 		String mode = "edit";
 		renderTemplate("DnevnaStanjaRacuna/show.html", dnevnaStanjaRacuna, mode);
 	}

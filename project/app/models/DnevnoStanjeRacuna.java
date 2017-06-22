@@ -29,11 +29,12 @@ public class DnevnoStanjeRacuna extends Model {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public DnevnoStanjeRacuna(Long brojIzvoda, Date datumPrometa, Long predhodnoStanje, Long prometUKorist,
+	public DnevnoStanjeRacuna(Long brojIzvoda, Racun racun, Date datumPrometa, Long predhodnoStanje, Long prometUKorist,
 			Long prometNaTeret, Long novoStanje) {
 		// TODO Auto-generated constructor stub
 		super();
 		this.brojIzvoda = brojIzvoda;
+		this.racun = racun;
 		this.datumPrometa = datumPrometa;
 		this.predhodnoStanje = predhodnoStanje;
 		this.prometUKorist = prometUKorist;

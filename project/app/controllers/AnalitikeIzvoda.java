@@ -41,7 +41,7 @@ public class AnalitikeIzvoda extends Controller{
 	public static void create(Long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
 			String datumPrijema, String datumValute, String racunDuznika, Integer modelZaduzenja, String pozNaBrojZaduzenja,
 			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, Long iznos,
-			Integer tipGreske, String status){
+			Integer tipGreske, String status, String smjer){
 		
 		//datum prijema
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -65,7 +65,7 @@ public class AnalitikeIzvoda extends Controller{
 
 		AnalitikaIzvoda analitikaIzvoda = new AnalitikaIzvoda(brojStavke, duzNalogodavac, svrhaPlacanja, povjerPrimalac, 
 				datumP, datumV, racunDuznika, modelZaduzenja, pozNaBrojZaduzenja, racunPovjerioca, modelOdobrenja,
-				pozNaBrojOdobrenja, hitno, iznos, tipGreske, status);
+				pozNaBrojOdobrenja, hitno, iznos, tipGreske, status, smjer);
 		
 		analitikaIzvoda.save();		
 		show("add");
@@ -74,7 +74,7 @@ public class AnalitikeIzvoda extends Controller{
 	public static void edit(Long id, Long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
 			String datumPrijema, String datumValute, String racunDuznika, Integer modelZaduzenja, String pozNaBrojZaduzenja,
 			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, Long iznos,
-			Integer tipGreske, String status){
+			Integer tipGreske, String status, String smjer){
 		
 		// datum prijema
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -113,6 +113,7 @@ public class AnalitikeIzvoda extends Controller{
 		analitikaIzvoda.iznos = iznos;
 		analitikaIzvoda.tipGreske = tipGreske;
 		analitikaIzvoda.status = status;
+		analitikaIzvoda.smjer = smjer;
 		
 		analitikaIzvoda.save();
 		show("edit");
@@ -121,15 +122,15 @@ public class AnalitikeIzvoda extends Controller{
 	public static void filter(String brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
 			String datumPrijema, String datumValute, String racunDuznika, String modelZaduzenja, String pozNaBrojZaduzenja,
 			String racunPovjerioca, String modelOdobrenja, String pozNaBrojOdobrenja, String hitno, String iznos,
-			String tipGreske, String status){
+			String tipGreske, String status, String smjer){
 		
 		List<AnalitikaIzvoda> analitikeIzvoda = AnalitikaIzvoda.find("byBrojStavkeLikeAndDuzNalogodavacLikeAndSvrhaPlacanjaLike"
 				+ "AndPovjerPrimalacLikeAndRacunDuznikaLikeAndModelZaduzenjaLikeAndPozNaBrojZaduzenjaLikeAndRacunPovjeriocaLike"
-				+ "AndModelOdobrenjaLikeAndPozNaBrojOdobrenjaLikeAndIznosLikeAndTipGreskeLikeAndStatusLike", 
+				+ "AndModelOdobrenjaLikeAndPozNaBrojOdobrenjaLikeAndIznosLikeAndTipGreskeLikeAndStatusLikeAndSmjerLike", 
 				"%" + brojStavke + "%", "%" + duzNalogodavac + "%", "%" + svrhaPlacanja + "%", "%" + povjerPrimalac + "%",
 				"%" + racunDuznika + "%", "%" + modelZaduzenja + "%", "%" + pozNaBrojZaduzenja + "%", "%" + racunPovjerioca + "%",
 				"%" + modelOdobrenja + "%", "%" + pozNaBrojOdobrenja + "%", "%" + iznos + "%",
-				"%" + tipGreske + "%", "%" + status + "%").fetch();
+				"%" + tipGreske + "%", "%" + status + "%", "%" + smjer + "%").fetch();
 		
 		String mode = "edit";
 		renderTemplate("AnalitikeIzvoda/show.html", analitikeIzvoda, mode);
@@ -181,7 +182,7 @@ public class AnalitikeIzvoda extends Controller{
 			AnalitikaIzvoda analitikaIzvoda = new AnalitikaIzvoda(brojStavke, duzNalogodavac, 
 					svrhaPlacanja, povjerPrimalac, datumPrijema, datumValute, racunDuznika, 
 					modelZaduzenja, pozNaBrojZaduzenja, racunPovjerioca, modelOdobrenja, 
-					pozNaBrojOdobrenja, hitno, iznos, tipGreske, status);
+					pozNaBrojOdobrenja, hitno, iznos, tipGreske, status, null);		//dodaj smjer
 			
 			analitikaIzvoda.save();
 			//renderTemplate("AnalitikeIzvoda/show.html", analitikaIzvoda);
