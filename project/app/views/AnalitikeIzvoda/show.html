@@ -46,7 +46,7 @@
 	
 	function openFileOption()
 	{
-	  document.getElementById("load").click();
+		document.getElementById("load").click();
 	}
 
 </script>
@@ -70,8 +70,7 @@
   		<!-- <li><a href="#" id = "load"><img src="@{'/public/images/file.png'}"/></a></li> -->
   		
   		<li>
-  			<input type="file" id="load" style="display:none">
-     		<a href="@{AnalitikeIzvoda.load()}" onclick="openFileOption();return;"><img src="@{'/public/images/file.png'}"/></a>
+  			<a  data-toggle="modal"  data-target="#analitikaModal"><img src="@{'/public/images/file.png'}"/></a>
   		</li>
   		
 	</ul>
@@ -113,7 +112,7 @@
 			<td class = "racunPovjerioca">${analitikaIzvoda.racunPovjerioca}</td>
 			<td class = "modelOdobrenja">${analitikaIzvoda.modelOdobrenja}</td>
 			<td class = "pozNaBrojOdobrenja">${analitikaIzvoda.pozNaBrojOdobrenja}</td>
-			<td type="checkbox" value="checked" class = "hitno">${analitikaIzvoda.hitno}</td>
+			<td class = "hitno" type="checkbox" value="checked">${analitikaIzvoda.hitno}</td>
 			<td class = "iznos">${analitikaIzvoda.iznos}</td>
 			<td class = "tipGreske">${analitikaIzvoda.tipGreske}</td>
 			<td class = "status">${analitikaIzvoda.status}</td>
@@ -122,6 +121,24 @@
 		</tr>
 		#{/list}
 	</table>
+	
+	
+	<div class="modal fade" id="analitikaModal" role="dialog">
+    	<div class="modal-dialog">
+      	<!-- Modal content-->
+      	<div class="modal-content">
+      	<div class="modal-header">Ucitavanje analitike izvoda iz .xml fajla</div>
+      	
+      	<div class="modal-body">
+			<form action="@{AnalitikeIzvoda.load()}">
+  				<input type="file" name="myFile" id="myFile">
+  				<input type="submit" value="potvrdi">
+			</form>
+		</div>
+      	
+      	</div>
+    	</div>
+   	</div>
 	
 	<!--  
 	
