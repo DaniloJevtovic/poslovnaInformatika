@@ -142,48 +142,64 @@ public class AnalitikeIzvoda extends Controller{
 	}
 	
 	
-	public static void load(File file) throws ParserConfigurationException, SAXException, IOException, ParseException{
+	public static void load(String myFile) throws ParserConfigurationException, SAXException, IOException, ParseException, FileNotFoundException{
 		
-		//File fXmlFile = new File("123.xml");
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		
-		//org.w3c.dom.Document document = documentBuilder.parse(file);
-		org.w3c.dom.Document document = documentBuilder.parse("C:/Users/Lemur/Desktop/analitika_izvoda.xml");
-		Element root = document.getDocumentElement();
+		try {
+			//File fXmlFile = new File("123.xml");
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+				
+			org.w3c.dom.Document document = documentBuilder.parse(myFile);
+			//org.w3c.dom.Document document = documentBuilder.parse("C:/Users/Lemur/Desktop/analitika_izvoda.xml");
+			Element root = document.getDocumentElement();
+			
+			Long brojStavke = Long.parseLong(XPath.selectText("broj_stavke", root));
+			String duzNalogodavac = XPath.selectText("duznik", root);
+			String svrhaPlacanja = XPath.selectText("svhra_placanja", root);
+			String povjerPrimalac = XPath.selectText("primalac", root);
+			
+			String datumPrijemaA = XPath.selectText("datum_prijema", root);
+			Date datumPrijema = new SimpleDateFormat("dd.MM.yyyy").parse(datumPrijemaA);
+			
+			String datumValuteE = XPath.selectText("datum_valute", root);
+			Date datumValute = new SimpleDateFormat("dd.MM.yyyy").parse(datumValuteE);
+			
+			String racunDuznika = XPath.selectText("racun_duznika", root);
+			Integer modelZaduzenja = Integer.parseInt(XPath.selectText("model_zaduzenja", root));
+			String pozNaBrojZaduzenja = XPath.selectText("poz_na_broj_zaduzenja", root);
+			String racunPovjerioca = XPath.selectText("racun_povjerioca", root);
+			Integer modelOdobrenja = Integer.parseInt(XPath.selectText("model_odobrenja", root));
+			String pozNaBrojOdobrenja = XPath.selectText("poz_na_br_odobrenja", root);
+			
+			Boolean hitno = Boolean.parseBoolean(XPath.selectText("hitno", root));
+			Long iznos = Long.parseLong(XPath.selectText("iznos", root));
+			Integer tipGreske  = Integer.parseInt(XPath.selectText("tip_greske", root));
+			String status = XPath.selectText("status", root);
+			
 
-		Long brojStavke = Long.parseLong(XPath.selectText("broj_stavke", root));
-		String duzNalogodavac = XPath.selectText("duznik", root);
-		String svrhaPlacanja = XPath.selectText("svhra_placanja", root);
-		String povjerPrimalac = XPath.selectText("primalac", root);
+			
+			AnalitikaIzvoda analitikaIzvoda = new AnalitikaIzvoda(brojStavke, duzNalogodavac, 
+					svrhaPlacanja, povjerPrimalac, datumPrijema, datumValute, racunDuznika, 
+					modelZaduzenja, pozNaBrojZaduzenja, racunPovjerioca, modelOdobrenja, 
+					pozNaBrojOdobrenja, hitno, iznos, tipGreske, status);
+			
+			analitikaIzvoda.save();
+			//renderTemplate("AnalitikeIzvoda/show.html", analitikaIzvoda);
+			show("");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			show("");
+		}
 		
-		String datumPrijemaA = XPath.selectText("datum_prijema", root);
-		Date datumPrijema = new SimpleDateFormat("dd.MM.yyyy").parse(datumPrijemaA);
 		
-		String datumValuteE = XPath.selectText("datum_valute", root);
-		Date datumValute = new SimpleDateFormat("dd.MM.yyyy").parse(datumValuteE);
-		
-		String racunDuznika = XPath.selectText("racun_duznika", root);
-		Integer modelZaduzenja = Integer.parseInt(XPath.selectText("model_zaduzenja", root));
-		String pozNaBrojZaduzenja = XPath.selectText("poz_na_broj_zaduzenja", root);
-		String racunPovjerioca = XPath.selectText("racun_povjerioca", root);
-		Integer modelOdobrenja = Integer.parseInt(XPath.selectText("model_odobrenja", root));
-		String pozNaBrojOdobrenja = XPath.selectText("poz_na_br_odobrenja", root);
-		
-		Boolean hitno = Boolean.parseBoolean(XPath.selectText("hitno", root));
-		Long iznos = Long.parseLong(XPath.selectText("iznos", root));
-		Integer tipGreske  = Integer.parseInt(XPath.selectText("tip_greske", root));
-		String status = XPath.selectText("status", root);
-		
-
-		
-		AnalitikaIzvoda analitikaIzvoda = new AnalitikaIzvoda(brojStavke, duzNalogodavac, 
-				svrhaPlacanja, povjerPrimalac, datumPrijema, datumValute, racunDuznika, 
-				modelZaduzenja, pozNaBrojZaduzenja, racunPovjerioca, modelOdobrenja, 
-				pozNaBrojOdobrenja, hitno, iznos, tipGreske, status);
-		
-		analitikaIzvoda.save();
-		renderTemplate("AnalitikeIzvoda/show.html", analitikaIzvoda);
 	}
+	
+	
+//	public static void loadFile(String myFile) throws ParserConfigurationException, SAXException, IOException, ParseException{
+//	//load("C:/Users/Lemur/Desktop/analitika_izvoda.xml");
+//	load(myFile);
+//	renderTemplate("AnalitikeIzvoda/show.html");
+//}
 
 }
