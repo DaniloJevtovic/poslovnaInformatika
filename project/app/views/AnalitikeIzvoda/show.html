@@ -4,7 +4,6 @@
 <script>
 	function sync(item){
 		id = item.find(".id").html()
-		brojStavke = item.find(".brojStavke").html()
 		duzNalogodavac = item.find(".duzNalogodavac").html()
 		svrhaPlacanja = item.find(".svrhaPlacanja").html()
 		povjerPrimalac = item.find(".povjerPrimalac").html()
@@ -22,7 +21,6 @@
 		status = item.find(".status").html()
 
 		$("#id").val(id);
-		$("#brojStavke").val(brojStavke);
 		$("#duzNalogodavac").val(duzNalogodavac);
 		$("#svrhaPlacanja").val(svrhaPlacanja);
 		$("#povjerPrimalac").val(povjerPrimalac);
@@ -48,6 +46,15 @@
 	{
 		document.getElementById("load").click();
 	}
+	
+	function genNaloga(id){
+		$(location).attr('href', '/AnalitikeIzvoda/genNaloga?analitikaIzvoda_id=' +id);
+	}
+	
+	function expNaloga(id){
+		$(location).attr('href', '/AnalitikeIzvoda/expNaloga?analitikaIzvoda_id=' +id);
+	}
+
 
 </script>
 
@@ -63,15 +70,21 @@
   		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  		
   		<!--<li><a href="@{AnalitikeIzvoda.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li> -->
   		<!--<li><a href="@{AnalitikeIzvoda.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li> -->
-  		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  		<!--<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li> -->
+  		
   		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
   		<!-- <li><a href="#" id = "load"><img src="@{'/public/images/file.png'}"/></a></li> -->
   		
-  		<li>
-  			<a  data-toggle="modal"  data-target="#analitikaModal"><img src="@{'/public/images/file.png'}"/></a>
-  		</li>
+  		<li><a href="@{AnalitikeIzvoda.loadAll()}" id = "loadAll" title="ucitavanje svih analitika iz .xml fajla"><img src="@{'/public/images/xmlLoad.png'}"/></a></li>
+  		
+  		<li><a  data-toggle="modal"  data-target="#analitikaModal"><img src="@{'/public/images/file.png'}"/></a></li>
+  		
+  		<li><a href="#" id = "genNaloga" title="generisanje naloga za medjubankarski prenos"><img src="@{'/public/images/transfer.png'}"/></a></li>
+  		
+  		<li><a href="#" id = "expNaloga" title="export naloga u .xml fajl"><img src="@{'/public/images/expxml.png'}"/></a></li>
   		
 	</ul>
 </p>
@@ -81,10 +94,9 @@
 
 	<table class = "maintable">
 		<tr class = "header">
-	   		<th>Broj stavke</th> 
-	   		<th>Duznik - nalogodavac</th>
+	   		<th>Duznik</th>
 	  		<th>Svrha placanja</th>
-	   		<th>Povjerilac - primalac</th>
+	   		<th>Primalac</th>
 	   		<th>Datum prijema</th>
 	   		<th>Datum valute</th>
 	   		<th>Racun duznika</th>
@@ -100,7 +112,6 @@
 		</tr>
 		#{list items:analitikeIzvoda, as:'analitikaIzvoda'}
 		<tr>
-			<td class = "brojStavke">${analitikaIzvoda.brojStavke}</td>
 			<td class = "duzNalogodavac">${analitikaIzvoda.duzNalogodavac}</td>
 			<td class = "svrhaPlacanja">${analitikaIzvoda.svrhaPlacanja}</td>
 			<td class = "povjerPrimalac">${analitikaIzvoda.povjerPrimalac}</td>
@@ -116,8 +127,7 @@
 			<td class = "iznos">${analitikaIzvoda.iznos}</td>
 			<td class = "tipGreske">${analitikaIzvoda.tipGreske}</td>
 			<td class = "status">${analitikaIzvoda.status}</td>
-			
-			<td style = "visibility: hidden; max-width: 0px" class = "id">${analitikaIzvoda.id}</td>
+			<td class = "id" style = "visibility: hidden; max-width: 0px" >${analitikaIzvoda.id}</td>
 		</tr>
 		#{/list}
 	</table>
@@ -162,12 +172,6 @@
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				
-				<p>
-				#{field 'brojStavke'}
-					<label for = "${field.id}">Broj stavke:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
 				<p>
 				#{field 'duzNalogodavac'}
 					<label for = "${field.id}">Duznik - nalogodavac:</label>
