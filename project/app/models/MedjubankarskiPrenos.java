@@ -11,11 +11,10 @@ import play.db.jpa.Model;
 @Entity
 public class MedjubankarskiPrenos extends Model {
 
-	public String idKliringa;
 	public Date datumKliringa;
-	public String swiftKodBankeDuz;
+	//public String swiftKodBankeDuz;
 	public String racBankeDuz;
-	public String swiftKodBankePovj;
+	//public String swiftKodBankePovj;
 	public String racBankePovj;
 	public Long ukupanIznos;
 	public String vrstaPrenosa;
@@ -27,14 +26,13 @@ public class MedjubankarskiPrenos extends Model {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MedjubankarskiPrenos(String idKliringa, Date datumKliringa, String swiftKodBankeDuz, String racBankeDuz,
-			String swiftKodBankePovj, String racBankePovj, Long ukupanIznos, String vrstaPrenosa) {
+	public MedjubankarskiPrenos(Date datumKliringa, String racBankeDuz, String racBankePovj, 
+			Long ukupanIznos, String vrstaPrenosa) {
 		super();
-		this.idKliringa = idKliringa;
 		this.datumKliringa = datumKliringa;
-		this.swiftKodBankeDuz = swiftKodBankeDuz;
+		//this.swiftKodBankeDuz = swiftKodBankeDuz;
 		this.racBankeDuz = racBankeDuz;
-		this.swiftKodBankePovj = swiftKodBankePovj;
+		//this.swiftKodBankePovj = swiftKodBankePovj;
 		this.racBankePovj = racBankePovj;
 		this.ukupanIznos = ukupanIznos;
 		this.vrstaPrenosa = vrstaPrenosa;
