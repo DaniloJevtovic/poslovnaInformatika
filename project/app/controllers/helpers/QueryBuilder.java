@@ -22,6 +22,10 @@ public class QueryBuilder {
 		addParam(name + "And", value);
 	}
 	
+	public void buildSimpleQuery(String name, Long value) {
+		addParam(name + "And", value);
+	}
+	
 	public void buildLikeQuery(String name, String value) {
 		if(value==null) {
 			return;
@@ -51,13 +55,7 @@ public class QueryBuilder {
 		if(value==null) {
 			return;
 		}
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(value);
-		cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
-	    cal.set(Calendar.MINUTE,      cal.getMaximum(Calendar.MINUTE));
-	    cal.set(Calendar.SECOND,      cal.getMaximum(Calendar.SECOND));
-	    cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
-		Date queryDate = cal.getTime();
+		Date queryDate = PomocneOperacije.getEndOfDay(value);
 		addParam(name + "LessThanEqualsAnd", queryDate);
 	}
 	
@@ -65,13 +63,7 @@ public class QueryBuilder {
 		if(value==null) {
 			return;
 		}
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(value);
-		cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
-	    cal.set(Calendar.MINUTE,      cal.getMinimum(Calendar.MINUTE));
-	    cal.set(Calendar.SECOND,      cal.getMinimum(Calendar.SECOND));
-	    cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
-		Date queryDate = cal.getTime();
+		Date queryDate = PomocneOperacije.getStartOfDay(value);
 		addParam(name + "GreaterThanEqualsAnd", queryDate);
 	}
 	

@@ -1,6 +1,6 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
-
+<!-- 
 <h1>Odaberite formu:</h1>
 
 <a href="@{Drzave.show()}">Države</a><br>
@@ -17,3 +17,146 @@
 <a href="@{KurseviUValuti.show()}">Kursevi u valuti</a><br>
 <a href="@{Ukidanja.show()}">Ukidanja</a><br>
 <a href="@{VrstePlacanja.show()}">Vrste placanja</a><br>
+ -->
+
+<h1 style="text-align: center; margin-bottom: 100px;">Forme</h1>
+<section class="row text-center placeholders">
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{Drzave.show()}">
+			<img src="@{'/public/images/index/locate.png'}" width="32" height="32"
+				class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Države</h4>
+		<span class="text-muted">Administrativne cjeline</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{NaseljenaMesta.show()}">
+			<img
+				src="@{'/public/images/index/building.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Naseljena mjesta</h4>
+		<span class="text-muted">Naseljena mjesta u sistemu</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center;">
+		<a href="@{Banke.show()}">
+			<img
+				src="@{'/public/images/index/bank.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Banke</h4>
+		<span class="text-muted">Entiteti koji vrše finansijske usluge</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{Klijenti.showDefault()}">
+			<img
+				src="@{'/public/images/index/group.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Klijenti</h4>
+		<span class="text-muted">Korisnici usluga banki</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{Racuni.showDefault()}">
+			<img
+				src="@{'/public/images/index/account_balances.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Računi</h4>
+		<span class="text-muted">Skladište novca</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{DnevnaStanjaRacuna.showDefault()}">
+		<img
+			src="@{'/public/images/index/credit.png'}"
+			width="32" height="32" class="img-fluid rounded-circle"
+			alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Dnevna stanja računa</h4>
+		<span class="text-muted">Dnevno kretanje novca jednog računa</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{AnalitikeIzvoda.showDefault()}">
+			<img
+				src="@{'/public/images/index/money_in_envelope.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Analitike izvoda</h4>
+		<span class="text-muted">Jedna novčana transakcija</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{MedjubankarskiPrenosi.show()}">
+			<img
+				src="@{'/public/images/index/domain_name_monetization.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Međubankarski prenosi</h4>
+		<span class="text-muted">Transakcija između banaka</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{StavkeKliringa.show()}">
+			<img
+				src="@{'/public/images/index/investment_menu_quality.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Stavke kliringa</h4>
+		<span class="text-muted">Stavke međubankarskog prenosa</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{KursneListe.showDefault()}">
+			<img
+				src="@{'/public/images/index/balance.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Kursne liste</h4>
+		<span class="text-muted">Svi kursevi jedne banke</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center;">
+		<a href="@{Valute.showDefault()}">
+			<img
+				src="@{'/public/images/index/money_euro.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Valute</h4>
+		<span class="text-muted">Jedinica novca</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{KurseviUValuti.show()}">
+			<img
+				src="@{'/public/images/index/conversion_of_currency.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Kursevi u valuti</h4>
+		<span class="text-muted">Odnos vrijednosti valuta</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{Ukidanja.show()}">
+			<img
+				src="@{'/public/images/index/money_delete.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Ukidanja</h4>
+		<span class="text-muted">Gašenje računa</span>
+	</div>
+	<div class="col-6 col-sm-3 placeholder" style="text-align: center; margin-bottom: 30px;">
+		<a href="@{VrstePlacanja.show()}">
+			<img
+				src="@{'/public/images/index/card_money.png'}"
+				width="32" height="32" class="img-fluid rounded-circle"
+				alt="Generic placeholder thumbnail">
+		</a>
+		<h4>Vrste plaćanja</h4>
+		<span class="text-muted">Stavka analitike izvoda</span>
+	</div>
+</section>

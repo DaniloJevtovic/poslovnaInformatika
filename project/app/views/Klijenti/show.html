@@ -4,19 +4,7 @@
 
 $(document).ready(function() {
 	highlightedId = "${flash.highlightedId}";
-	#{if flash.highlightedId}
-	var items = $(".maintable tr");
-	$(".highlighted").removeClass("highlighted");
-	for(var i = 0; i < items.length; i++) {
-		var item = $(items[i]);
-		var id = item.find(".id").html();
-		if(id == highlightedId) {
-			item.addClass("highlighted")
-			sync(item);
-			break;
-		}
-	}
-	#{/if}
+	selectedRow = null;
 	$("#search").click(function() {
 		var loc = '@{Klijenti.show()}' + '?mode=search&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
@@ -56,8 +44,9 @@ function sync(data){
     highlightedId = data[10];
 }
 
-function nextForm(id){
-	$(location).attr('href', '/Racun/nextForm?klijent_id=' +id);	
+function nextRacuni(){
+	var string = '/Klijenti/nextRacuni?filterId=' + highlightedId;
+	$(location).attr('href', '/Klijenti/nextRacuni?filterId=' + highlightedId);	
 }
 
 function remove(id){
@@ -66,7 +55,7 @@ function remove(id){
 
 </script>
 
-#{StandardFormToolbar /}
+#{StandardFormToolbar nextForm: 'nextRacuni()' /}
 
 <div class = "container-fluid">
 <h1>Klijenti</h1>

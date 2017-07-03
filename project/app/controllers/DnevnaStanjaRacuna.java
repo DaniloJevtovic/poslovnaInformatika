@@ -2,9 +2,13 @@ package controllers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
-import javafx.scene.control.DatePicker;
+import controllers.helpers.Konstante;
+import controllers.helpers.PomocneOperacije;
+import controllers.session.KonstanteSesije;
+import models.AnalitikaIzvoda;
 import models.DnevnoStanjeRacuna;
 import models.Racun;
 import play.mvc.Controller;
@@ -18,54 +22,36 @@ public class DnevnaStanjaRacuna extends Controller {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static void show(String mode){
-		List<DnevnoStanjeRacuna> dnevnaStanjaRacuna = DnevnoStanjeRacuna.findAll();
-		if(mode == null || mode.equals(""))
-			mode = "edit";
-		render(dnevnaStanjaRacuna, mode);
+	
+	public static void showDefault() {
+		KonstanteSesije.clearFlashConfig(flash);
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_DNEVNO_STANJE_RACUNA, KonstanteSesije.FILTRI_DNEVNOG_STANJA_RACUNA)) {
+			KonstanteSesije.clearFlashFilter(flash);
+		}
+		flash.keep();
+		show(Konstante.KONF_IZMJENA, "");
 	}
 	
-	public static void create(Long brojIzvoda, Racun racun, String datumPrometa, Long predhodnoStanje, Long prometUKorist,
-			Long prometNaTeret, Long novoStanje){
-		
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		Date datum = null;
-		
-		try {
-			datum = dateFormat.parse(datumPrometa);
-		} catch (Exception e) {
-			System.out.println("Greska!");
+	public static void show(String mode, String highlightedId){
+		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
+			List<DnevnoStanjeRacuna> dnevnaStanjaRacuna;
+			if(Konstante.IME_ENTITETA_ANALITIKA_IZVODA.equals(flash.get(KonstanteSesije.TARGET_ENTITY))) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_RACUN:
+					query = "select dsr from DnevnoStanjeRacuna dsr where dsr.racun.id = ?";
+					break;
+				}
+				long filterId = Long.parseLong(flash.get(KonstanteSesije.FILTER_ID)); 
+				dnevnaStanjaRacuna = DnevnoStanjeRacuna.find(query, filterId).fetch();
+			} else {
+				dnevnaStanjaRacuna = DnevnoStanjeRacuna.findAll();
+			}
+			KonstanteSesije.fillFlash(flash, mode, highlightedId);
+			render(dnevnaStanjaRacuna);
+		} else {
+			throw new IllegalArgumentException(PomocneOperacije.porukaNevazecaKonfiguracija(mode));
 		}
-		
-		DnevnoStanjeRacuna dnevnoStanjeRacuna = new DnevnoStanjeRacuna(brojIzvoda, racun, datum, predhodnoStanje, prometUKorist,
-				prometNaTeret, novoStanje);
-		dnevnoStanjeRacuna.save();		
-		show("add");
-	}
-	
-	public static void edit(Long id, Racun racun, Long brojIzvoda, String datumPrometa, Long predhodnoStanje, Long prometUKorist,
-			Long prometNaTeret, Long novoStanje){
-		
-		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		Date datum = null;
-		
-		try {
-			datum = dateFormat.parse(datumPrometa);
-		} catch (Exception e) {
-			System.out.println("Greska!");
-		}
-		
-		DnevnoStanjeRacuna dnevnoStanjeRacuna = DnevnoStanjeRacuna.findById(id);	
-		dnevnoStanjeRacuna.brojIzvoda = brojIzvoda;
-		dnevnoStanjeRacuna.racun = racun;
-		dnevnoStanjeRacuna.datumPrometa = datum;
-		dnevnoStanjeRacuna.predhodnoStanje = predhodnoStanje;
-		dnevnoStanjeRacuna.prometUKorist = prometUKorist;
-		dnevnoStanjeRacuna.prometNaTeret = prometNaTeret;
-		dnevnoStanjeRacuna.novoStanje = novoStanje;
-
-		dnevnoStanjeRacuna.save();
-		show("edit");
 	}
 	
 	public static void filter(String brojIzvoda, String racun, String datumPrometa, String predhodnoStanje, String prometUKorist,
@@ -76,10 +62,5 @@ public class DnevnaStanjaRacuna extends Controller {
 		renderTemplate("DnevnaStanjaRacuna/show.html", dnevnaStanjaRacuna, mode);
 	}
 	
-	public static void delete(Long id){
-		DnevnoStanjeRacuna dnevnoStanjeRacuna = DnevnoStanjeRacuna.findById(id);
-		dnevnoStanjeRacuna.delete();
-		show("edit");
-	}
 
 }

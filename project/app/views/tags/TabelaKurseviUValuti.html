@@ -1,0 +1,35 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Naziv Banke</th>
+			<th>Broj kursne liste</th>
+			<th>Sifra osnovne valute</th>
+	   		<th>Sifra valute prema</th>
+			<th>Kupovni</th>
+	   		<th>Srednji</th>
+	   		<th>Prodajni</th>
+	   		<th>Id</th>
+			<th>Id Osnovne Valute</th>
+			<th>Id Valute Prema</th>
+			<th>Id Kursne Liste</th>
+		</tr>
+	</thead>
+	<tbody>
+		#{list items:_data, as:'kurs'}
+		<tr>
+			<td class="banka">#{if kurs.kursnaLista}${kurs.kursnaLista.banka.nazivBanke}#{/if}</td>
+			<td class="brojKursneListe">#{if kurs.kursnaLista}${kurs.kursnaLista.brojKursneListe}#{/if}</td>
+			<td class="osnovnaValuta">#{if kurs.osnovnaValuta}${kurs.osnovnaValuta.zvanicnaSifra}#{/if}</td>
+	   		<td class="premaValuti">#{if kurs.premaValuti}${kurs.premaValuti.zvanicnaSifra}#{/if}</td>
+			<td class="kupovni">${kurs.kupovni}</td>
+	   		<td class="srednji">${kurs.srednji}</td>
+	   		<td class="prodajni">${kurs.prodajni}</td>
+	   		<td style="visibility: hidden; max-width: 0px" class="id">${kurs.id}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id_osnovne_valute">#{if kurs.osnovnaValuta}${kurs.osnovnaValuta.id}#{/if}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id_valute_prema">#{if kurs.premaValuti}${kurs.premaValuti.id}#{/if}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id_kursne_liste">#{if kurs.kursnaLista}${kurs.kursnaLista.id}#{/if}</td>
+		</tr>
+		#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

@@ -1,5 +1,8 @@
 package controllers.helpers;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import models.Klijent;
 import play.db.jpa.Model;
 
@@ -36,5 +39,33 @@ public class PomocneOperacije {
 			return true;
 		}
 		return (string.trim().equals(""));
+	}
+	/*
+	 * Vraca DateTime podesen na isti datum ali
+	 * u 00:00:00
+	 */
+	public static Date getEndOfDay(Date day) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
+	    cal.set(Calendar.MINUTE,      cal.getMaximum(Calendar.MINUTE));
+	    cal.set(Calendar.SECOND,      cal.getMaximum(Calendar.SECOND));
+	    cal.set(Calendar.MILLISECOND, cal.getMaximum(Calendar.MILLISECOND));
+		return cal.getTime();
+	}
+	
+	
+	/*
+	 * Vraca DateTime podesen na isti datum ali
+	 * u 23:59:59
+	 */
+	public static Date getStartOfDay(Date day) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
+	    cal.set(Calendar.MINUTE,      cal.getMinimum(Calendar.MINUTE));
+	    cal.set(Calendar.SECOND,      cal.getMinimum(Calendar.SECOND));
+	    cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
+		return cal.getTime();
 	}
 }

@@ -22,4 +22,9 @@ public class Konstante {
 	public static final String IME_ENTITETA_VALUTA = "Valuta";
 	public static final String IME_ENTITETA_VRSTA_PLACANJA = "VrstaPlacanja";
 	
+	public static final String IME_OSNOVNA_VALUTA = "osnovnaValuta";
+	public static final String IME_PREMA_VALUTI = "premaValuti";
+	public static final String IME_ENTITETA_DNEVNO_STANJE_U_KORIST = "dnevnoStanjeRacunaUKorist";
+	public static final String IME_ENTITETA_DNEVNO_STANJE_NA_TERET = "dnevnoStanjeRacunaNaTeret";
+	
 }

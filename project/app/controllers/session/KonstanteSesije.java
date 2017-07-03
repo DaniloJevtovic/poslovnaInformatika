@@ -12,9 +12,13 @@ public class KonstanteSesije {
 	public static final String FILTER_ENTITY = "filterEntity";
 	public static final String FILTER_ID = "filterId";
 	
+	public static final String[] FILTRI_ANALITIKE_IZVODA = {Konstante.IME_ENTITETA_VALUTA, Konstante.IME_ENTITETA_VRSTA_PLACANJA
+			, Konstante.IME_ENTITETA_NASELJENO_MESTO, Konstante.IME_ENTITETA_DNEVNO_STANJE_U_KORIST, Konstante.IME_ENTITETA_DNEVNO_STANJE_NA_TERET};
+	public static final String[] FILTRI_DNEVNOG_STANJA_RACUNA = {Konstante.IME_ENTITETA_RACUN};
 	public static final String[] FILTRI_RACUNA = {Konstante.IME_ENTITETA_BANKA, Konstante.IME_ENTITETA_KLIJENT, Konstante.IME_ENTITETA_VALUTA};
 	public static final String[] FILTRI_VALUTE = {Konstante.IME_ENTITETA_DRZAVA};
 	public static final String[] FILTRI_KURSNE_LISTE = {Konstante.IME_ENTITETA_BANKA};
+	public static final String[] FILTRI_KURSA_U_VALUTI = {Konstante.IME_ENTITETA_KURSNA_LISTA, Konstante.IME_OSNOVNA_VALUTA, Konstante.IME_PREMA_VALUTI};
 	
 	public static final String[] DOZVOLJENE_KONFIGURACIJE = 
 		{ Konstante.KONF_DODAVANJE, Konstante.KONF_IZMJENA, Konstante.KONF_PRETRAGA };
@@ -57,6 +61,13 @@ public class KonstanteSesije {
 	public static void resetSession(Flash flash) {
 		flash.clear();
 		flash.put(MODE, Konstante.KONF_IZMJENA);
+	}
+	
+	public static void insertFlashFilter(Flash flash, String filter, String target, String id) {
+		clearFlashFilter(flash);
+		flash.put(TARGET_ENTITY, target);
+		flash.put(FILTER_ENTITY, filter);
+		flash.put(FILTER_ID, id);
 	}
 	
 }

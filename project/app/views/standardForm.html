@@ -105,6 +105,14 @@
 			}
 		});
 		
+		$("#remove").click(function(){
+			if((highlightedId != null) && (highlightedId != "")) {
+				if(confirm('Da li ste sigurni da zelite da obrisete selektovanu vrstu?')) {
+					remove(highlightedId)
+				}
+			}
+		});
+		
 		$("#nextform").click(function(){
 			highlighted = $(".highlighted");
             if(highlighted.length != 0){

@@ -125,4 +125,17 @@ public class Klijenti extends Controller {
 		List<Klijent> klijenti  = Klijent.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("Klijenti/show.html", Konstante.KONF_IZMJENA, klijenti);
 	}
+	
+	public static void nextRacuni(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_KLIJENT,
+				Konstante.IME_ENTITETA_RACUN,
+				filterId);
+		flash.keep();
+		Racuni.showDefault();
+	}
 }

@@ -25,16 +25,18 @@ public class Racuni extends Controller {
 	}
 	
 	public static void showDefault() {
+		KonstanteSesije.clearFlashConfig(flash);
 		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_RACUN, KonstanteSesije.FILTRI_RACUNA)) {
-			KonstanteSesije.resetSession(flash);
+			KonstanteSesije.clearFlashFilter(flash);
 		}
+		flash.keep();
 		show(Konstante.KONF_DODAVANJE, "");
 	}
 	
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
 			List<Racun> racuni;
-			if(Konstante.IME_ENTITETA_RACUN.equals(flash.get(KonstanteSesije.FILTER_ENTITY))) {
+			if(Konstante.IME_ENTITETA_RACUN.equals(flash.get(KonstanteSesije.TARGET_ENTITY))) {
 				String query = "";
 				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
 				case Konstante.IME_ENTITETA_BANKA:
@@ -47,7 +49,8 @@ public class Racuni extends Controller {
 					query = "select r from Racun r where r.valuta.id = ?";
 					break;
 				}
-				racuni = Racun.find(query, flash.get(KonstanteSesije.FILTER_ID)).fetch();
+				long filterId = Long.parseLong(flash.get(KonstanteSesije.FILTER_ID)); 
+				racuni = Racun.find(query, filterId).fetch();
 			} else {
 				racuni = Racun.findAll();
 			}
@@ -140,8 +143,11 @@ public class Racuni extends Controller {
 		renderTemplate("Racuni/show.html", Konstante.KONF_IZMJENA, racuni);
 	}
 	
-	public static void nextForm(String klijent_id) {
-		List<Racun> racuni = Racun.find("byKlijent_id", klijent_id).fetch();
-		renderTemplate("Racuni/show.html", Konstante.KONF_IZMJENA, racuni);
+	public static void nextDnevnaStanja() {
+		
+	}
+	
+	public static void nextUkidanja() {
+		
 	}
 }
