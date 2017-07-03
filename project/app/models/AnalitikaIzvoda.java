@@ -29,7 +29,6 @@ public class AnalitikaIzvoda extends Model {
 	public Integer tipGreske;
 	public String status;
 	
-	
 	@ManyToOne
 	public VrstaPlacanja vrstaPlacanja;
 	

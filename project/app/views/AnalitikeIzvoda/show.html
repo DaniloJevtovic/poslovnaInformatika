@@ -2,6 +2,7 @@
 #{set title:'Analitike izvoda' /}
 
 <script>
+
 	$(document).ready(function() {
 		highlightedId = "${flash.highlightedId}";
 
@@ -14,7 +15,7 @@
 			$(location).attr('href', '@{AnalitikeIzvoda.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
 		});
 	});
-
+	
 	function sync(data){
 		//po potrebi dodati sinhronizaciju
 	
@@ -29,6 +30,15 @@
 	{
 		document.getElementById("load").click();
 	}
+	
+	function genNaloga(id){
+		$(location).attr('href', '/AnalitikeIzvoda/genNaloga?analitikaIzvoda_id=' +id);
+	}
+	
+	function expNaloga(id){
+		$(location).attr('href', '/AnalitikeIzvoda/expNaloga?analitikaIzvoda_id=' +id);
+	}
+
 
 </script>
 
@@ -44,15 +54,21 @@
   		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  		
   		<!--<li><a href="@{AnalitikeIzvoda.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li> -->
   		<!--<li><a href="@{AnalitikeIzvoda.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li> -->
-  		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  		<!--<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li> -->
+  		
   		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
   		<!-- <li><a href="#" id = "load"><img src="@{'/public/images/file.png'}"/></a></li> -->
   		
-  		<li>
-  			<a  data-toggle="modal"  data-target="#analitikaModal"><img src="@{'/public/images/file.png'}"/></a>
-  		</li>
+  		<li><a href="@{AnalitikeIzvoda.loadAll()}" id = "loadAll" title="ucitavanje svih analitika iz .xml fajla"><img src="@{'/public/images/xmlLoad.png'}"/></a></li>
+  		
+  		<li><a  data-toggle="modal"  data-target="#analitikaModal"><img src="@{'/public/images/file.png'}"/></a></li>
+  		
+  		<li><a href="#" id = "genNaloga" title="generisanje naloga za medjubankarski prenos"><img src="@{'/public/images/transfer.png'}"/></a></li>
+  		
+  		<li><a href="#" id = "expNaloga" title="export naloga u .xml fajl"><img src="@{'/public/images/expxml.png'}"/></a></li>
   		
 	</ul>
 </p>
@@ -60,6 +76,7 @@
 <div class = "container-fluid">
 	<h1>Analitike izvoda</h1>
 
+<<<<<<< HEAD
 	#{TabelaAnalitikeIzvoda data : analitikeIzvoda, tableId: 'tabela_analitike_izvoda', hiddenColumns : '[]', idColumn:'0'/}	
 	
 	<div class="modal fade" id="analitikaModal" role="dialog">
@@ -101,12 +118,6 @@
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				
-				<p>
-				#{field 'brojStavke'}
-					<label for = "${field.id}">Broj stavke:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
 				<p>
 				#{field 'duzNalogodavac'}
 					<label for = "${field.id}">Duznik - nalogodavac:</label>

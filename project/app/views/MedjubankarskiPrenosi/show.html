@@ -4,21 +4,15 @@
 <script>
 	function sync(item){
 		id = item.find(".id").html()
-		idKliringa = item.find(".idKliringa").html()
 		datumKliringa = item.find(".datumKliringa").html()
-		swiftKodBankeDuz = item.find(".swiftKodBankeDuz").html()
 		racBankeDuz = item.find(".racBankeDuz").html()
-		swiftKodBankePovj = item.find(".swiftKodBankePovj").html()
 		racBankePovj = item.find(".racBankePovj").html()
 		ukupanIznos = item.find(".ukupanIznos").html()
 		vrstaPrenosa = item.find(".vrstaPrenosa").html()
 
 		$("#id").val(id);
-		$("#idKliringa").val(idKliringa);
 		$("#datumKliringa").val(datumKliringa);
-		$("#swiftKodBankeDuz").val(swiftKodBankeDuz);
 		$("#racBankeDuz").val(racBankeDuz);
-		$("#swiftKodBankePovj").val(swiftKodBankePovj);
 		$("#racBankePovj").val(racBankePovj);
 		$("#ukupanIznos").val(ukupanIznos);
 		$("#vrstaPrenosa").val(vrstaPrenosa);
@@ -42,10 +36,11 @@
   		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  		<li><a href="@{MedjubankarskiPrenosi.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  		<li><a href="@{MedjubankarskiPrenosi.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  		<!--  <li><a href="@{MedjubankarskiPrenosi.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li> -->
+  		<!--  <li><a href="@{MedjubankarskiPrenosi.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li> -->
+  		<!--  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li> -->
+  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>	
+  		
 	</ul>
 </p>
 
@@ -54,26 +49,20 @@
 
 	<table class = "maintable">
 		<tr class = "header">
-	   		<th>Id kliringa</th> 
 	   		<th>Datum kliringa</th>
-	  		<th>Swift kod banke duznika</th>
 	   		<th>Racun banke duznika</th>
-	   		<th>Swift kod banke povjerioca</th>
 	   		<th>Racun banke povjerioca</th>
 	   		<th>Ukupan iznos</th>
 	   		<th>Vrsta prenosa</th>
 		</tr>
 		#{list items:medjubankarskiPrenosi, as:'medjubankarskiPrenos'}
 		<tr>
-			<td class = "idKliringa">${medjubankarskiPrenos.idKliringa}</td>
 			<td class = "datumKliringa">${medjubankarskiPrenos.datumKliringa.format('dd.MM.yyyy')}</td>
-			<td class = "swiftKodBankeDuz">${medjubankarskiPrenos.swiftKodBankeDuz}</td>
 			<td class = "racBankeDuz">${medjubankarskiPrenos.racBankeDuz}</td>
-			<td class = "swiftKodBankePovj">${medjubankarskiPrenos.swiftKodBankePovj}</td>
 			<td class = "racBankePovj">${medjubankarskiPrenos.racBankePovj}</td>
 			<td class = "ukupanIznos">${medjubankarskiPrenos.ukupanIznos}</td>
 			<td class = "vrstaPrenosa">${medjubankarskiPrenos.vrstaPrenosa}</td>
-			<td style = "visibility: hidden; max-width: 0px" class = "id">${medjubankarskiPrenos.id}</td>
+			<td class = "id" style = "visibility: hidden; max-width: 0px">${medjubankarskiPrenos.id}</td>
 		</tr>
 		#{/list}
 	</table>

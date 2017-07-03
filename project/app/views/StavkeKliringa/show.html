@@ -18,11 +18,15 @@
 	});
 
 	function sync(item) {
-		id = item.find(".id").html()
-		idStavke = item.find(".idStavke").html()
+		id = item.find(".id").html();
+		idStavke = item.find(".idStavke").html();
+		analitikaIzvoda = item.find(".analitika_izvoda").html();
+		medjubankarskiPrenos = item.find(".medjubankarski_prenos").html();
 
 		$("#id").val(id);
 		$("#idStavke").val(idStavke);
+		$("analitikaIzvoda").val(analitikaIzvoda);
+		$("medjubankarskiPrenos").val(medjubankarskiPrenos);
 	}
 
 	function remove(id) {
@@ -61,8 +65,8 @@
 		#{list items:stavkeKliringa, as:'stavkaKliringa'}
 		<tr>
 			<td class = "idStavke">${stavkaKliringa.idStavke}</td>
-			<td class = "analitikaIzvoda">#{if stavkaKliringa.analitikaIzvoda} ${stavkaKliringa.analitikaIzvoda.idStavke} #{/if}</td>
-			<td class = "analitikaIzvoda">#{if stavkaKliringa.mbp} ${stavkaKliringa.mbp.idKliringa} #{/if}</td>
+			<td class = "analitikaIzvoda">#{if stavkaKliringa.analitikaIzvoda} ${stavkaKliringa.analitikaIzvoda.id} #{/if}</td>
+			<td class = "analitikaIzvoda">#{if stavkaKliringa.mbp} ${stavkaKliringa.mbp.id} #{/if}</td>
 			<td style = "visibility: hidden; max-width: 0px" class = "id">${stavkaKliringa.id}</td>
 		</tr>
 		#{/list}
@@ -173,7 +177,6 @@
 				<div class="modal-body">
 					<table style="padding: 2em">
 						<tr class="header">
-							<th>Id kliringa</th>
 							<th>Datum kliringa</th>
 							<th>Racun banke duznika</th>
 							<th>Racun banke povjerioca</th>
@@ -181,7 +184,6 @@
 						</tr>
 						#{list items:medjubankarskiPrenosi, as:'medjubankarskiPrenos'}
 						<tr>
-							<td class="idKliringa">${medjubankarskiPrenos.idKliringa}</td>
 							<td class="datumKliringa">${medjubankarskiPrenos.datumKliringa}</td>
 							<td class="racBankeDuz">${medjubankarskiPrenos.racBankeDuz}</td>
 							<td class="racBankePovj">${medjubankarskiPrenos.racBankePovj}</td>
