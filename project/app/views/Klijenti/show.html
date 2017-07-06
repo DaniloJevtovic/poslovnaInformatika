@@ -53,9 +53,29 @@ function remove(id){
 	$(location).attr('href', '/Klijenti/delete?id=' + highlightedId)
 }
 
+function openReportModal() {
+	//data-toggle="modal" data-target="#modal_report"
+	$('#modal_report').modal('toggle');
+	var table = $('#tabela_klijenti').DataTable();
+	var data = table.row(function(idx, data, node) {
+		return data[10]==highlightedId;
+	}).data();
+	var title;
+	if(data!=null) {
+		if(data[0]=='P') {
+			title = "Izvod klijenta '" + data[1] + "'";
+		} else {
+			title = "Izvod klijenta '" + data[3] + " " + data[4] + "'";
+		}
+	} else {
+		title = 'Klijent nije izabran!';
+	}
+	$('#modal_report_title').html(title);
+}
+
 </script>
 
-#{StandardFormToolbar nextForm: 'nextRacuni()' /}
+#{StandardFormToolbar nextForm: 'nextRacuni()', menuAddon:'tags/ReportButton.html' /}
 
 <div class = "container-fluid">
 <h1>Klijenti</h1>
@@ -188,3 +208,83 @@ function remove(id){
 </div>
 </div>
 
+<div class="modal fade" id="modal_report" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" id="modal_report_title">
+				
+			</div>
+			<div class="modal-body">
+				<form>
+					<p style="text-align: center;">Za period</p>
+					#{field 'from'}
+					<label for = "${field.id}">Od</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					#{/}
+					#{field 'to'}
+					<label for = "${field.id}">Do</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					#{/}
+					<p style="color: red;" id="error_disp"></p>
+				</form>
+			</div>	
+			<div class="modal-footer">
+				<input id="modal_report_pdf" type="button" value="Kao PDF" />
+				<input id="modal_report_xml" type="button" value="Kao XML" />
+				<input id="modal_report_cancel" type="button" value="Odustanak" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	function checkValidity() {
+		var id = highlightedId;
+		var _od = $('#from').val();
+		var _do = $('#to').val();
+		if((id=="") || (id==null)) {
+			$('#error_disp').html('Klijent nije izabran!');
+			return false;
+		}
+		if((_od=="") || (_od==null)) {
+			$('#error_disp').html('Nije naveden datum pocetka!');
+			return false;
+		}
+		if((_do=="") || (_do==null)) {
+			$('#error_disp').html('Nije naveden datum kraja!');
+			return false;
+		}
+		return true;
+	}
+	$("#modal_report_pdf").click(function(){
+		if(checkValidity()) {
+			$('#error_disp').html('');
+			$('#modal_report').modal('toggle');
+			var from = $('#from').val();
+			var to = $('#to').val();
+			var loc = '@{Klijenti.reportPDF()}' + '?id_klijenta=' + highlightedId + '&from=' + from + '&to=' + to;
+			$(location).attr('href', loc);	
+		} 
+	});
+	$("#modal_report_xml").click(function(){
+		if(checkValidity()) {
+			$('#error_disp').html('');
+			$('#modal_report').modal('toggle');
+			var from = $('#from').val();
+			var to = $('#to').val();
+			var loc = '@{Klijenti.reportXML()}' + '?id_klijenta=' + highlightedId + '&from=' + from + '&to=' + to;
+			$(location).attr('href', loc);	
+		} 
+	});
+	$("#modal_report_cancel").click(function(){
+		$('#error_disp').html('');
+		$('#modal_report').modal('toggle');
+	});
+});
+</script>

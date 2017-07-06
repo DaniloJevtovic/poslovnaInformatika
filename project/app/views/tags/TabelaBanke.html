@@ -10,13 +10,12 @@
 	   		<th>E-mail banke</th>
 	   		<th>Web banke</th>
 	   		<th>Faks banke</th>
-	   		<th>Id</th>
 		</tr>
 	</thead>
 	<tbody>
 	#{list items:_data, as:'banka'}
 		<tr>
-			<td class = "idBanke">${banka.idBanke}</td>
+			<td class = "idBanke">${banka.id}</td>
 			<td class = "sifraBanke">${banka.sifraBanke}</td>
 			<td class = "PIBBanke">${banka.PIBBanke}</td>
 			<td class = "nazivBanke">${banka.nazivBanke}</td>
@@ -25,7 +24,6 @@
 			<td class = "emailBanke">${banka.emailBanke}</td>
 			<td class = "webBanke">${banka.webBanke}</td>
 			<td class = "faksBanke">${banka.faksBanke}</td>
-			<td style = "visibility: hidden; max-width: 0px" class = "id">${banka.id}</td>
 		</tr>
 	#{/list}
 	</tbody>

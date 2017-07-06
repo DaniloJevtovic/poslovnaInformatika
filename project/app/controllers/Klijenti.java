@@ -1,18 +1,39 @@
 package controllers;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.example.izvod_klijenta.IzvodKlijenta;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
 import controllers.helpers.QueryBuilder;
+import controllers.poslovna_obrada.XmlPunilac;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaKlijenta;
 import models.Klijent;
-import models.constants.KonstanteKlijenta;
-import play.db.jpa.Model;
-import play.db.jpa.GenericModel.JPAQuery;
-import play.mvc.Before;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import play.mvc.Controller;
 
 /*
@@ -137,5 +158,44 @@ public class Klijenti extends Controller {
 				filterId);
 		flash.keep();
 		Racuni.showDefault();
+	}
+	
+	public static void reportXML(Long id_klijenta, Date from, Date to) throws DatatypeConfigurationException, JAXBException, ParserConfigurationException {
+		Klijent klijent = Klijent.findById(id_klijenta);
+		IzvodKlijenta xmlIzvod = XmlPunilac.napuniXML(klijent, from, to);
+		
+		// Definiše se JAXB kontekst (putanja do paketa sa JAXB bean-ovima)
+		JAXBContext context = JAXBContext.newInstance("org.example.izvod_klijenta");
+		// Unmarshaller je objekat zadužen za konverziju iz XML-a u objektni model
+		Marshaller marshaller = context.createMarshaller();
+		// Marshaller podesen da daje formatiran izlaz
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		
+		StringWriter writer = new StringWriter();
+		marshaller.marshal(xmlIzvod, writer);
+		
+		renderXml(writer.toString());
+		
+		
+	}
+	
+	public static void reportPDF(Long id_klijenta, Date from, Date to) throws SQLException, JRException {
+		String pdfDir = "public/GenPdf/";
+		
+		HashMap<String,Object> params = new HashMap<String,Object>();
+		params.put("id_klijenta", id_klijenta);
+		params.put("datum_od", from);
+		params.put("datum_do", to);
+		
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovna", "isa", "nekasifra");
+		
+		Date now = new Date();
+		String pdfName = "" + now.getTime() + (((Long)Math.round(Math.random() * 1000000))+1000000) + ".pdf";
+		String pdfPath = pdfDir + pdfName;
+		
+		JasperPrint jprint = (JasperPrint)JasperFillManager.fillReport("jasper/izvod_banke.jasper", params, conn);
+		JasperExportManager.exportReportToPdfFile(jprint, pdfPath);
+		
+		redirect("/pdf/" + pdfName);
 	}
 }

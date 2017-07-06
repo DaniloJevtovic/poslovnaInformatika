@@ -174,7 +174,7 @@ Racun(miroA2) :
  brojRacuna : 123-0000000000002-86
  datumOtvaranja : 2017-06-26
  vazeci : true
- valuta : marka
+ valuta : dinar
  banka : bankaA
  klijent : miro 
  
@@ -190,7 +190,7 @@ Racun(jovoA2) :
  brojRacuna : 123-0000000000004-80
  datumOtvaranja : 2017-06-26
  vazeci : true
- valuta : marka
+ valuta : dinar
  banka : bankaA
  klijent : jovo
 

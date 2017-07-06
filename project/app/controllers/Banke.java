@@ -1,9 +1,21 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import models.Banka;
 import models.Drzava;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import play.mvc.Controller;
 
 /*
@@ -22,19 +34,18 @@ public class Banke extends Controller {
 		render(banke, mode);
 	}
 	
-	public static void create(String idBanke, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
+	public static void create(String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
 			String telefonBanke, String emailBanke, String webBanke, String faksBanke){
 
-		Banka banka = new Banka(idBanke, sifraBanke, PIBBanke, nazivBanke, adresaBanke, telefonBanke, emailBanke, webBanke, faksBanke);
+		Banka banka = new Banka(sifraBanke, PIBBanke, nazivBanke, adresaBanke, telefonBanke, emailBanke, webBanke, faksBanke);
 		banka.save();		
 		show("add");
 	}
 	
-	public static void edit(Long id, String idBanke, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
+	public static void edit(Long id, String sifraBanke, String PIBBanke, String nazivBanke, String adresaBanke,
 			String telefonBanke, String emailBanke, String webBanke, String faksBanke){
 		
 		Banka banka = Banka.findById(id);
-		banka.idBanke = idBanke;
 		banka.sifraBanke = sifraBanke;
 		banka.PIBBanke = PIBBanke;
 		banka.nazivBanke = nazivBanke;
@@ -64,6 +75,24 @@ public class Banke extends Controller {
 		Banka banka = Banka.findById(id);
 		banka.delete();
 		show("edit");
+	}
+	
+	public static void reportPDF(Long id_banke) throws SQLException, JRException {
+		String pdfDir = "public/GenPdf/";
+		
+		HashMap<String,Object> params = new HashMap<String,Object>();
+		params.put("id_banke", id_banke);
+		
+		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovna", "isa", "nekasifra");
+		
+		Date now = new Date();
+		String pdfName = "" + now.getTime() + (((Long)Math.round(Math.random() * 1000000))+1000000) + ".pdf";
+		String pdfPath = pdfDir + pdfName;
+		
+		JasperPrint jprint = (JasperPrint)JasperFillManager.fillReport("jasper/spisak_racuna.jasper", params, conn);
+		JasperExportManager.exportReportToPdfFile(jprint, pdfPath);
+		
+		redirect("/pdf/" + pdfName);
 	}
 	
 }

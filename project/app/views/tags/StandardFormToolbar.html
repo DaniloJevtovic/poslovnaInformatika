@@ -23,5 +23,6 @@
 		</div>#{/if}
 		#{else}<a onclick="${_nextForm}"><img src="@{'/public/images/nextform.gif'}" /></a>#{/else}
 		</li>
+		#{if _menuAddon}#{include _menuAddon /}#{/if}
 	</ul>
 </p>
