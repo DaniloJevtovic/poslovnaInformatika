@@ -1,0 +1,35 @@
+<div class="modal fade" id="${_modalId}" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				${_modalTitle}
+			</div>
+			<div class="modal-body">
+				#{include _table /}
+			</div>	
+			<div class="modal-footer">
+				<input id="modal_ok_button${_modalId}" type="button" value="Potvrda" />
+				<input id="modal_cancel_button${_modalId}" type="button" value="Odustanak" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	var izabraniId;
+	MyModals.addCallback("${_modalId}", function(id) {
+		izabraniId = id;
+	});
+	$("#modal_ok_button${_modalId}").click(function(){
+		#{list items : _selectIds, as : 'selectId'}
+		$("#${selectId}").val(izabraniId);
+		#{/list}
+		$('#${_modalId}').modal('toggle');
+		$("#${_modalId} .selected").removeClass("selected");
+	});
+	$("#modal_cancel_button${_modalId}").click(function(){
+		$('#${_modalId}').modal('toggle');
+		$("#${_modalId} .selected").removeClass("selected");
+	});
+});
+</script>

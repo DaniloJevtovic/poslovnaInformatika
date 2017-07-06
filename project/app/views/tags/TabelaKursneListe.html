@@ -15,9 +15,9 @@
 		<tr>
 			<td class = "banka">${kursnaLista.banka.nazivBanke}</td>
 			<td class = "brojKursneListe">${kursnaLista.brojKursneListe}</td>
-			<td class = "datumKursneListe">${kursnaLista.datumKursneListe}</td>
-			<td class = "primSeOd">${kursnaLista.primSeOd}</td>
-			<td class = "primSeDo">${kursnaLista.primSeDo}</td>
+			<td class = "datumKursneListe">#{if kursnaLista.datumKursneListe}${kursnaLista.datumKursneListe.format()}#{/if}</td>
+			<td class = "primSeOd">#{if kursnaLista.primSeOd}${kursnaLista.primSeOd.format()}#{/if}</td>
+			<td class = "primSeDo">#{if kursnaLista.primSeDo}${kursnaLista.primSeDo.format()}#{/if}</td>
 			<td style = "visibility: hidden; max-width: 0px" class = "id">${kursnaLista.id}</td>
 			<td class = "banka_id">${kursnaLista.banka.id}</td>
 		</tr>

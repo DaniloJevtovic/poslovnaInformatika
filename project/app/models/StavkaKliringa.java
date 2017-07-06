@@ -20,8 +20,10 @@ public class StavkaKliringa extends Model{
 		// TODO Auto-generated constructor stub
 	}
 
-	public StavkaKliringa(String idStavke) {
+	public StavkaKliringa(String idStavke, AnalitikaIzvoda analitikaIzvoda, MedjubankarskiPrenos medjubankarskiPrenos) {
 		super();
 		this.idStavke = idStavke;
+		this.analitikaIzvoda = analitikaIzvoda;
+		this.medjubankarskiPrenos = medjubankarskiPrenos;
 	}
 }

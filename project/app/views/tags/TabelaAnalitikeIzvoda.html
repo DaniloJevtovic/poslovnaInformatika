@@ -1,0 +1,51 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Broj stavke</th> 
+	   		<th>Duznik - nalogodavac</th>
+	  		<th>Svrha placanja</th>
+	   		<th>Mjesto</th>
+	   		<th>Povjerilac - primalac</th>
+	   		<th>Datum prijema</th>
+	   		<th>Datum valute</th>
+	   		<th>Racun duznika</th>
+	   		<th>Model zaduzenja</th>
+	   		<th>Poziv na broj zaduzenja</th>
+	   		<th>Racun povjerioca</th>
+	   		<th>Model odobrenja</th>
+	   		<th>Poziv na broj odobrenja</th>
+	   		<th>Hitno</th>
+	   		<th>Sifra placanja</th>
+	   		<th>Iznos</th>
+	   		<th>Valuta</th>
+	   		<th>Tip greske</th>
+	   		<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		#{list items:_data, as:'analitikaIzvoda'}
+		<tr>
+			<td class = "brojStavke">${analitikaIzvoda.id}</td>
+			<td class = "duzNalogodavac">${analitikaIzvoda.duzNalogodavac}</td>
+			<td class = "svrhaPlacanja">${analitikaIzvoda.svrhaPlacanja}</td>
+			<td class = "mjesto"></td>
+			<td class = "povjerPrimalac">${analitikaIzvoda.povjerPrimalac}</td>
+			<td class = "datumPrijema">${analitikaIzvoda.datumPrijema.format()}</td>
+			<td class = "datumValute">${analitikaIzvoda.datumValute.format()}</td>
+			<td class = "racunDuznika">${analitikaIzvoda.racunDuznika}</td>
+			<td class = "modelZaduzenja">${analitikaIzvoda.modelZaduzenja}</td>
+			<td class = "pozNaBrojZaduzenja">${analitikaIzvoda.pozNaBrojZaduzenja}</td>
+			<td class = "racunPovjerioca">${analitikaIzvoda.racunPovjerioca}</td>
+			<td class = "modelOdobrenja">${analitikaIzvoda.modelOdobrenja}</td>
+			<td class = "pozNaBrojOdobrenja">${analitikaIzvoda.pozNaBrojOdobrenja}</td>
+			<td class = "hitno" type="checkbox" value="checked">${analitikaIzvoda.hitno}</td>
+			<td class = "sifraPlacanja">${analitikaIzvoda.vrstaPlacanja.oznakaVrste}</td>
+			<td class = "iznos">${analitikaIzvoda.iznos}</td>
+			<td class = "valuta">${analitikaIzvoda.valuta.zvanicnaSifra}</td>
+			<td class = "tipGreske">${analitikaIzvoda.tipGreske}</td>
+			<td class = "status">${analitikaIzvoda.status}</td>
+		</tr>
+		#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

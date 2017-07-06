@@ -1,5 +1,5 @@
 <p>
-	<ul>
+	<ul class="dropdown">
 		<li><a href="/" id="drzave"><img src="@{'/public/images/home.png'}" /></a></li>
 		<li><a href="#" id="search"><img src="@{'/public/images/search.gif'}" /></a></li>
 		<li><a href="#" id="refresh"><img src="@{'/public/images/refresh.gif'}" /></a></li>
@@ -12,6 +12,17 @@
 		<li><a href="#" id="add"><img src="@{'/public/images/add.gif'}" /></a></li>
 		<li><a href="#" id="edit"><img src="@{'/public/images/edit.png'}" /></a></li>
 		<li><a href="#" id="remove"><img src="@{'/public/images/remove.gif'}" /></a></li>
-		<li><a href="#" id="nextform"><img src="@{'/public/images/nextform.gif'}" /></a></li>
+		<li>
+		#{if _nextForms}<div class="dropdown show">
+			<a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<img src="@{'/public/images/nextform.gif'}" />
+			</a>
+			<div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+				#{list _nextForms, as: 'nextForm'}<a class="dropdown-item" onclick="${nextForm.action}">${nextForm.disp}</a>#{/list}
+			</div>
+		</div>#{/if}
+		#{else}<a onclick="${_nextForm}"><img src="@{'/public/images/nextform.gif'}" /></a>#{/else}
+		</li>
+		#{if _menuAddon}#{include _menuAddon /}#{/if}
 	</ul>
 </p>

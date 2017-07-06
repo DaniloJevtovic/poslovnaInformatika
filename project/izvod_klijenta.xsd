@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/izvod_klijenta" xmlns:tns="http://www.example.org/izvod_klijenta" elementFormDefault="qualified">
+<simpleType name="Iznos">
+	<restriction base="decimal">
+		<totalDigits value="15"></totalDigits>
+		<fractionDigits value="2"></fractionDigits>
+	</restriction>
+</simpleType>
+<complexType name="Klijent" abstract="true">
+	<sequence>
+		<element name="telefon" type="string" minOccurs="0"></element>
+		<element name="adresa" type="string" minOccurs="0"></element>
+		<element name="web" type="string" minOccurs="0"></element>
+		<element name="email" type="string" minOccurs="0"></element>
+		<element name="faks" type="string" minOccurs="0"></element>
+	</sequence>
+	<attribute name="id_klijenta" type="long"></attribute>
+</complexType>
+<complexType name="FizickoLice">
+	<complexContent>
+		<extension base="tns:Klijent">
+			<sequence>
+				<element name="ime" type="string"></element>
+				<element name="prezime" type="string"></element>
+				<element name="pib" type="int" minOccurs="0"></element>
+			</sequence>
+		</extension>
+	</complexContent>
+</complexType>
+<complexType name="PravnoLice">
+	<complexContent>
+		<extension base="tns:Klijent">
+			<sequence>
+				<element name="ime" type="string"></element>
+				<element name="prezime" type="string"></element>
+				<element name="naziv" type="string"></element>
+				<element name="pib" type="int"></element>
+			</sequence>
+		</extension>
+	</complexContent>
+</complexType>
+<complexType name="Transakcija" abstract="true">
+	<sequence>
+		<element name="datum_prijema" type="date"></element>
+		<element name="sifra_placanja" type="string" minOccurs="0"></element>
+		<element name="svrha_placanja" type="string" minOccurs="0"></element>
+		<element name="iznos" type="tns:Iznos"></element>
+		<element name="hitno" type="boolean"></element>
+		<element name="tip_greske" type="int" minOccurs="0"></element>
+		<element name="status" type="string" minOccurs="0"></element>
+	</sequence>
+	<attribute name="id_analitike" type="long"></attribute>
+</complexType>
+<complexType name="TransakcijaUKorist">
+	<complexContent>
+		<extension base="tns:Transakcija">
+			<sequence>
+				<element name="duznik" type="string"></element>
+				<element name="racun_duznika" type="string"></element>
+				<element name="model_zaduzenja" type="int" minOccurs="0"></element>
+				<element name="poziv_na_broj_zaduzenja" type="string" minOccurs="0"></element>
+			</sequence>
+		</extension>
+	</complexContent>
+</complexType>
+<complexType name="TransakcijaNaTeret">
+	<complexContent>
+		<extension base="tns:Transakcija">
+			<sequence>
+				<element name="povjerilac" type="string"></element>
+				<element name="racun_povjerioca" type="string"></element>
+				<element name="model_odobrenja" type="int" minOccurs="0"></element>
+				<element name="poziv_na_broj_odobrenja" type="string" minOccurs="0"></element>
+			</sequence>
+		</extension>
+	</complexContent>
+</complexType>
+<complexType name="Transakcije">
+	<sequence>
+		<element name="transakcija" type="tns:Transakcija" minOccurs="0" maxOccurs="unbounded"></element>
+	</sequence>
+</complexType>
+<complexType name="DnevnoStanjeRacuna">
+	<sequence>
+		<element name="datum" type="date"></element>
+		<element name="prethodno_stanje" type="tns:Iznos"></element>
+		<element name="promet_u_korist" type="tns:Iznos"></element>
+		<element name="promet_na_teret" type="tns:Iznos"></element>
+		<element name="novo_stanje" type="tns:Iznos"></element>
+		<element name="transakcije" type="tns:Transakcije"></element>
+	</sequence>
+	<attribute name="id_dnevnog_stanja" type="long"></attribute>
+</complexType>
+<complexType name="DnevnaStanjaRacuna">
+	<sequence>
+		<element name="dnevno_stanje" type="tns:DnevnoStanjeRacuna" minOccurs="0" maxOccurs="unbounded"></element>
+	</sequence>
+</complexType>
+<complexType name="Racun">
+	<sequence>
+		<element name="banka" type="string"></element>
+		<element name="broj_racuna" type="string"></element>
+		<element name="valuta" type="string"></element>
+		<element name="datum_otvaranja" type="date"></element>
+		<element name="vazeci" type="boolean"></element>
+		<element name="dnevna_stanja" type="tns:DnevnaStanjaRacuna"></element>
+	</sequence>
+	<attribute name="id_racuna" type="long"></attribute>
+</complexType>
+<complexType name="Racuni">
+	<sequence>
+		<element name="racun" type="tns:Racun" minOccurs="0" maxOccurs="unbounded"></element>
+	</sequence>
+</complexType>
+<element name="izvod_klijenta">
+	<complexType>
+		<sequence>
+			<element name="datum_od" type="date"></element>
+			<element name="datum_do" type="date"></element>
+			<element name="klijent" type="tns:Klijent"></element>
+			<element name="racuni" type="tns:Racuni"></element>
+		</sequence>
+	</complexType>
+</element>
+</schema>

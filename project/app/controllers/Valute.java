@@ -4,10 +4,12 @@ import java.util.List;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaValute;
 import models.Drzava;
 import models.Klijent;
+import models.Racun;
 import models.Valuta;
 import play.mvc.Controller;
 
@@ -21,12 +23,26 @@ public class Valute extends Controller {
 	}
 	
 	public static void showDefault() {
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_VALUTA, KonstanteSesije.FILTRI_VALUTE)) {
+			KonstanteSesije.resetSession(flash);
+		}
 		show(Konstante.KONF_IZMJENA, "");
 	}
 	
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
-			List<Valuta> valute = Valuta.findAll();
+			List<Valuta> valute;
+			if(Konstante.IME_ENTITETA_VALUTA.equals(flash.get(KonstanteSesije.FILTER_ENTITY))) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_DRZAVA:
+					query = "select v from Valuta v where v.drzava.id = ?";
+					break;
+				}
+				valute = Valuta.find(query, flash.get(KonstanteSesije.FILTER_ID)).fetch();
+			} else {
+				valute = Valuta.findAll();
+			}
 			List<Drzava> drzave = Drzava.findAll();
 			KonstanteSesije.fillFlash(flash, mode, highlightedId);
 			render(mode, valute, drzave);
@@ -101,7 +117,11 @@ public class Valute extends Controller {
 	}
 	
 	public static void filter(String zvanicnaSifra, String nazivValute) {
-		List<Valuta> valute = Valuta.find("byZvanicnaSifraAndNazivValute", zvanicnaSifra, nazivValute).fetch();
+		flash.clear();
+		QueryBuilder queryBuilder = new QueryBuilder();
+		queryBuilder.buildLikeQuery("ZvanicnaSifra", zvanicnaSifra);
+		queryBuilder.buildLikeQuery("NazivValute", nazivValute);
+		List<Valuta> valute = Valuta.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("Valute/show.html", Konstante.KONF_IZMJENA, valute);
 	}
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/instrumenti_placanja" xmlns:tns="http://www.example.org/instrumenti_placanja" elementFormDefault="qualified">
+	<simpleType name="NazivSvrha">
+		<restriction base="string">
+			<pattern value="(([A-Z]|Č|Ć|Đ|Š|Ž|[a-z]|č|ć|đ|š|ž| ){1,35})(\n([A-Z]|Č|Ć|Đ|Š|Ž|[a-z]|č|ć|đ|š|ž| ){1,35}){0,2}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="SifraPlacanja">
+		<restriction base="short">
+			<totalDigits value="3"></totalDigits>
+		</restriction>
+	</simpleType>
+	<simpleType name="Valuta">
+		<restriction base="string">
+			<pattern value="[A-Z]{3}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="Iznos">
+		<restriction base="decimal">
+			<minInclusive value="0.00"></minInclusive>
+			<totalDigits value="17"></totalDigits>
+			<fractionDigits value="2"></fractionDigits>
+		</restriction>
+	</simpleType>
+	<simpleType name="BrojRacuna">
+		<restriction base="string">
+			<pattern value="[0-9]{3}-[0-9]{13}-[0-9]{2}"></pattern>
+		</restriction>
+	</simpleType>
+	<simpleType name="Model">
+		<restriction base="short">
+			<minExclusive value="0"></minExclusive>
+			<maxExclusive value="100"></maxExclusive>
+		</restriction>
+	</simpleType>
+	<simpleType name="PozivNaBroj">
+		<restriction base="string">
+			<pattern value="[0-9A-Z]{1,20}"></pattern>
+		</restriction>
+	</simpleType>
+	<complexType name="SredstvoPlacanja" abstract="true">
+		<sequence>
+			<element name="naziv_duznika" type="tns:NazivSvrha"></element>
+			<element name="naziv_povjerioca" type="tns:NazivSvrha"></element>
+			<element name="svrha_placanja" type="tns:NazivSvrha"></element>
+			<element name="datum_prijema" type="date"></element>
+			<element name="datum_izvrsenja" type="date" minOccurs="0"></element>
+			<element name="sifra_placanja" type="tns:SifraPlacanja"></element>
+			<element name="valuta" type="tns:Valuta"></element>
+			<element name="iznos" type="tns:Iznos"></element>
+		</sequence>
+	</complexType>
+	<complexType name="NalogZaUplatu">
+		<complexContent>
+			<extension base="tns:SredstvoPlacanja">
+				<sequence>
+					<element name="racun_povjerioca" type="tns:BrojRacuna"></element>
+					<element name="model_odobrenja" type="tns:Model" minOccurs="0"></element>
+					<element name="poziv_na_broj_odobrenja" type="tns:PozivNaBroj" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="NalogZaIsplatu">
+		<complexContent>
+			<extension base="tns:SredstvoPlacanja">
+				<sequence>
+					<element name="racun_duznika" type="tns:BrojRacuna"></element>
+					<element name="model_zaduzenja" type="tns:Model" minOccurs="0"></element>
+					<element name="poziv_na_broj_zaduzenja" type="tns:PozivNaBroj" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="NalogZaPrenos">
+		<complexContent>
+			<extension base="tns:SredstvoPlacanja">
+				<sequence>
+					<element name="racun_duznika" type="tns:BrojRacuna"></element>
+					<element name="model_zaduzenja" type="tns:Model" minOccurs="0"></element>
+					<element name="poziv_na_broj_zaduzenja" type="tns:PozivNaBroj" minOccurs="0"></element>
+					<element name="racun_povjerioca" type="tns:BrojRacuna"></element>
+					<element name="model_odobrenja" type="tns:Model" minOccurs="0"></element>
+					<element name="poziv_na_broj_odobrenja" type="tns:PozivNaBroj" minOccurs="0"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<element name="instrumenti_placanja">
+		<complexType>
+			<sequence>
+				<element name="instrument_placanja" maxOccurs="unbounded" type="tns:SredstvoPlacanja"></element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

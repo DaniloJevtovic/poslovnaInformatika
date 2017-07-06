@@ -1,0 +1,29 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr class = "header">
+	   		<th>Broj izvoda</th> 
+	   		<th>Broj racuna</th>
+	   		<th>Datum prometa</th>
+	  		<th>Predhodno stanje</th>
+	   		<th>Promet u korist</th>
+	   		<th>Promet na teret</th>
+	   		<th>Novo stanje</th>
+	   		<th>Id Racuna</th>
+		</tr>
+	</thead>
+	<tbody>
+		#{list items:_data, as:'dnevnoStanjeRacuna'}
+		<tr>
+			<td class = "brojIzvoda">${dnevnoStanjeRacuna.id}</td>
+			<td class="brojRacuna">${dnevnoStanjeRacuna.racun.brojRacuna}</td>
+			<td class = "datumPrometa">${dnevnoStanjeRacuna.datumPrometa.format()}</td>
+			<td class = "predhodnoStanje">${dnevnoStanjeRacuna.predhodnoStanje}</td>
+			<td class = "prometUKorist">${dnevnoStanjeRacuna.prometUKorist}</td>
+			<td class = "prometNaTeret">${dnevnoStanjeRacuna.prometNaTeret}</td>
+			<td class = "novoStanje">${dnevnoStanjeRacuna.novoStanje}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "racun_id">${dnevnoStanjeRacuna.racun.id}</td>
+		</tr>
+		#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

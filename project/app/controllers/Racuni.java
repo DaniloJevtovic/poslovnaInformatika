@@ -6,6 +6,7 @@ import java.util.function.BiConsumer;
 
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
+import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaRacuna;
 import models.Banka;
@@ -24,12 +25,35 @@ public class Racuni extends Controller {
 	}
 	
 	public static void showDefault() {
+		KonstanteSesije.clearFlashConfig(flash);
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_RACUN, KonstanteSesije.FILTRI_RACUNA)) {
+			KonstanteSesije.clearFlashFilter(flash);
+		}
+		flash.keep();
 		show(Konstante.KONF_DODAVANJE, "");
 	}
 	
 	public static void show(String mode, String highlightedId) {
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
-			List<Racun> racuni = Racun.findAll();
+			List<Racun> racuni;
+			if(Konstante.IME_ENTITETA_RACUN.equals(flash.get(KonstanteSesije.TARGET_ENTITY))) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_BANKA:
+					query = "select r from Racun r where r.banka.id = ?";
+					break;
+				case Konstante.IME_ENTITETA_KLIJENT:
+					query = "select r from Racun r where r.klijent.id = ?";
+					break;
+				case Konstante.IME_ENTITETA_VALUTA:
+					query = "select r from Racun r where r.valuta.id = ?";
+					break;
+				}
+				long filterId = Long.parseLong(flash.get(KonstanteSesije.FILTER_ID)); 
+				racuni = Racun.find(query, filterId).fetch();
+			} else {
+				racuni = Racun.findAll();
+			}
 			List<Klijent> klijenti = Klijent.find("select k from Klijent k order by k.tipKlijenta desc, k.nazivKlijenta, k.przKlijenta, k.imeKlijenta").fetch();
 			List<Banka> banke = Banka.findAll();
 			List<Valuta> valute = Valuta.find("select v from Valuta v order by v.zvanicnaSifra").fetch();
@@ -107,13 +131,23 @@ public class Racuni extends Controller {
 		}
 	}
 	
-	public static void filter(String brojRacuna, Date datumOtvaranja, boolean vazeci) {
-		List<Racun> racuni = Racun.find("byBrojRacunaAndDatumOtvaranjaAndVazeci", brojRacuna, datumOtvaranja, vazeci).fetch();
+	public static void filter(String brojRacuna, Date datumOtvaranjaManjeJednako,
+			Date datumOtvaranjaVeceJednako, boolean vazeci) {
+		flash.clear();
+		QueryBuilder queryBuilder = new QueryBuilder();
+		queryBuilder.buildLikeQuery("BrojRacuna", brojRacuna);
+		queryBuilder.buildLessThanEqualsQuery("DatumOtvaranja", datumOtvaranjaManjeJednako);
+		queryBuilder.buildGreaterThanEqualsQuery("DatumOtvaranja", datumOtvaranjaVeceJednako);
+		queryBuilder.buildSimpleQuery("Vazeci", vazeci);
+		List<Racun> racuni = Racun.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("Racuni/show.html", Konstante.KONF_IZMJENA, racuni);
 	}
 	
-	public static void nextForm(String klijent_id) {
-		List<Racun> racuni = Racun.find("byKlijent_id", klijent_id).fetch();
-		renderTemplate("Racuni/show.html", Konstante.KONF_IZMJENA, racuni);
+	public static void nextDnevnaStanja() {
+		
+	}
+	
+	public static void nextUkidanja() {
+		
 	}
 }

@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import models.AnalitikaIzvoda;
+import models.MedjubankarskiPrenos;
 import models.StavkaKliringa;
 import play.mvc.Controller;
 
@@ -21,21 +23,24 @@ public class StavkeKliringa extends Controller {
 		render(stavkeKliringa, mode);
 	}
 	
-	public static void create(String idStavke){
-		StavkaKliringa stavkaKliringa = new StavkaKliringa(idStavke);
+	public static void create(String idStavke, AnalitikaIzvoda analitikeIzvoda, MedjubankarskiPrenos medjubankarskiPrenos){
+		StavkaKliringa stavkaKliringa = new StavkaKliringa(idStavke, analitikeIzvoda, medjubankarskiPrenos);
 		stavkaKliringa.save();
 		show("add");
 	}
 	
-	public static void edit(Long id, String idStavke){
+	public static void edit(Long id, String idStavke, AnalitikaIzvoda analitikaIzvoda, MedjubankarskiPrenos medjubankarskiPrenos){
 		StavkaKliringa stavkaKliringa = StavkaKliringa.findById(id);
 		stavkaKliringa.idStavke = idStavke;
+		stavkaKliringa.analitikaIzvoda = analitikaIzvoda;
+		stavkaKliringa.medjubankarskiPrenos = medjubankarskiPrenos;
 		stavkaKliringa.save();
 		show("edit");
 	}
 	
-	public static void filter(String idStavke){
-		List<StavkaKliringa> stavkeKliringa = StavkaKliringa.find("byIdStavkeLike", "%" + idStavke + "%").fetch();
+	public static void filter(String idStavke, AnalitikaIzvoda analitikaIzvoda, MedjubankarskiPrenos medjubankarskiPrenos){
+		List<StavkaKliringa> stavkeKliringa = StavkaKliringa.find("byIdStavkeLikeAndAnalitikaIzvodaLikeAndMedjubankarskiPrenosLike", 
+				"%" + idStavke + "%", "%" + analitikaIzvoda + "%", "%" + medjubankarskiPrenos + "%").fetch();
 		String mode = "edit";
 		renderTemplate("StavkeKliringa/show.html", stavkeKliringa, mode);
 	}

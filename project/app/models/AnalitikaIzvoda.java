@@ -1,6 +1,8 @@
 package models;
 
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -11,7 +13,6 @@ import play.db.jpa.Model;
 @Entity
 public class AnalitikaIzvoda extends Model {
 
-	public Long brojStavke;
 	public String duzNalogodavac;		//duznik - nalogodavac
 	public String svrhaPlacanja;
 	public String povjerPrimalac;		//povjerilac - primalac
@@ -24,10 +25,9 @@ public class AnalitikaIzvoda extends Model {
 	public Integer modelOdobrenja;
 	public String pozNaBrojOdobrenja;
 	public Boolean hitno;
-	public Long iznos;
+	public BigDecimal iznos;
 	public Integer tipGreske;
-	public Character status;
-	
+	public String status;
 	
 	@ManyToOne
 	public VrstaPlacanja vrstaPlacanja;
@@ -39,7 +39,10 @@ public class AnalitikaIzvoda extends Model {
 	public Valuta valuta;
 	
 	@ManyToOne
-	public DnevnoStanjeRacuna dnevnoStanjeRacuna;
+	public DnevnoStanjeRacuna dnevnoStanjeUKorist;
+	
+	@ManyToOne
+	public DnevnoStanjeRacuna dnevnoStanjeNaTeret;
 	
 	@OneToMany(mappedBy = "analitikaIzvoda")
 	public List<StavkaKliringa> stavkeKliringa;
@@ -48,12 +51,11 @@ public class AnalitikaIzvoda extends Model {
 		// TODO Auto-generated constructor stub
 	}
 
-	public AnalitikaIzvoda(Long brojStavke, String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
+	public AnalitikaIzvoda(String duzNalogodavac, String svrhaPlacanja, String povjerPrimalac,
 			Date datumPrijema, Date datumValute, String racunDuznika, Integer modelZaduzenja, String pozNaBrojZaduzenja,
-			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, Long iznos,
-			Integer tipGreske, Character status) {
+			String racunPovjerioca, Integer modelOdobrenja, String pozNaBrojOdobrenja, Boolean hitno, BigDecimal iznos,
+			Integer tipGreske, String status) {
 		super();
-		this.brojStavke = brojStavke;
 		this.duzNalogodavac = duzNalogodavac;
 		this.svrhaPlacanja = svrhaPlacanja;
 		this.povjerPrimalac = povjerPrimalac;
@@ -70,6 +72,4 @@ public class AnalitikaIzvoda extends Model {
 		this.tipGreske = tipGreske;
 		this.status = status;
 	}
-	
-
 }

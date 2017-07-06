@@ -4,19 +4,7 @@
 
 $(document).ready(function() {
 	highlightedId = "${flash.highlightedId}";
-	#{if flash.highlightedId}
-	var items = $(".maintable tr");
-	$(".highlighted").removeClass("highlighted");
-	for(var i = 0; i < items.length; i++) {
-		var item = $(items[i]);
-		var id = item.find(".id").html();
-		if(id == highlightedId) {
-			item.addClass("highlighted")
-			sync(item);
-			break;
-		}
-	}
-	#{/if}
+	selectedRow = null;
 	$("#search").click(function() {
 		var loc = '@{Klijenti.show()}' + '?mode=search&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
@@ -35,81 +23,68 @@ $(document).ready(function() {
 	});
 });
 
-function sync(item){
-	var tip = item.find(".tipKlijenta").html();
-	var naziv = item.find(".nazivKlijenta").html();
-	var pib = item.find(".pibKlijenta").html();
-	var ime = item.find(".imeKlijenta").html();
-	var prezime = item.find(".przKlijenta").html();
-	var telefon = item.find(".telKlijenta").html();
-	var adresa = item.find(".adrKlijenta").html();
-	var web = item.find(".webKlijenta").html();
-	var email = item.find(".emailKlijenta").html();
-	var faks = item.find(".faksKlijenta").html();
-    var id = item.find(".id").html();
-    
-    $("#tipKlijenta").val(tip);
-    $("#nazivKlijenta").val(naziv);
-    $("#pibKlijenta").val(pib);
-    $("#imeKlijenta").val(ime);
-    $("#przKlijenta").val(prezime);
-    $("#telKlijenta").val(telefon);
-    $("#adrKlijenta").val(adresa);
-    $("#webKlijenta").val(web);
-    $("#emailKlijenta").val(email);
-    $("#faksKlijenta").val(faks);
-    $("#id").val(id);
-    highlightedId = id;
+function sync(data){
+    $("#tipKlijenta").val(data[0]);
+    $("#nazivKlijenta").val(data[1]);
+    #{if flash.mode == 'search'}
+	$("#pibManjeJednako").val(data[2]);
+	$("#pibVeceJednako").val(data[2]);
+	#{/if}
+	#{else}
+	$("#pibKlijenta").val(data[2]);
+	#{/else}
+    $("#imeKlijenta").val(data[3]);
+    $("#przKlijenta").val(data[4]);
+    $("#telKlijenta").val(data[5]);
+    $("#adrKlijenta").val(data[6]);
+    $("#webKlijenta").val(data[7]);
+    $("#emailKlijenta").val(data[8]);
+    $("#faksKlijenta").val(data[9]);
+    $("#id").val(data[10]);
+    highlightedId = data[10];
 }
 
-function nextForm(id){
-	$(location).attr('href', '/Racun/nextForm?klijent_id=' +id);	
+function nextRacuni(){
+	var string = '/Klijenti/nextRacuni?filterId=' + highlightedId;
+	$(location).attr('href', '/Klijenti/nextRacuni?filterId=' + highlightedId);	
 }
 
 function remove(id){
 	$(location).attr('href', '/Klijenti/delete?id=' + highlightedId)
 }
 
+function openReportModal() {
+	//data-toggle="modal" data-target="#modal_report"
+	$('#modal_report').modal('toggle');
+	var table = $('#tabela_klijenti').DataTable();
+	var data = table.row(function(idx, data, node) {
+		return data[10]==highlightedId;
+	}).data();
+	var title;
+	if(data!=null) {
+		if(data[0]=='P') {
+			title = "Izvod klijenta '" + data[1] + "'";
+		} else {
+			title = "Izvod klijenta '" + data[3] + " " + data[4] + "'";
+		}
+	} else {
+		title = 'Klijent nije izabran!';
+	}
+	$('#modal_report_title').html(title);
+}
+
 </script>
 
-#{StandardFormToolbar /}
+#{StandardFormToolbar nextForm: 'nextRacuni()', menuAddon:'tags/ReportButton.html' /}
 
 <div class = "container-fluid">
 <h1>Klijenti</h1>
 
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Tip</th> 
-	   <th>Naziv</th>
-	   <th>Pib</th>
-	   <th>Ime</th> 
-	   <th>Prezime</th>
-	   <th>Telefon</th> 
-	   <th>Adresa</th>
-	   <th>Web</th> 
-	   <th>Email</th>
-	   <th>Faks</th> 
-	</tr>
-#{list items:klijenti, as:'klijent'}
-	<tr #{if klijent.id == highlightedId} class = "highlighted" #{/if}>
-		<td class = "tipKlijenta">${klijent.tipKlijenta}</td>
-		<td class = "nazivKlijenta">${klijent.nazivKlijenta}</td>
-		<td class = "pibKlijenta">${klijent.pibKlijenta}</td>
-		<td class = "imeKlijenta">${klijent.imeKlijenta}</td>
-		<td class = "przKlijenta">${klijent.przKlijenta}</td>
-		<td class = "telKlijenta">${klijent.telKlijenta}</td>
-		<td class = "adrKlijenta">${klijent.adrKlijenta}</td>
-		<td class = "webKlijenta">${klijent.webKlijenta}</td>
-		<td class = "emailKlijenta">${klijent.emailKlijenta}</td>
-		<td class = "faksKlijenta">${klijent.faksKlijenta}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${klijent.id}</td>
-	</tr>
-#{/list}
-</table>
+#{TabelaKlijenti data : klijenti, tableId : 'tabela_klijenti', hiddenColumns : '[10]', idColumn:'10' /}
 
 <div class = "panel">
 	<p>
-		<div><b>Status: ${flash.mode}</b></div> <br>
+		
 			#{set 'action'}
 				#{if flash.mode == 'add'}
 					@{Klijenti.create()}
@@ -123,6 +98,11 @@ function remove(id){
 			#{/set}
 		
 			<form action=${action} method="post">
+				<p>
+				<label>Status:</label>
+				<label><b>${flash.mode}</b></label>
+				</p>
+				
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
@@ -131,6 +111,7 @@ function remove(id){
 				#{field 'tipKlijenta'}
 					<label for = "${field.id}">Tip</label>
 					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					  #{if flash.mode == 'search'}<option value = "">Svi Tipovi</option>#{/if}
 					  <option value = "P">Pravno Lice</option>
 					  <option value = "F">Fizičko Lice</option>
 					</select>
@@ -144,6 +125,23 @@ function remove(id){
 					<span class="error">#{error 'nazivKlijenta' /}</span>
 				#{/}
 				</p>
+				#{if flash.mode == 'search'}
+				<p>
+				#{field 'pibManjeJednako'}
+					<label for = "${field.id}">Pib &lt=</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'pibKlijenta' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'pibVeceJednako'}
+					<label for = "${field.id}">Pib &gt=</label>
+					<input type = "number" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'pibKlijenta' /}</span>
+				#{/}
+				</p>
+				#{/if}
+				#{else}
 				<p>
 				#{field 'pibKlijenta'}
 					<label for = "${field.id}">Pib</label>
@@ -151,6 +149,7 @@ function remove(id){
 					<span class="error">#{error 'pibKlijenta' /}</span>
 				#{/}
 				</p>
+				#{/else}
 				<p>
 				#{field 'imeKlijenta'}
 					<label for = "${field.id}">Ime</label>
@@ -209,3 +208,83 @@ function remove(id){
 </div>
 </div>
 
+<div class="modal fade" id="modal_report" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" id="modal_report_title">
+				
+			</div>
+			<div class="modal-body">
+				<form>
+					<p style="text-align: center;">Za period</p>
+					#{field 'from'}
+					<label for = "${field.id}">Od</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					#{/}
+					#{field 'to'}
+					<label for = "${field.id}">Do</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<script>
+						$('#${field.id}').datepicker();
+					</script>
+					#{/}
+					<p style="color: red;" id="error_disp"></p>
+				</form>
+			</div>	
+			<div class="modal-footer">
+				<input id="modal_report_pdf" type="button" value="Kao PDF" />
+				<input id="modal_report_xml" type="button" value="Kao XML" />
+				<input id="modal_report_cancel" type="button" value="Odustanak" />
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	function checkValidity() {
+		var id = highlightedId;
+		var _od = $('#from').val();
+		var _do = $('#to').val();
+		if((id=="") || (id==null)) {
+			$('#error_disp').html('Klijent nije izabran!');
+			return false;
+		}
+		if((_od=="") || (_od==null)) {
+			$('#error_disp').html('Nije naveden datum pocetka!');
+			return false;
+		}
+		if((_do=="") || (_do==null)) {
+			$('#error_disp').html('Nije naveden datum kraja!');
+			return false;
+		}
+		return true;
+	}
+	$("#modal_report_pdf").click(function(){
+		if(checkValidity()) {
+			$('#error_disp').html('');
+			$('#modal_report').modal('toggle');
+			var from = $('#from').val();
+			var to = $('#to').val();
+			var loc = '@{Klijenti.reportPDF()}' + '?id_klijenta=' + highlightedId + '&from=' + from + '&to=' + to;
+			$(location).attr('href', loc);	
+		} 
+	});
+	$("#modal_report_xml").click(function(){
+		if(checkValidity()) {
+			$('#error_disp').html('');
+			$('#modal_report').modal('toggle');
+			var from = $('#from').val();
+			var to = $('#to').val();
+			var loc = '@{Klijenti.reportXML()}' + '?id_klijenta=' + highlightedId + '&from=' + from + '&to=' + to;
+			$(location).attr('href', loc);	
+		} 
+	});
+	$("#modal_report_cancel").click(function(){
+		$('#error_disp').html('');
+		$('#modal_report').modal('toggle');
+	});
+});
+</script>

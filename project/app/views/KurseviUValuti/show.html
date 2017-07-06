@@ -2,18 +2,39 @@
 #{set title:'Kurs u valuti' /}
 
 <script>
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
 
-function sync(item){
-    redniBroj=item.find("redniBroj").html()
-    kupovni = item.find(".kupovni").html()
-    srednji= item.find(".srednji").html()
-    prodajni= item.find(".prodajni").html()
-    id = item.find(".id").html()
-    $("#redniBroj").val(redniBroj);
-    $("#kupovni").val(kupovni);
-    $("#srednji").val(srednji);
-    $("#prodajni").val(prodajni);
-    $("#id").val(id);
+	$("#search").click(function() {
+		var loc = '@{KurseviUValuti.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{KurseviUValuti.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#edit").click(function() {
+		var loc = '@{KurseviUValuti.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{KurseviUValuti.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+function sync(data){
+	$("#osnovnaValuta").val(data[8]);
+	$("#premaValuti").val(data[9]);
+	$("#kursnaLista").val(data[10]);
+	#{if flash.mode != 'search'}
+	$("#kupovni").val(data[4]);
+	$("#srednji").val(data[5]);
+	$("#prodajni").val(data[6]);
+	#{/if}
+	$("#id").val(data[7]);
+	
+	highlightedId = data[7];
 }
 
 /*function nextForm(id){
@@ -22,59 +43,22 @@ function sync(item){
 */
 function remove(id){
 	$(location).attr('href', '/KurseviUValuti/delete?id=' +id)
-
 }
 </script>
 
-<p>
-<ul>
-  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
-  
-  <li><a href="@{KurseviUValuti.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
-  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
-  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
-  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
-  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
-  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{KurseviUValuti.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{KurseviUValuti.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
-</ul>
-</p>
+#{StandardFormToolbar /}
 
 <div class = "container-fluid">
 <h1>Kursevi u valuti</h1>
-
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Redni broj</th>
-	   <th>Kupovni</th>
-	   <th>Srednji</th>
-	   <th>Prodajni</th>
-	</tr>
-#{list items:kursevi, as:'kurs'}
-	<tr>
-		<tr #{if kurs.id == selected} class = "highlighted" #{/if}>
-		<td class = "redniBroj">${kurs.redniBroj}</td>
-		<td class = "kupovni">${kurs.kupovni}</td>
-		<td class = "srednji">${kurs.srednji}</td>
-		<td class = "prodajni">${kurs.prodajni}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${kurs.id}</td>
-	</tr>
-#{/list}
-</table>
-
+#{TabelaKurseviUValuti data : kursevi, tableId: 'tabela_kursevi', hiddenColumns : '[7,8,9,10]', idColumn:'7' /}
 <div class = "panel">
 	<p>
-		<div><b>Status: ${mode}</b></div> <br>
+		<div><b>Status: ${flash.mode}</b></div> <br>
 			#{set 'action'}
-				#{if mode == 'add'}
+				#{if flash.mode == 'add'}
 					@{KurseviUValuti.create()}
 				#{/if}
-				#{elseif mode == 'edit'}
+				#{elseif flash.mode == 'edit'}
 					@{KurseviUValuti.edit()}
 				#{/elseif}
 				#{else}
@@ -85,17 +69,29 @@ function remove(id){
 			<form action=${action} method="post">
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
-					
 				#{/}
+				<p>
+				#{field 'kursnaLista'}
+					<label for = "${field.id}">Kursna lista</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}" #{if flash.mode== 'edit'}disabled="disabled"#{/if}/>
+					#{if flash.mode == 'search'}<option value = "">Bilo Koja</option>#{/if}
+					#{list items:kursneListe, as:'kursnaLista'}
+					<option value = "${kursnaLista.id}">${kursnaLista.banka.nazivBanke}-${kursnaLista.brojKursneListe}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#kursna_lista_modal" #{if flash.mode== 'edit'}disabled="disabled"#{/if}>...</button>
+				#{/}
+				</p>
 				<p>
 				#{field 'osnovnaValuta'}
 					<label for = "${field.id}">Osnovna valuta</label>
-					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}" #{if flash.mode== 'edit'}disabled="disabled"#{/if}/>
+					#{if flash.mode == 'search'}<option value = "">Bilo Koja</option>#{/if}
 					#{list items:valute, as:'valuta'}
 					<option value = "${valuta.id}">${valuta.zvanicnaSifra}</option>
 					#{/list}
 					</select>
-					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#osnovna_valuta_modal">...</button>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#osnovna_valuta_modal" #{if flash.mode== 'edit'}disabled="disabled"#{/if}>...</button>
 					
 				#{/}
 				</p>
@@ -124,12 +120,20 @@ function remove(id){
 				#{/}
 				</p>
 				<p>
-				#{field 'redniBroj'}
-					<label for = "${field.id}">Redni broj</label>
-					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
+				#{field 'premaValuti'}
+					<label for = "${field.id}">Prema valuti</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}" #{if flash.mode== 'edit'}disabled="disabled"#{/if}/>
+					#{if flash.mode == 'search'}<option value = "">Bilo Koja</option>#{/if}
+					#{list items:valute, as:'valuta'}
+					<option value = "${valuta.id}">${valuta.zvanicnaSifra}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#prema_valuti_modal" #{if flash.mode== 'edit'}disabled="disabled"#{/if}>...</button>
+					
 				#{/}
 				</p>
-				<p>
+				#{if flash.mode != 'search'}
+					<p>
 				#{field 'kupovni'}
 					<label for = "${field.id}">Kupovni</label>
 					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
@@ -147,6 +151,8 @@ function remove(id){
 					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
+					
+				#{/if}
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
 					<a href = "@{KurseviUValuti.show("edit")}" style="margin-left:1em">Rollback</a>
@@ -155,7 +161,6 @@ function remove(id){
 	</p>
 </div>
 </div>
-
+#{ModalTemplate modalId : 'kursna_lista_modal', modalTitle: 'Kursna lista', selectId : 'kursnaLista', table : 'tags/TabelaKursneListe.html', data : kursneListe, tableId: 'tabela_kursne_liste', hiddenColumns : '[5,6]', idColumn:'5' /}
 #{ModalTemplate modalId : 'osnovna_valuta_modal', modalTitle: 'Osnovna valuta', selectId : 'osnovnaValuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_osnovna_valuta', hiddenColumns : '[3,4]', idColumn:'3' /}
 #{ModalTemplate modalId : 'prema_valuti_modal', modalTitle: 'Prema valuti', selectId : 'premaValuti', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_prema_valuti', hiddenColumns : '[3,4]', idColumn:'3' /}
-#{ModalTemplate modalId : 'kursna_lista_modal', modalTitle: 'Kursna Lista', selectId : 'kursnaLista', table : 'tags/TabelaKursneListe.html', data : kursList, tableId: 'kursna_lista', hiddenColumns : '[5,6]', idColumn:'2' /}

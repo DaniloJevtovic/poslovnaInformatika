@@ -2,16 +2,35 @@
 #{set title:'Stavke kliringa' /}
 
 <script>
-	function sync(item){
-		id = item.find(".id").html()
-		idStavke = item.find(".idStavke").html()
+
+	$(document).ready(function() {
+		$("#analitikaPickup").click(function() {
+			id = $(".highlighted2").find(".an_id").html();
+			$("select").val(id);
+			$('#analitikeModal').modal('toggle');
+		});
 		
+		$("#mbpPickup").click(function() {
+			id = $(".highlighted2").find(".mbp_id").html();
+			$("select").val(id);
+			$('#analitikeModal').modal('toggle');
+		});
+	});
+
+	function sync(item) {
+		id = item.find(".id").html();
+		idStavke = item.find(".idStavke").html();
+		analitikaIzvoda = item.find(".analitika_izvoda").html();
+		medjubankarskiPrenos = item.find(".medjubankarski_prenos").html();
+
 		$("#id").val(id);
 		$("#idStavke").val(idStavke);
+		$("analitikaIzvoda").val(analitikaIzvoda);
+		$("medjubankarskiPrenos").val(medjubankarskiPrenos);
 	}
 
-	function remove(id){
-		$(location).attr('href', '/StavkeKliringa/delete?id=' +id)
+	function remove(id) {
+		$(location).attr('href', '/StavkeKliringa/delete?id=' + id)
 	}
 </script>
 
@@ -19,7 +38,7 @@
 	<ul>
 		<li><a href="/" id = "stavkeKliringa"><img src="@{'/public/images/home.png'}"/></a></li>
   
-  		<li><a href="@{StavkeKliringa.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  		<li><a href="@{StavkeKliringa.show('search')}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   		<li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   		<li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   		<li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -27,8 +46,8 @@
   		<li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   		<li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
   		<li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  		<li><a href="@{StavkeKliringa.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  		<li><a href="@{StavkeKliringa.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
+  		<li><a href="@{StavkeKliringa.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  		<li><a href="@{StavkeKliringa.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
 	</ul>
@@ -40,10 +59,14 @@
 	<table class = "maintable">
 		<tr class = "header">
 	   		<th>ID Stavke</th> 
+	   		<th>Analitika izvoda</th>
+	   		<th>Medjubankarski prenos</th>
 		</tr>
 		#{list items:stavkeKliringa, as:'stavkaKliringa'}
 		<tr>
 			<td class = "idStavke">${stavkaKliringa.idStavke}</td>
+			<td class = "analitikaIzvoda">#{if stavkaKliringa.analitikaIzvoda} ${stavkaKliringa.analitikaIzvoda.id} #{/if}</td>
+			<td class = "analitikaIzvoda">#{if stavkaKliringa.mbp} ${stavkaKliringa.mbp.id} #{/if}</td>
 			<td style = "visibility: hidden; max-width: 0px" class = "id">${stavkaKliringa.id}</td>
 		</tr>
 		#{/list}
@@ -75,6 +98,33 @@
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
+				
+				<p>
+				#{field 'analitikaIzvoda'}
+					<label for = "${field.id}">Analitika izvoda:</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:analitikaIzvoda, as:'analitikaIzvoda'}
+					<option value = "${analitikaIzvoda.id}">${analitikaIzvoda.brojStavke}</option>
+					#{/list}
+					</select>
+					
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal"  data-target="#analitikeModal">...	</button>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'medjubankarskiPrenos'}
+					<label for = "${field.id}">Medjubankarski prenos:</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:medjubanakarskiPrenosi, as:'medjubankrskiPrenos'}
+					<option value = "${mbp.id}">${medjubankarskiPrenos.idKliringa}</option>
+					#{/list}
+					</select>
+					
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal"  data-target="#mbpModal">...	</button>
+				#{/}
+				</p>
+				
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
 					<a href = "#" style="margin-left:1em">Rollback</a>
@@ -83,5 +133,72 @@
 		</p>
 	</div>
 	
+	
+	 <!-- Analitike izvoda -->
+	<div class="modal fade" id="analitikeModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">Analitike izvoda</div>
+				<div class="modal-body">
+					<table style="padding: 2em">
+						<tr class="header">
+							<th>Duznik</th>
+							<th>Primalac</th>
+							<th>Racun duznika</th>
+							<th>Racun primaoca</th>
+							<th>Iznos</th>
+						</tr>
+						#{list items:analitikeIzvoda, as:'analitikaIzvoda'}
+						<tr>
+							<td class="duzNalogodavac">${analitikaIzvoda.duzNalogodavac}</td>
+							<td class="povjerPrimalac">${analitikaIzvoda.povjerPrimalac}</td>
+							<td class="racunDuznika">${analitikaIzvoda.racunDuznika}</td>
+							<td class="racunPovjerioca">${analitikaIzvoda.racunPovjerioca}</td>
+							<td class="iznos">${analitikaIzvoda.iznos}</td>
+							<td style="visibility: hidden; max-width: 0px" class="an_id">${analitikaIzvoda.id}</td>
+						</tr>
+						#{/list}
+					</table>
+					<div class="modal-footer">
+						<input id="analitikaPickup" type="button" value="izbor" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Medjubankarski prenos -->
+	<div class="modal fade" id="mbpModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">Medjubankarski prenos</div>
+				<div class="modal-body">
+					<table style="padding: 2em">
+						<tr class="header">
+							<th>Datum kliringa</th>
+							<th>Racun banke duznika</th>
+							<th>Racun banke povjerioca</th>
+							<th>Ukupan iznos</th>
+						</tr>
+						#{list items:medjubankarskiPrenosi, as:'medjubankarskiPrenos'}
+						<tr>
+							<td class="datumKliringa">${medjubankarskiPrenos.datumKliringa}</td>
+							<td class="racBankeDuz">${medjubankarskiPrenos.racBankeDuz}</td>
+							<td class="racBankePovj">${medjubankarskiPrenos.racBankePovj}</td>
+							<td class="ukupanIznos">${medjubankarskiPrenos.ukupanIznos}</td>
+							<td style="visibility: hidden; max-width: 0px" class="mbp_id">${medjubankarskiPrenos.id}</td>
+						</tr>
+						#{/list}
+					</table>
+					<div class="modal-footer">
+						<input id="mbpPickup" type="button" value="izbor" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 	

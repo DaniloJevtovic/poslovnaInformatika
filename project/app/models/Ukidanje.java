@@ -2,18 +2,23 @@ package models;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.ForeignKey;
 
 import play.db.jpa.Model;
 
 @Entity
 public class Ukidanje extends Model {
-
+	
+	@Column(nullable=false)
 	public Date datumUkidanja;
+	@Column(nullable=false)
 	public String sredSePrenNaRacun;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	public Racun racun;
 	
 	public Ukidanje() {

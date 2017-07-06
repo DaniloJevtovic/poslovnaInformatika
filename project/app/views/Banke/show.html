@@ -2,38 +2,67 @@
 #{set title:'Banke' /}
 
 <script>
-	function sync(item){
-		id = item.find(".id").html()
-		idBanke = item.find(".idBanke").html()
-		sifraBanke = item.find(".sifraBanke").html()
-		PIBBanke = item.find(".PIBBanke").html()
-		nazivBanke = item.find(".nazivBanke").html()
-		adresaBanke = item.find(".adresaBanke").html()
-		telefonBanke = item.find(".telefonBanke").html()
-		emailBanke = item.find(".emailBanke").html()
-		webBanke = item.find(".webBanke").html()
-		faksBanke = item.find(".faksBanke").html()
-
-		$("#id").val(id);
-		$("#idBanke").val(idBanke);
-		$("#sifraBanke").val(sifraBanke);
-		$("#PIBBanke").val(PIBBanke);
-		$("#nazivBanke").val(nazivBanke);
-		$("#adresaBanke").val(adresaBanke);
-		$("#telefonBanke").val(telefonBanke);
-		$("#emailBanke").val(emailBanke);
-		$("#webBanke").val(webBanke);
-		$("#faksBanke").val(faksBanke);
-
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+	/*
+	selectedRow = null;
+	$("#search").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#edit").click(function() {
+		var loc = '@{Klijenti.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Klijenti.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});*/
+});
+	function sync(data){
+		$("#id").val(data[0]);
+		$("#sifraBanke").val(data[1]);
+		$("#PIBBanke").val(data[2]);
+		$("#nazivBanke").val(data[3]);
+		$("#adresaBanke").val(data[4]);
+		$("#telefonBanke").val(data[5]);
+		$("#emailBanke").val(data[6]);
+		$("#webBanke").val(data[7]);
+		$("#faksBanke").val(data[8]);
+		highlightedId = data[0];
 	}
-
 	function remove(id){
 		$(location).attr('href', '/Banke/delete?id=' +id)
+	}
+	
+	function nextForm(id, path) {
+		$(location).attr('href', '/'+ path +'/nextForm?banka_id='+id);
+	}
+	
+	function openReportModal() {
+		//data-toggle="modal" data-target="#modal_report"
+		var table = $('#tabela_banke').DataTable();
+		var data = table.row(function(idx, data, node) {
+			return data[0]==highlightedId;
+		}).data();
+		if(data==null) {
+			alert('Niste izabrali banku!');
+			return;
+		}
+		var upit = "Da li zelite dobijete izvjestaj o banci '" + data[3] + "'?"
+		if(confirm(upit)) {
+			var loc = '@{Banke.reportPDF()}' + '?id_banke=' + highlightedId;
+			$(location).attr('href', loc);
+		}
 	}
 </script>
 
 <p>
-	<ul>
+	<ul class="dropdown">
 		<li><a href="/" id = "banke"><img src="@{'/public/images/home.png'}"/></a></li>
   
   		<li><a href="@{Banke.show('search')}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
@@ -47,40 +76,28 @@
   		<li><a href="@{Banke.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
   		<li><a href="@{Banke.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  		<li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  		<!-- <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li> -->
+  		
+  		<li>
+		<div class="dropdown show">
+			<a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<img src="@{'/public/images/nextform.gif'}" />
+			</a>
+
+			<div class="dropdown-menu " aria-labelledby="dropdownMenuLink">
+				<a class="dropdown-item nextform2" id="KursneListe">Kursne liste</a>
+				<a class="dropdown-item nextform2" id="Racuni">Racuni</a>
+			</div>
+		</div>
+		</li>
+  		#{include 'tags/ReportButton.html' /}
 	</ul>
 </p>
 
 <div class = "container-fluid">
 	<h1>Banke</h1>
 
-	<table class = "maintable">
-		<tr class = "header">
-	   		<th>ID Banke</th> 
-	   		<th>Sifra banke</th>
-	  		<th>PIB banke</th>
-	   		<th>Naziv banke</th>
-	   		<th>Adresa banke</th>
-	   		<th>Telefon banke</th>
-	   		<th>e-mail banke</th>
-	   		<th>web banke</th>
-	   		<th>faks banke</th>
-		</tr>
-		#{list items:banke, as:'banka'}
-		<tr>
-			<td class = "idBanke">${banka.idBanke}</td>
-			<td class = "sifraBanke">${banka.sifraBanke}</td>
-			<td class = "PIBBanke">${banka.PIBBanke}</td>
-			<td class = "nazivBanke">${banka.nazivBanke}</td>
-			<td class = "adresaBanke">${banka.adresaBanke}</td>
-			<td class = "telefonBanke">${banka.telefonBanke}</td>
-			<td class = "emailBanke">${banka.emailBanke}</td>
-			<td class = "webBanke">${banka.webBanke}</td>
-			<td class = "faksBanke">${banka.faksBanke}</td>
-			<td style = "visibility: hidden; max-width: 0px" class = "id">${banka.id}</td>
-		</tr>
-		#{/list}
-	</table>
+	#{TabelaBanke data : banke, tableId : 'tabela_banke', hiddenColumns : '[]', idColumn:'0' /}
 	
 	<div class = "panel">
 	<p>
@@ -98,14 +115,10 @@
 			#{/set}
 		
 			<form action=${action} method="post">
-				#{field 'id'}
-					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				
 				<p>
-				#{field 'idBanke'}
+				#{field 'id'}
 					<label for = "${field.id}">ID Banke:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}" disabled="disabled"/>
 				#{/}
 				</p>
 				<p>

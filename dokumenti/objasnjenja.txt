@@ -1,0 +1,97 @@
+Konvencije i pravila koja sam koristio:
+
+-u svim klasama modela:
+ -za sva polja 
+  -napisati @Column(unique=?) i @Column(nullable=?)
+  -napisati sve duzine @Column(length=?)
+   -duzine cuvati u klasi koja se zove Konstante|Ime Entiteta|
+   -u paketu model.constants
+ -za sve @ManyToOne
+  -napisati da li su optional
+ -vrijednosti duzina procitati iz modela
+ -ostale vrijednosti smisliti po logici
+
+-u svim kontrolerskim klasama:
+ -obavezno uvesti metode: showDefault(), show(), filter(), 
+  next|Ime Entiteta| za svaku @OneToMany vezu odgovarajuceg modela
+ -po potrebi uvesti create(), edit(), delete()
+ -konvencije:
+  -ne koristiti literale u javi nego konstatne sacuvati u klasama
+ 
+  -highlighted id se cuva u flash scope
+  -highlighted id se cuva u globalnoj javascript promjenljivoj highlightedId
+  -svaki klik na red tabele vrsi update ove vrijednosti (u javascript-u)
+  -ne mora da se implementira u template-u TableConfig je ovo vec implementirano
+  
+  -konfiguracija (add, edit, search) se takodje cuva u flash scope
+  -konstante postoje u klasi Konstante
+  
+  -metoda showDefault prima parametre
+  -metoda show prima parametre mode (vrijednosti: add, edit, search) i highlightedId oba tipa string
+  -u ovoj metodi se oni postavljaju u flash da se ne bi izgubili (promjenljive u flash-u zive samo do sledeceg poziva neke motode kontrolera)
+  -u ovoj metodi se gleda da li je neko trazio next i na osnovu toga se vrsi upit u bazu
+  
+  -metodu show zove samo kontroler u kome je definisana i njegov view
+  -metodu show default zovu drugi kontroleri i njihivi view
+  
+  -pojasnjenja:
+  -sada se pozivom metode refresh ne gubi izabrani red
+  -metoda delete ne mijenja konfiguraciju (ako je add ostaje add, ako je edit ostaje edit)
+  
+  -next mehanizam se vrsi obavlja na sledeci nacin
+  -u flash se upise:
+   -kao target entity naziv klase djeteta koje se filtrira po nasoj klasi iz koje zovemo next
+   -kao filter entity naziv klase iz koje se zove next
+   -kao filter id id torke po kome se filtriranje vrsi
+  -pozove se metoda show default od target entity klase
+  
+  -sada se vidi da show default treba da obrise iz flash-a sve osim filtera i to samo ako bas nju gadja
+  
+-u svim view
+ -koristiti template StandardFormToolbar ako nisu potrebne neke dodatne funkcionalnosti
+  -ako jesu moze se napraviti novi template ili prilagoditi postojeci
+ -koristiti template ModalTemplate za svaki combozoom mehanizam
+ -napisati template za tabelu
+ -umjesto href atributa u toolbaru koristio sam click handlere (nije moralo ovako moglo je i preko href ali sam ovo uradio 
+  da bi napravio StandardFormToolbar template)
+ 
+ -Modal template se koristi na sledeci nacin:
+  modalId - id modala u html (obavezno se potruditi da bude jedinstven jer se koristi u u javascriptu kao naziv promjenljive) (trebaju navodnici)
+  modalTitle - naslov modala koji ce korisnik da vidi (trebaju navodnici)
+  selectId - id selecta ciju vrijednost modal treba da postavi (trebaju navodnici)
+   - kada se select pravi obvezno praviti po sledecem sablonu:
+    <option value="id entiteta koji se bira">Ono sto ce korisnik da vidi</option>
+  table - template tabele koja ce biti ugradjena u modal (trebaju navodnici)
+  data - play promjenljiva iz koje ce se citati podaci (nikada ne navoditi u '' jer je ovo promjenljiva, a ne konstanta)
+  tableId - id tabele u modalu u html (isto kao za modal obavezno da bude jedinstvena jer se koristi i kao promjenljiva u javascriptu) (trebaju navodnici)
+  hiddenColumns - kolone tabele koje se nece prikazivati i po kojima se ne vrsi pretraga
+   -navesti u formatu '[x1, x2, ...]' gdje treba upisati u bilo kom redoslijedu svaku ovakvu kolonu (trebaju navodnici)
+  idColumn - kolona iz koje se cita id entiteta da bi se postavio highlightedId (trebaju navodnici)
+ 
+ -Template tabelele napisati na sledeci nacin
+
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Kolona x</th> 
+			<th>Kolona y</th>
+			<th>Kolona z</th>
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'drzava'}
+		<tr>
+			<td class = "kolonax">Kolona x</td>
+			<td class = "kolonay">Kolona y</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "kolonaz">Kolona z</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /} 
+  
+ -broj th i td tagova mora biti isti
+ -atributi class i style ne trebaju ali ih ja pisem iz sujevjerja
+
+ -Template tabele se korisi isto kao template modala samo sto navode jedino
+ data, tableId, hiddenColumns i idColumn parametri
