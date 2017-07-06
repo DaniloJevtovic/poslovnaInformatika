@@ -82,6 +82,18 @@ $(document).ready(function() {
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				<p>
+				#{field 'racun'}
+					<label for = "${field.id}">Racun</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:ukidRac, as:'racuni'}
+					<option value = "${valuta.id}">${racuni.brojRacuna}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#racuni_modal">...</button>
+					
+				#{/}
+				</p>
+				<p>
 				#{field 'datumUkidanja'}
 					<label for = "${field.id}">Datum ukidanja</label>
 					<input type="text"  id="${field.id}" name="${field.name}">
@@ -105,4 +117,6 @@ $(document).ready(function() {
 	</p>
 </div>
 </div>
+
+#{ModalTemplate modalId : 'racuni_modal', modalTitle: 'Racun', selectId : 'racun', table : 'tags/TabelaRacuni.html', data : ukidRac, tableId: 'Racun', hiddenColumns : '[6,7,8,9]', idColumn:'3' /}
 

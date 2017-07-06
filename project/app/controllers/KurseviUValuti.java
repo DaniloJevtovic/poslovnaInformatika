@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.Drzava;
 import models.KursUValuti;
+import models.KursnaLista;
 import models.Ukidanje;
 import models.Valuta;
 import models.VrstaPlacanja;
@@ -21,9 +22,10 @@ public class KurseviUValuti extends Controller {
 	public static void show(String mode,Long selected){
 		List<KursUValuti> kursevi= KursUValuti.findAll();
 		List<Valuta> valute = Valuta.findAll();
+		List<KursnaLista> kursList=KursnaLista.findAll();
 		if(mode == null || mode.equals(""))
 			mode = "edit";
-		render(kursevi, valute, mode,selected);
+		render(kursevi,kursList, valute, mode,selected);
 	}
 	public static void create(String redniBroj,BigDecimal kupovni, BigDecimal srednji, BigDecimal prodajni){
 

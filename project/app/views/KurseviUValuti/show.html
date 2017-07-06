@@ -99,6 +99,30 @@ function remove(id){
 					
 				#{/}
 				</p>
+								<p>
+				#{field 'premaValuti'}
+					<label for = "${field.id}">Prema valuti</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:valute, as:'valuta'}
+					<option value = "${valuta.id}">${valuta.zvanicnaSifra}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#prema_valuti_modal">...</button>
+					
+				#{/}
+				</p>
+												<p>
+				#{field 'kursnaLista'}
+					<label for = "${field.id}">Kursna lista</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:kursList, as:'kursnaLista'}
+					<option value = "${kursnaLista.id}">${kursnaLista.brojKursneListe}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#kursna_lista_modal">...</button>
+					
+				#{/}
+				</p>
 				<p>
 				#{field 'redniBroj'}
 					<label for = "${field.id}">Redni broj</label>
@@ -132,4 +156,6 @@ function remove(id){
 </div>
 </div>
 
-#{ModalTemplate modalId : 'osnovna_valuta_modal', modalTitle: 'Osnovna valuta', selectId : 'osnovnaValuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_osnovna_valuta', hiddenColumns : '[2]', idColumn:'2' /}
+#{ModalTemplate modalId : 'osnovna_valuta_modal', modalTitle: 'Osnovna valuta', selectId : 'osnovnaValuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_osnovna_valuta', hiddenColumns : '[3,4]', idColumn:'3' /}
+#{ModalTemplate modalId : 'prema_valuti_modal', modalTitle: 'Prema valuti', selectId : 'premaValuti', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_prema_valuti', hiddenColumns : '[3,4]', idColumn:'3' /}
+#{ModalTemplate modalId : 'kursna_lista_modal', modalTitle: 'Kursna Lista', selectId : 'kursnaLista', table : 'tags/TabelaKursneListe.html', data : kursList, tableId: 'kursna_lista', hiddenColumns : '[5,6]', idColumn:'2' /}

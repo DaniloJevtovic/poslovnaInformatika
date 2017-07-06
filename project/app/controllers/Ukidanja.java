@@ -9,7 +9,9 @@ import java.util.List;
 
 
 
+
 import models.Drzava;
+import models.Racun;
 import models.Ukidanje;
 import models.VrstaPlacanja;
 import play.mvc.Controller;
@@ -24,9 +26,10 @@ public class Ukidanja extends Controller {
 	}
 	public static void show(String mode,Long selected){
 		List<Ukidanje> ukidanje = Ukidanje.findAll();
+		List<Racun> ukidRacuna=Racun.findAll();
 		if(mode == null || mode.equals(""))
 			mode = "edit";
-		render(ukidanje, mode,selected);
+		render(ukidanje,ukidRacuna, mode,selected);
 	}
 	
 	public static void create(Date datumUkidanja, String sredSePrenNaRacun){

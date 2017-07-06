@@ -130,4 +130,40 @@ Klijent(preduzeceB):
  emailKlijenta : preduzeceb@provider.com
  faksKlijenta : 8888888880
  
+KursUValuti(kurs1): 
+ redniBroj : 1
+ kupovni   : 1
+ srednji   : 2
+ prodajni  : 3
+ 
+KursUValuti(kurs2):
+ redniBroj : 2
+ kupovni   : 10
+ srednji   : 15
+ prodajni  : 20
+ 
+KursUValuti(kurs3):
+ redniBroj : 3
+ kupovni   : 100
+ srednji   : 107
+ prodajni  : 112
+ 
+KursUValuti(kurs4):
+ redniBroj : 4
+ kupovni   : 123
+ srednji   : 128
+ prodajni  : 144
+ 
+ 
+VrstaPlacanja(vrsta1): 
+ oznakaVrste : 1
+ nazivVrstePlacanja : 'dinar'
+ 
+VrstaPlacanja(vrsta2): 
+ oznakaVrste : 2
+ nazivVrstePlacanja  : 'euro' 
+ 
+VrstaPlacanja(vrsta3): 
+ oznakaVrste : 3
+ nazivVrstePlacanja : 'marka'
  
