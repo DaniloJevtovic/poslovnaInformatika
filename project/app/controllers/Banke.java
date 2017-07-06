@@ -16,6 +16,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import play.db.DB;
 import play.mvc.Controller;
 
 /*
@@ -83,7 +84,8 @@ public class Banke extends Controller {
 		HashMap<String,Object> params = new HashMap<String,Object>();
 		params.put("id_banke", id_banke);
 		
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovna", "isa", "nekasifra");
+		//old conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovna", "isa", "nekasifra");
+		Connection conn = DB.getConnection();
 		
 		Date now = new Date();
 		String pdfName = "" + now.getTime() + (((Long)Math.round(Math.random() * 1000000))+1000000) + ".pdf";

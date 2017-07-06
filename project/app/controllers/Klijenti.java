@@ -34,6 +34,8 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import play.db.DB;
+import play.db.jpa.JPA;
 import play.mvc.Controller;
 
 /*
@@ -186,8 +188,11 @@ public class Klijenti extends Controller {
 		params.put("id_klijenta", id_klijenta);
 		params.put("datum_od", from);
 		params.put("datum_do", to);
-		
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/poslovna", "isa", "nekasifra");
+		//url "jdbc:mysql://localhost:3306/poslovna"
+		//user "isa"
+		//pass "nekasifra"
+		Connection conn = DB.getConnection();
+		//Connection conn = DriverManager.getConnection("jdbc:h2:ssl://localhost/play", "sa", "");
 		
 		Date now = new Date();
 		String pdfName = "" + now.getTime() + (((Long)Math.round(Math.random() * 1000000))+1000000) + ".pdf";
