@@ -1,0 +1,21 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+		   <th>Ukinuti račun</th>
+		   <th>Sredstva prenesena na</th>
+		   <th>Datum ukidanja</th>
+		   <th>Id</th>
+		</tr>
+	</thead>
+	<tbody>
+		#{list items:_data, as:'ukidanje'}
+		<tr>
+			<td class = "brojRacuna">${ukidanje.racun.brojRacuna}</td>
+			<td class = "sredSePrenNaRacun">${ukidanje.sredSePrenNaRacun}</td>
+			<td class = "datumUkidanja">${ukidanje.datumUkidanja}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${ukidanje.id}</td>
+		</tr>
+		#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

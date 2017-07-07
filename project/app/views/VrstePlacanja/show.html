@@ -3,61 +3,41 @@
 
 <script>
 
-function sync(item){
-	oznakaVrste = item.find(".oznakaVrste").html()
-    nazivVrstePlacanja= item.find(".nazivVrstePlacanja").html()
-    id = item.find(".id").html()
-    $("#oznakaVrste").val(oznakaVrste);
-    $("#nazivVrstePlacanja").val(nazivVrstePlacanja);
-    $("#id").val(id);
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+
+	$("#search").click(function() {
+		var loc = '@{Racuni.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Racuni.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+function sync(data){
+
+    $("#oznakaVrste").val(data[0]);
+    $("#nazivVrstePlacanja").val(data[1]);
+    $("#id").val(data[2]);
+    
+    highlightedId = data[2];
 }
 
-/*function nextForm(id){
-	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
-}
-*/
 function remove(id){
 	$(location).attr('href', '/VrstePlacanja/delete?id=' +id)
 }
 
 </script>
 
-<p>
-<ul>
-  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
-  
-  <li><a href="@{VrstePlacanja.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
-  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
-  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
-  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
-  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
-  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{VrstePlacanja.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{VrstePlacanja.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
-</ul>
-</p>
+#{StandardFormToolbar /}
 
 <div class = "container-fluid">
 <h1>Vrste placanja</h1>
 
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Oznaka vrste</th>
-	   <th>Naziv vrste</th>
-	</tr>
-#{list items:placanje, as:'vPlacanje'}
-	<tr>
-		<tr #{if vPlacanje.id == selected} class = "highlighted" #{/if}>
-		<td class = "oznakaVrste">${vPlacanje.oznakaVrste}</td>
-		<td class = "nazivVrstePlacanja">${vPlacanje.nazivVrstePlacanja}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${vPlacanje.id}</td>
-	</tr>
-#{/list}
-</table>
+#{TabelaVrstePlacanja data : placanje, tableId: 'tabela_vrste_placanja', hiddenColumns : '[3]', idColumn:'3'/}
+
 
 <div class = "panel">
 	<p>

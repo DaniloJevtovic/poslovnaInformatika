@@ -19,7 +19,7 @@ public class KonstanteSesije {
 	public static final String[] FILTRI_VALUTE = {Konstante.IME_ENTITETA_DRZAVA};
 	public static final String[] FILTRI_KURSNE_LISTE = {Konstante.IME_ENTITETA_BANKA};
 	public static final String[] FILTRI_KURSA_U_VALUTI = {Konstante.IME_ENTITETA_KURSNA_LISTA, Konstante.IME_OSNOVNA_VALUTA, Konstante.IME_PREMA_VALUTI};
-	
+	public static final String[] FILTRI_UKIDANJA = {Konstante.IME_ENTITETA_RACUN};
 	public static final String[] DOZVOLJENE_KONFIGURACIJE = 
 		{ Konstante.KONF_DODAVANJE, Konstante.KONF_IZMJENA, Konstante.KONF_PRETRAGA };
 	
