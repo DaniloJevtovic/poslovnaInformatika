@@ -1,15 +1,47 @@
 #{extends 'standardForm.html' /}
-#{set title:'Naseljena mesta' /}
+#{set title:'Naseljena mjesta' /}
 
 <script>
 
-$(document).ready(function(){
-	$("#drzavaPickup").click(function(){
-		id = $(".highlighted2").find(".dr_id").html();
-		$("select").val(id);
-		$('#drzaveModal').modal('toggle');
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+	
+	$("#search").click(function() {
+		var loc = '@{NaseljenaMesta.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{NaseljenaMesta.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{NaseljenaMesta.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
 	});
 });
+
+
+function sync(data) {
+	$("#oznaka").val(data[0]);
+	$("#naziv").val(data[1]);
+	$("#postanskiBroj").val(data[2]);
+	//$("#drzava").val(data[3]);
+	$("#id").val(data[4]);
+	highlightedId = data[4];
+}
+
+function remove(id){
+	$(location).attr('href', '/NaseljenaMesta/delete?id='+id);
+}
+
+/*
+ $(document).ready(function(){
+		$("#drzavaPickup").click(function(){
+			id = $(".highlighted2").find(".dr_id").html();
+			$("select").val(id);
+			$('#drzaveModal').modal('toggle');
+		});
+	});
 
 function sync(item){
 	oznaka = item.find(".nm_oznaka").html()
@@ -21,12 +53,11 @@ function sync(item){
     $("#postanskiBroj").val(postanskiBroj);
     $("#id").val(id);
 }
-
-function remove(id){
-	$(location).attr('href', '/NaseljenaMesta/delete?id='+id);
-}
+*/
 
 </script>
+
+<!--  #{StandardFormToolbar /} -->
 
 <p>
 <ul>
@@ -48,8 +79,70 @@ function remove(id){
 </p>
 
 <div class = "container-fluid">
-<h1>Naseljena mesta</h1>
+<h1>Naseljena mjesta</h1>
 
+#{TabelaNaseljenaMjesta data : naseljenaMjesta, tableId : 'tabela_naseljenaMjesta', hiddenColumns : '[4,5]', idColumn:'4' /}
+
+<div class = "panel">
+	<p>
+		<div><b>Status: ${mode} </b></div> <br>
+		#{set 'action'}
+			#{if flash.mode == 'add'}@{NaseljenaMesta.create()}#{/if}
+			#{elseif flash.mode == 'edit'}@{NaseljenaMesta.edit()}#{/elseif}
+			#{else}@{NaseljenaMesta.filter()}#{/else}
+		#{/set}
+
+		<form action = "${action}" method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'oznaka'}
+					<label for = "${field.id}">Oznaka:</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<span class="error">#{error 'oznaka' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'naziv'}
+					<label for = "${field.id}">Naziv:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+					<span class="error">#{error 'naziv' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'postanskiBroj'}
+					<label for = "${field.id}">Poštanski broj:</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}" placeholder="[0-9]{5-12}"/>
+					<span class="error">#{error 'postanskiBroj' /}</span>
+				#{/}
+				</p>
+				<p>
+				#{field 'drzava'}
+					<label for = "${field.id}">Država:</label>
+					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
+					#{list items:drzave, as:'drzava'}
+					<option value = "${drzava.id}">${drzava.naziv}</option>
+					#{/list}
+					</select>
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#drzave_modal">...</button>
+					<span class="error">#{error 'drzava' /}</span>
+				#{/}
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{NaseljenaMesta.show('edit')}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+
+#{ModalTemplate modalId : 'drzave_modal', modalTitle : 'Drzave', selectId : 'drzava', table : 'tags/TabelaDrzave.html', data : drzave, tableId: 'tabela_drzave', hiddenColumns : '[2]', idColumn:'2' /}
+
+<!--  
 <table class = "maintable">
 	<tr class = "header">
 	   <th>Oznaka</th> 
@@ -68,7 +161,6 @@ function remove(id){
 #{/list}
 </table>
 
-
 #{set 'action'}
     #{if mode == 'add'}
         @{NaseljenaMesta.create()}
@@ -81,59 +173,14 @@ function remove(id){
     #{/else}
   #{/set}
   
-<div class = "panel">
-	<p>
-		<div><b>Status: ${mode} </b></div> <br>
-
-		<form action = "${action}" method="post">
-		
-				#{field 'id'}
-					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				
-				<p>
-				#{field 'oznaka'}
-					<label for = "${field.id}">Oznaka:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
-				<p>
-				#{field 'naziv'}
-					<label for = "${field.id}">Naziv:</label>
-					<input type = "text" name = "${field.name}" id = "${field.name}"/>
-				#{/}
-				</p>
-				<p>
-				#{field 'postanskiBroj'}
-					<label for = "${field.id}">Poštanski broj:</label>
-					<input type = "text" name = "${field.name}" id = "${field.name}"/>
-				#{/}
-				</p>
-				<p>
-				#{field 'drzava'}
-					<label for = "${field.id}">Država:</label>
-					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
-					#{list items:drzave, as:'drzava'}
-					<option value = "${drzava.id}">${drzava.naziv}</option>
-					#{/list}
-					</select>
-					
-					<button type="button" class="btn btn-info btn-sm" data-toggle="modal"  data-target="#drzaveModal">...	</button>
-				#{/}
-				</p>
-				<div id = "formActions">
-					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
-					<a href = "@{NaseljenaMesta.show('edit')}" style="margin-left:1em">Rollback</a>
-				</div>			
-				
-		</form>
-	</p>
-</div>
+-->
+ 
 
  <!-- Modal -->
+ <!--  
   <div class="modal fade" id="drzaveModal" role="dialog">
     <div class="modal-dialog">
-      <!-- Modal content-->
+
       <div class="modal-content">
       <div class="modal-header">
       	Države
@@ -160,3 +207,4 @@ function remove(id){
     </div>
    </div>
 </div>
+-->
