@@ -52,9 +52,18 @@ function remove(id){
 	$(location).attr('href', '/KursneListe/delete?id=' +id)
 }
 
+function nextKurseviUValuti(){
+	if(highlightedId==null || highlightedId == "") {
+		alert("Kursna lista nije izabrana!");
+	} else {
+		var string = '/KursneListe/nextKurseviUValuti?filterId=' + highlightedId;
+		$(location).attr('href', '/KursneListe/nextKurseviUValuti?filterId=' + highlightedId);	
+	}
+}
+
 </script>
 
-#{StandardFormToolbar /}
+#{StandardFormToolbar nextForm : 'nextKurseviUValuti()' /}
 
 <div class = "container-fluid">
 <h1>Kursne Liste</h1>
@@ -201,4 +210,4 @@ function remove(id){
 	</p>
 </div>
 </div>
-#{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[3,4,5,6,7,8,9]', idColumn:'9' /}
+#{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[4,5,6,7,8]', idColumn:'0' /}
