@@ -2,32 +2,57 @@
 #{set title:'Države' /}
 
 <script>
+	$(document).ready(function() {
+		highlightedId = "${flash.highlightedId}";
+		
+		$("#search").click(function() {
+			var loc = '@{Drzave.show()}' + '?mode=search&highlightedId=' + highlightedId;
+			$(location).attr('href', loc);
+		});
+		$("#add").click(function() {
+			var loc = '@{Drzave.show()}' + '?mode=add&highlightedId=' + highlightedId;
+			$(location).attr('href', loc);
+		});
+		$("#refresh").click(function() {
+			var mode = "${flash.mode}";
+			$(location).attr('href', '@{Drzave.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+		});
+		
+	});
+	
+	function sync(data) {
+		$("#oznaka").val(data[0]);
+		$("#naziv").val(data[1]);
+		$("#id").val(data[2]);
+		highlightedId = data[2];
+	}
 
-function sync(item){
-	oznaka = item.find(".oznaka").html()
-    naziv = item.find(".naziv").html()
-    id = item.find(".id").html()
-    
-    $("#oznaka").val(oznaka);
-    $("#naziv").val(naziv);
-    $("#id").val(id);
-}
+	/*
+	function sync(item) {
+		oznaka = item.find(".oznaka").html()
+		naziv = item.find(".naziv").html()
+		id = item.find(".id").html()
 
+		$("#oznaka").val(oznaka);
+		$("#naziv").val(naziv);
+		$("#id").val(id);
+	}
 
-//function nextForm(id){
+	*/
+	//function nextForm(id){
 	//$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
-//}
+	//}
 
-function nextForm(id, path) {
-	$(location).attr('href', '/'+ path +'/nextForm?drzava_id='+id);
-}
+	function nextForm(id, path) {
+		$(location).attr('href', '/' + path + '/nextForm?drzava_id=' + id);
+	}
 
-
-function remove(id){
-	$(location).attr('href', '/Drzave/delete?id=' +id)
-}
-
+	function remove(id) {
+		$(location).attr('href', '/Drzave/delete?id=' + id)
+	}
 </script>
+
+
 
 <p>
 
@@ -66,21 +91,25 @@ function remove(id){
 </p>
 
 <div class = "container-fluid">
-<h1>Države</h1>
-
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Oznaka države</th> 
-	   <th>Naziv države</th>
-	</tr>
-#{list items:drzave, as:'drzava'}
-	<tr>
-		<td class = "oznaka">${drzava.oznaka}</td>
-		<td class = "naziv">${drzava.naziv}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${drzava.id}</td>
-	</tr>
-#{/list}
-</table>
+	<h1>Države</h1>
+	
+	#{TabelaDrzave data : drzave, tableId : 'tabela_drzave', hiddenColumns : '[2]', idColumn:'2' /}
+	
+	<!--  
+	<table class = "maintable">
+		<tr class = "header">
+	   		<th>Oznaka države</th> 
+	   		<th>Naziv države</th>
+		</tr>
+		#{list items:drzave, as:'drzava'}
+		<tr>
+			<td class = "oznaka">${drzava.oznaka}</td>
+			<td class = "naziv">${drzava.naziv}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${drzava.id}</td>
+		</tr>
+		#{/list}
+	</table> 
+	-->
 
 <div class = "panel">
 	<p>
@@ -105,13 +134,13 @@ function remove(id){
 				<p>
 				#{field 'oznaka'}
 					<label for = "${field.id}">Oznaka države:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}" placeholder="Oznaka"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}" placeholder="[A-Z]{3}"/>
 				#{/}
 				</p>
 				<p>
 				#{field 'naziv'}
 					<label for = "${field.id}">Naziv države:</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<input type = "text" name = "${field.name}" id = "${field.id}" placeholder="[a-z / A-Z]"/>
 				#{/}
 				</p>
 				<div id = "formActions">

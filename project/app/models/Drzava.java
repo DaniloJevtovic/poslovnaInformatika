@@ -8,13 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import models.constants.KonstanteDrzave;
 import play.data.validation.Max;
 import play.db.jpa.Model;
 
 @Entity
 public class Drzava extends Model {
-	
+	@Column(unique=true, nullable=false, length=KonstanteDrzave.MAKSIMALNA_DUZINA_OZNAKA)
 	public String oznaka;
+	@Column(unique=false, nullable=false, length=KonstanteDrzave.MAKSIMALNA_DUZINA_NAZIV)
 	public String naziv;
 	
 	@OneToMany(mappedBy = "drzava")
