@@ -137,28 +137,11 @@
 			}
 		});
 		
-		//generisanje naloga 
-		$("#genNaloga").click(function(){
-			highlighted = $(".highlighted");
-	        if(highlighted.length != 0){
-	            id = highlighted.find(".id").html();
-	            genNaloga(id);
-	        }
-			else{
-				alert("Niste selektovali analitiku");
-			}
-	    });
-		
 		//export naloga u xml
 		$("#expNaloga").click(function(){
 			highlighted = $(".highlighted");
-	        if(highlighted.length != 0){
-	            id = highlighted.find(".id").html();
-	            expNaloga(id);
-	        }
-			else{
-				alert("Niste selektovali analitiku");
-			}
+	        id = highlighted.find(".id").html();
+	        expNaloga(id);
 	    });
 		
 		

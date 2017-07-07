@@ -40,6 +40,7 @@ function sync(data){
 
 	#{TabelaDnevnaStanjaRacuna data : dnevnaStanjaRacuna, tableId: 'tabela_dnevna_stanja_racuna', hiddenColumns : '[7]', idColumn:'0'/}
 	
+	<!--  
 	<div class = "panel">
 	<p>
 		<div><b>Status: read-only</b></div> <br>
@@ -63,9 +64,7 @@ function sync(data){
 				<p>
 				#{field 'datumPrometa'}
 					<label for = "${field.id}">Datum prometa:</label>
-					<!-- <input type="text" id="datepicker" name = "${field.name}"> --> 
-					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly"/> <!-- readonly="readonly" -->
-					
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly"/>
 					<script>
 						$('#datumPrometa').datepicker();
 					</script>
@@ -102,6 +101,6 @@ function sync(data){
 			</form>
 		</p>
 	</div>
-	
+	-->
 </div>
 	
