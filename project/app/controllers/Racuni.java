@@ -1,19 +1,22 @@
 package controllers;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.function.BiConsumer;
 
+import models.AnalitikaIzvoda;
+import models.Banka;
+import models.DnevnoStanjeRacuna;
+import models.Klijent;
+import models.Racun;
+import models.Ukidanje;
+import models.Valuta;
+import play.mvc.Controller;
 import controllers.helpers.Konstante;
 import controllers.helpers.PomocneOperacije;
 import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaRacuna;
-import models.Banka;
-import models.Klijent;
-import models.Racun;
-import models.Valuta;
-import play.mvc.Controller;
 
 /*
  * Stevan radi
@@ -166,6 +169,75 @@ public class Racuni extends Controller {
 				Konstante.IME_ENTITETA_UKIDANJE,
 				filterId);
 		flash.keep();
-		//Ukidanja.showDefault();
+		Ukidanja.showDefault();
+	}
+	
+	public static void ukini(Long id,String brojRacuna) {
+		Racun racun=Racun.findById(id);
+		if(racun!=null) {
+			if(racun.vazeci) {
+				ValidacijaRacuna.validateAccountNumber(brojRacuna);
+				DnevnoStanjeRacuna posZaRacun = PomocneOperacije.danasnjeDnevnoStanje(racun);
+				Date datumUkidanja= PomocneOperacije.getStartOfDay(new Date());
+				if(posZaRacun==null) {
+					racun.vazeci=false;
+					racun.save();
+					Ukidanje ukidanje=new Ukidanje(datumUkidanja,brojRacuna);
+					ukidanje.racun = racun;
+					ukidanje.save();
+				} else {
+					Racun naKojiSePrenosi = Racun.find("byBrojRacuna", brojRacuna).first();
+					if(naKojiSePrenosi==null) {
+						throw new NullPointerException();
+					}
+					if(racun.valuta.id != naKojiSePrenosi.valuta.id) {
+						throw new IllegalStateException();
+					}
+					if(racun.banka.id != naKojiSePrenosi.banka.id) {
+						throw new IllegalStateException();
+					}
+					if(!naKojiSePrenosi.vazeci) {
+						throw new IllegalStateException();
+					}
+					DnevnoStanjeRacuna posZaNaKojiSePrenosi = PomocneOperacije.danasnjeDnevnoStanje(naKojiSePrenosi);
+					BigDecimal iznos = posZaRacun.novoStanje;
+					AnalitikaIzvoda prenosna = new AnalitikaIzvoda(
+						PomocneOperacije.nazivKlijenta(racun.klijent), 
+						"Prenos zbog zatvaranja",
+						PomocneOperacije.nazivKlijenta(naKojiSePrenosi.klijent),
+						datumUkidanja,
+						datumUkidanja,
+						racun.brojRacuna,
+						null,
+						null,
+						naKojiSePrenosi.brojRacuna,
+						
+						null,
+						null,
+						false,
+						iznos,
+						null,
+						null
+					);
+					prenosna.dnevnoStanjeNaTeret = posZaRacun;
+					prenosna.dnevnoStanjeUKorist = posZaNaKojiSePrenosi;
+					posZaRacun.dodajNaTaret(iznos);
+					posZaNaKojiSePrenosi.dodajUKorist(iznos);
+					racun.vazeci = false;
+					racun.save();
+					posZaRacun.save();
+					posZaNaKojiSePrenosi.save();
+					prenosna.save();
+					Ukidanje ukidanje=new Ukidanje(datumUkidanja,brojRacuna);
+					ukidanje.racun = racun;
+					ukidanje.save();
+				}
+				
+			}
+			show(flash.get(KonstanteSesije.MODE), id.toString());
+		} else {
+			notFound(PomocneOperacije.porukaNijePronadjen(Konstante.IME_ENTITETA_RACUN, id));
+		}
+		
 	}
 }

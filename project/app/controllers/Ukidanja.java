@@ -67,6 +67,5 @@ public class Ukidanja extends Controller {
 		String mode = "edit";
 		renderTemplate("Ukidanja/show.html", ukidanje, mode);
 	}
-	
 
 }

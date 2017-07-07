@@ -7,11 +7,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		#{list items:_data, as:'racun'}
+		#{list items:_data, as:'vPlacanje'}
 		<tr>
 			<td class = "oznakaVrste">${vPlacanje.oznakaVrste}</td>
 			<td class = "nazivVrstePlacanja">${vPlacanje.nazivVrstePlacanja}</td>
-			<td style="visibility: hidden; max-width: 0px" class="id">${racun.id}</td>
+			<td style="visibility: hidden; max-width: 0px" class="id">${vPlacanje.id}</td>
 		</tr>
 		#{/list}
 	</tbody>

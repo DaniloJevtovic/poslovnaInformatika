@@ -7,12 +7,20 @@ $(document).ready(function() {
 	highlightedId = "${flash.highlightedId}";
 
 	$("#search").click(function() {
-		var loc = '@{Racuni.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		var loc = '@{VrstePlacanja.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#add").click(function() {
+		var loc = '@{VrstePlacanja.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#edit").click(function() {
+		var loc = '@{VrstePlacanja.show()}' + '?mode=edit&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
 	});
 	$("#refresh").click(function() {
 		var mode = "${flash.mode}";
-		$(location).attr('href', '@{Racuni.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+		$(location).attr('href', '@{VrstePlacanja.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
 	});
 });
 
@@ -29,24 +37,33 @@ function remove(id){
 	$(location).attr('href', '/VrstePlacanja/delete?id=' +id)
 }
 
+function nextAnalitikeIzvoda(){
+	if(highlightedId==null || highlightedId == "") {
+		alert("Vrsta placanja nije izabrana!");
+	} else {
+		var string = '/VrstePlacanja/nextAnalitikeIzvoda?filterId=' + highlightedId;
+		$(location).attr('href', '/VrstePlacanja/nextAnalitikeIzvoda?filterId=' + highlightedId);	
+	}
+}
+
 </script>
 
-#{StandardFormToolbar /}
+#{StandardFormToolbar nextForm : 'nextAnalitikeIzvoda()' /}
 
 <div class = "container-fluid">
 <h1>Vrste placanja</h1>
 
-#{TabelaVrstePlacanja data : placanje, tableId: 'tabela_vrste_placanja', hiddenColumns : '[3]', idColumn:'3'/}
+#{TabelaVrstePlacanja data : placanje, tableId: 'tabela_vrste_placanja', hiddenColumns : '[2]', idColumn:'2'/}
 
 
 <div class = "panel">
 	<p>
-		<div><b>Status: ${mode}</b></div> <br>
+		<div><b>Status: ${flash.mode}</b></div> <br>
 			#{set 'action'}
-				#{if mode == 'add'}
+				#{if flash.mode == 'add'}
 					@{VrstePlacanja.create()}
 				#{/if}
-				#{elseif mode == 'edit'}
+				#{elseif flash.mode == 'edit'}
 					@{VrstePlacanja.edit()}
 				#{/elseif}
 				#{else}
@@ -60,13 +77,13 @@ function remove(id){
 				#{/}
 				<p>
 				#{field 'oznakaVrste'}
-					<label for = "${field.id}">Oznaka_vrste</label>
+					<label for = "${field.id}">Oznaka vrste</label>
 					<input type = "number" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
 				<p>
 				#{field 'nazivVrstePlacanja'}
-					<label for = "${field.id}">Naziv_vrste_placanja</label>
+					<label for = "${field.id}">Naziv vrste</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>

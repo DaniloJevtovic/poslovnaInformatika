@@ -61,9 +61,38 @@ function remove(id){
 	$(location).attr('href', '/Racuni/delete?id=' +id)
 }
 
+function openUkidanjeModal() {
+	$("#modal_za_ukidanje").modal('toggle');
+	var table = $('#tabela_racuni').DataTable();
+	var data = table.row(function(idx, data, node) {
+		return data[6]==highlightedId;
+	}).data();
+	var title;
+	if(data!=null) {
+		title = "Ukidanje racuna '" + data[2] + "'";
+	} else {
+		title = 'Racun nije izabran!';
+	}
+	$('#modal_ukidanje_naslov').html(title);
+}
+
+function ukidanjePotvrda() {
+	if(highlightedId==null || highlightedId == "") {
+		alert("Racun nije izabran!");
+	} else {
+		var racun = $("#input_sredstva_se_prenose_na").val();
+		$(location).attr('href', '/Racuni/ukini?id=' + highlightedId + '&brojRacuna=' + racun);	
+	}
+	$("#modal_za_ukidanje").modal('toggle');
+}
+
+function ukidanjeOdustanak() {
+	$("#modal_za_ukidanje").modal('toggle');
+}
+
 </script>
 
-#{StandardFormToolbar nextForms : [[action : 'nextDnevnaStanja()', disp : 'Dnevna Stanja'],[action : 'nextUkidanja()', disp : 'Ukidanja']] /}
+#{StandardFormToolbar nextForms : [[action : 'nextDnevnaStanja()', disp : 'Dnevna Stanja'],[action : 'nextUkidanja()', disp : 'Ukidanja']], menuAddon : 'tags/DugmeZaUkidanje.html' /}
 
 <div class = "container-fluid">
 <h1>Računi</h1>
@@ -194,3 +223,20 @@ function remove(id){
 #{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5,6,7,8,9,10]', idColumn:'10' /}
 #{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[3,4]', idColumn:'3' /}
 #{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[4,5,6,7,8]', idColumn:'0' /}
+<div class="modal fade" id="modal_za_ukidanje" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" id="modal_ukidanje_naslov">
+			</div>
+			<div class="modal-body">
+				<label>Sredstva se prenose na:</label>
+				<input type = "text" id = "input_sredstva_se_prenose_na" />
+			</div>	
+			<div class="modal-footer">
+				<button onclick="ukidanjePotvrda()">Potvrda</button>
+				<button onclick="ukidanjeOdustanak()">Odustanak</button>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -20,4 +20,10 @@ public class ValidacijaRacuna {
 		validation.required(racun_banka_id);
 		validation.required(racun_valuta_id);
 	}
+	
+	public static void validateAccountNumber(String accNum) {
+		if(!accNum.matches("^" + BROJ_REGEX + "$")) {
+			throw new IllegalArgumentException();
+		}
+	}
 }

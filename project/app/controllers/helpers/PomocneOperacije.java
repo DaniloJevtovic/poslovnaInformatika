@@ -1,10 +1,12 @@
 package controllers.helpers;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+import models.DnevnoStanjeRacuna;
 import models.Klijent;
-import play.db.jpa.Model;
+import models.Racun;
 
 public class PomocneOperacije {
 	//provjera da li string kojim se u kontroleru zadaje konfiguracija ima 
@@ -67,5 +69,32 @@ public class PomocneOperacije {
 	    cal.set(Calendar.SECOND,      cal.getMinimum(Calendar.SECOND));
 	    cal.set(Calendar.MILLISECOND, cal.getMinimum(Calendar.MILLISECOND));
 		return cal.getTime();
+	}
+	
+	public static DnevnoStanjeRacuna posljednjeDnevnoStanje(Racun racun) {
+		DnevnoStanjeRacuna dsr  = DnevnoStanjeRacuna.find("select dsr from DnevnoStanjeRacuna dsr where dsr.racun = ? order by dsr.datumPrometa desc", racun).first();
+		return dsr;
+	}
+	
+	public static DnevnoStanjeRacuna danasnjeDnevnoStanje(Racun racun) {
+		Date danas = getStartOfDay(new Date());
+		DnevnoStanjeRacuna dsr  = DnevnoStanjeRacuna.find("select dsr from DnevnoStanjeRacuna dsr where dsr.racun = ? and dsr.datumPrometa = ?", racun, danas).first();
+		if(dsr==null) {
+			DnevnoStanjeRacuna prethodno = posljednjeDnevnoStanje(racun);
+			if(prethodno!=null) {
+				dsr = new DnevnoStanjeRacuna(racun, danas, prethodno.novoStanje, BigDecimal.ZERO, BigDecimal.ZERO, prethodno.novoStanje);
+			} else {
+				dsr = new DnevnoStanjeRacuna(racun, danas, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+			}
+		}
+		return dsr;
+	}
+	
+	public static String nazivKlijenta(Klijent k) {
+		if(k.tipKlijenta.equals("P")) {
+			return k.nazivKlijenta;
+		} else {
+			return k.imeKlijenta + " " + k.przKlijenta;
+		}
 	}
 }
