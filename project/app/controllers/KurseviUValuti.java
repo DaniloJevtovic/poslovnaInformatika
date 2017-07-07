@@ -44,7 +44,7 @@ public class KurseviUValuti extends Controller {
 				query = "select k from KursUValuti k where k.osnovnaValuta.id = ? order by kursnaLista.banka, kursnaLista.brojKursneListe, osnovnaValuta, premaValuti";
 				break;
 			case Konstante.IME_PREMA_VALUTI:
-				query = "select k from KursUValuti where k.premaValuti.id = ? k order by kursnaLista.banka, kursnaLista.brojKursneListe, osnovnaValuta, premaValuti";
+				query = "select k from KursUValuti k where k.premaValuti.id = ? order by kursnaLista.banka, kursnaLista.brojKursneListe, osnovnaValuta, premaValuti";
 				break;
 			}
 			long filterId = Long.parseLong(flash.get(KonstanteSesije.FILTER_ID)); 

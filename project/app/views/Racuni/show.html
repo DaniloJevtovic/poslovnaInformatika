@@ -38,18 +38,32 @@ function sync(data){
     
     highlightedId = data[6];
 }
-/*
-function nextForm(id){
-	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
-}
-*/
+
+    function nextDnevnaStanja(){
+    	if(highlightedId==null || highlightedId == "") {
+    		alert("Racun nije izabran!");
+    	} else {
+    		var string = '/Racuni/nextDnevnaStanja?filterId=' + highlightedId;
+    		$(location).attr('href', '/Racuni/nextDnevnaStanja?filterId=' + highlightedId);	
+    	}
+    }
+    
+    function nextUkidanja(){
+    	if(highlightedId==null || highlightedId == "") {
+    		alert("Racun nije izabran!");
+    	} else {
+    		var string = '/Racuni/nextUkidanja?filterId=' + highlightedId;
+    		$(location).attr('href', '/Racuni/nextUkidanja?filterId=' + highlightedId);	
+    	}
+    }
+
 function remove(id){
 	$(location).attr('href', '/Racuni/delete?id=' +id)
 }
 
 </script>
 
-#{StandardFormToolbar nextForms : [[action : '', disp : 'Dnevna Stanja'],[action : '', disp : 'ukidanja']] /}
+#{StandardFormToolbar nextForms : [[action : 'nextDnevnaStanja()', disp : 'Dnevna Stanja'],[action : 'nextUkidanja()', disp : 'Ukidanja']] /}
 
 <div class = "container-fluid">
 <h1>Računi</h1>
@@ -179,4 +193,4 @@ function remove(id){
 
 #{ModalTemplate modalId : 'klijenti_modal', modalTitle : 'Klijenti', selectId : 'klijent', table : 'tags/TabelaKlijenti.html', data : klijenti, tableId: 'tabela_klijenti', hiddenColumns : '[5,6,7,8,9,10]', idColumn:'10' /}
 #{ModalTemplate modalId : 'valute_modal', modalTitle: 'Valute', selectId : 'valuta', table : 'tags/TabelaValute.html', data : valute, tableId: 'tabela_valute', hiddenColumns : '[3,4]', idColumn:'3' /}
-#{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[3,4,5,6,7,8,9]', idColumn:'9' /}
+#{ModalTemplate modalId : 'banke_modal', modalTitle: 'Banke', selectId : 'banka', table : 'tags/TabelaBanke.html', data : banke, tableId: 'tabela_banke', hiddenColumns : '[4,5,6,7,8]', idColumn:'0' /}

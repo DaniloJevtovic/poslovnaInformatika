@@ -10,9 +10,16 @@ import java.util.List;
 
 
 
+
+import controllers.helpers.Konstante;
+import controllers.helpers.PomocneOperacije;
+import controllers.session.KonstanteSesije;
+import models.Banka;
 import models.Drzava;
+import models.Klijent;
 import models.Racun;
 import models.Ukidanje;
+import models.Valuta;
 import models.VrstaPlacanja;
 import play.mvc.Controller;
 
@@ -24,49 +31,42 @@ public class Ukidanja extends Controller {
 	public Ukidanja() {
 		// TODO Auto-generated constructor stub
 	}
-	public static void show(String mode,Long selected){
-		List<Ukidanje> ukidanje = Ukidanje.findAll();
-		List<Racun> ukidRacuna=Racun.findAll();
-		if(mode == null || mode.equals(""))
-			mode = "edit";
-		render(ukidanje,ukidRacuna, mode,selected);
+	public static void showDefault() {
+		KonstanteSesije.clearFlashConfig(flash);
+		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_UKIDANJE, KonstanteSesije.FILTRI_UKIDANJA)) {
+			KonstanteSesije.clearFlashFilter(flash);
+		}
+		flash.keep();
+		show(Konstante.KONF_IZMJENA, "");
 	}
 	
-	public static void create(Date datumUkidanja, String sredSePrenNaRacun){
+	public static void show(String mode, String highlightedId) {
+		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
+			List<Ukidanje> ukidanje;
+			if(Konstante.IME_ENTITETA_UKIDANJE.equals(flash.get(KonstanteSesije.TARGET_ENTITY))) {
+				String query = "";
+				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
+				case Konstante.IME_ENTITETA_RACUN:
+					query = "select u from Ukidanje u where u.racun.id = ?";
+					break;
+				}
+				long filterId = Long.parseLong(flash.get(KonstanteSesije.FILTER_ID)); 
+				ukidanje = Ukidanje.find(query, filterId).fetch();
+			} else {
+				ukidanje = Ukidanje.findAll();
+			}
+			KonstanteSesije.fillFlash(flash, mode, highlightedId);
+			render(ukidanje);
+		} else {
+			throw new IllegalArgumentException(PomocneOperacije.porukaNevazecaKonfiguracija(mode));
+		}
+	}
 
-		Ukidanje ukidanje = new Ukidanje(datumUkidanja, sredSePrenNaRacun);
-		ukidanje.save();		
-		show("add",ukidanje.id);
-	}
-	
-	public static void edit(Long id, Date datumUkidanja, String sredSePrenNaRacun){
-		Ukidanje ukidanje = Ukidanje.findById(id);
-		ukidanje.datumUkidanja=datumUkidanja;
-		ukidanje.sredSePrenNaRacun=sredSePrenNaRacun;
-		ukidanje.save();
-		show("edit",ukidanje.id);
-	}
-	
 	public static void filter(Long id,Date datumUkidanja, String sredSePrenNaRacun){
 		List<Ukidanje> ukidanje = Ukidanje.find("bydatumUkidanjaLikeAndsredSePrenNaRacunLike", "%" + datumUkidanja + "%", "%" + sredSePrenNaRacun + "%").fetch();
 		String mode = "edit";
 		renderTemplate("Ukidanja/show.html", ukidanje, mode);
 	}
 	
-	public static void delete(Long id){
-		Ukidanje ukidanje = Ukidanje.findById(id);
-		ukidanje.delete();
-		Ukidanje prviVeci=Ukidanje.find("byIdGreaterThan", id).first();
-		   if(prviVeci!=null) {
-			    show("edit", prviVeci.id);
-			    return;
-		   }
-		   Ukidanje prviManji=Ukidanje.find("select k from Ukidanje k where k.id < ? order by id desc", id).first();
-				   if(prviManji!=null) {
-					    show("edit", prviManji.id);
-					    return;
-				   }	   	
-		   show("edit", null);
-		  
-	}
+
 }

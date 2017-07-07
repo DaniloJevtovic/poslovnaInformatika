@@ -143,11 +143,29 @@ public class Racuni extends Controller {
 		renderTemplate("Racuni/show.html", Konstante.KONF_IZMJENA, racuni);
 	}
 	
-	public static void nextDnevnaStanja() {
-		
+	public static void nextDnevnaStanja(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_RACUN,
+				Konstante.IME_ENTITETA_DNEVNO_STANJE_RACUNA,
+				filterId);
+		flash.keep();
+		DnevnaStanjaRacuna.showDefault();
 	}
 	
-	public static void nextUkidanja() {
-		
+	public static void nextUkidanja(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_RACUN,
+				Konstante.IME_ENTITETA_UKIDANJE,
+				filterId);
+		flash.keep();
+		//Ukidanja.showDefault();
 	}
 }

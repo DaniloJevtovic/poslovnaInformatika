@@ -3,19 +3,29 @@
 
 <script>
 
-function sync(item){
-	datumUkidanja = item.find(".datumUkidanja").html()
-    sredSePrenNaRacun= item.find(".sredSePrenNaRacun").html()
-    id = item.find(".id").html()
-    $("#datumUkidanja").val(datumUkidanja);
-    $("#sredSePrenNaRacun").val(sredSePrenNaRacun);
-    $("#id").val(id);
+$(document).ready(function() {
+	highlightedId = "${flash.highlightedId}";
+
+	$("#search").click(function() {
+		var loc = '@{Racuni.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
+	$("#refresh").click(function() {
+		var mode = "${flash.mode}";
+		$(location).attr('href', '@{Racuni.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
+});
+
+
+function sync(data){
+	$("#racun").val(data[0]);
+	$("#sredSePrenNaRacun").val(data[1]);
+	$("#datumUkidanja").val(data[2]);
+    $("#id").val(data[3]);
+    
+    highlightedId = data[3];
 }
 
-/*function nextForm(id){
-	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
-}
-*/
 function remove(id){
 	$(location).attr('href', '/Ukidanja/delete?id=' +id)
 }
@@ -25,72 +35,30 @@ $(document).ready(function() {
 });
 </script>
 
-<p>
-<ul>
-  <li><a href="/" id = "drzave"><img src="@{'/public/images/home.png'}"/></a></li>
-  
-  <li><a href="@{Ukidanja.show("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
-  <li><a href="#" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
-  <li><a id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
-  <li><a id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
-  <li><a id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
-  <li><a id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
-  <li><a href="@{Ukidanja.show("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
-  <li><a href="@{Ukidanja.show("edit")}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
-  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
-</ul>
-</p>
+#{StandardFormToolbar /}
 
 <div class = "container-fluid">
 <h1>Ukidanje</h1>
 
-<table class = "maintable">
-	<tr class = "header">
-	   <th>Datum ukidanja</th>
-	   <th>Sredstva se prenose na racun</th>
-	</tr>
-#{list items:ukidanje, as:'ukidanja'}
-	<tr>
-		<tr #{if ukidanja.id == selected} class = "highlighted" #{/if}>
-		<td class = "datumUkidanja">${ukidanja.datumUkidanja}</td>
-		<td class = "sredSePrenNaRacun">${ukidanja.sredSePrenNaRacun}</td>
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${ukidanja.id}</td>
-	</tr>
-#{/list}
-</table>
+#{TabelaUkidanja data : ukidanje, tableId: 'tabela_ukidanja', hiddenColumns : '[2]', idColumn:'2'/}
 
 <div class = "panel">
 	<p>
-		<div><b>Status: ${mode}</b></div> <br>
-			#{set 'action'}
-				#{if mode == 'add'}
-					@{Ukidanja.create()}
-				#{/if}
-				#{elseif mode == 'edit'}
-					@{Ukidanja.edit()}
-				#{/elseif}
-				#{else}
-					@{Ukidanja.filter()}
-				#{/else}
-			#{/set}
-		
-			<form action=${action} method="post">
+		<div><b>Status: read-only</b></div> <br>
+			<form>
 				#{field 'id'}
 					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				<p>
 				#{field 'racun'}
 					<label for = "${field.id}">Racun</label>
-					<select style="margin-left:1em" name = "${field.name}" id = "${field.id}"/>
-					#{list items:ukidRac, as:'racuni'}
-					<option value = "${valuta.id}">${racuni.brojRacuna}</option>
-					#{/list}
-					</select>
-					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#racuni_modal">...</button>
-					
+					<input type="text"  id="${field.id}" name="${field.name}">
+				#{/}
+				</p>
+				<p>
+				#{field 'sredSePrenNaRacun'}
+					<label for = "${field.id}">Sredstva se prenose na racun</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
 				#{/}
 				</p>
 				<p>
@@ -102,12 +70,6 @@ $(document).ready(function() {
 					</script>				
 				#{/}
 				</p>
-				<p>
-				#{field 'sredSePrenNaRacun'}
-					<label for = "${field.id}">Sredstva se prenose na racun</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>					
-				#{/}
-				</p>
 
 				<div id = "formActions">
 					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
@@ -117,6 +79,3 @@ $(document).ready(function() {
 	</p>
 </div>
 </div>
-
-#{ModalTemplate modalId : 'racuni_modal', modalTitle: 'Racun', selectId : 'racun', table : 'tags/TabelaRacuni.html', data : ukidRac, tableId: 'Racun', hiddenColumns : '[6,7,8,9]', idColumn:'3' /}
-
