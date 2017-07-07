@@ -8,12 +8,21 @@ import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.example.instrumenti_placanja.InstrumentiPlacanja;
 import org.example.instrumenti_placanja.NalogZaIsplatu;
 import org.example.instrumenti_placanja.NalogZaPrenos;
 import org.example.instrumenti_placanja.NalogZaUplatu;
 import org.example.instrumenti_placanja.SredstvoPlacanja;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import controllers.helpers.PomocneOperacije;
@@ -21,7 +30,9 @@ import controllers.validation.ValidacijaKlijenta;
 import models.AnalitikaIzvoda;
 import models.DnevnoStanjeRacuna;
 import models.Klijent;
+import models.MedjubankarskiPrenos;
 import models.Racun;
+import models.StavkaKliringa;
 import models.VrstaPlacanja;
 
 public class Obrada {
@@ -421,10 +432,98 @@ public class Obrada {
 		}
 		if((racunDuznika!=null) || (racunPovjerioca!=null)) {
 			analitika.save();
+			generisanjeNalogaZaMedjubankarskiTransfer(analitika);
 		}
 	}
 	
 	public String izvjestaj() {
 		return biljeznik.getIzlaz();
+	}
+	
+	public static void generisanjeNalogaZaMedjubankarskiTransfer(AnalitikaIzvoda analitikaIzvoda) {
+
+		ArrayList<MedjubankarskiPrenos> medjubankarskiPrenosi = new ArrayList<>();
+
+		// RTGS
+		if (analitikaIzvoda.iznos.compareTo(new BigDecimal(250000)) > 0 || analitikaIzvoda.hitno.equals(true)) {
+
+			MedjubankarskiPrenos medjubankarskiPrenos = new MedjubankarskiPrenos(analitikaIzvoda.datumPrijema,
+					analitikaIzvoda.racunDuznika, analitikaIzvoda.racunPovjerioca, analitikaIzvoda.iznos.longValue(),
+					"MT103 (RTGS)");
+
+			medjubankarskiPrenos.save();
+			medjubankarskiPrenosi.add(medjubankarskiPrenos);
+
+			StavkaKliringa stavkaKliringa = new StavkaKliringa(null, analitikaIzvoda, medjubankarskiPrenos);
+			stavkaKliringa.save();
+		}
+
+		// kliring
+		else {
+			MedjubankarskiPrenos medjubankarskiPrenos = new MedjubankarskiPrenos(analitikaIzvoda.datumPrijema,
+					analitikaIzvoda.racunDuznika, analitikaIzvoda.racunPovjerioca, analitikaIzvoda.iznos.longValue(),
+					"MT102 (KLIRING)");
+
+			medjubankarskiPrenos.save();
+			medjubankarskiPrenosi.add(medjubankarskiPrenos);
+
+			StavkaKliringa stavkaKliringa = new StavkaKliringa(null, analitikaIzvoda, medjubankarskiPrenos);
+			stavkaKliringa.save();
+		}
+
+	}
+	
+	public static void exportNalogaZaMedjubanakarskiPrenosUXml(){
+		try {
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			
+			//root element
+			Document document = documentBuilder.newDocument();
+			Element root = document.createElement("medjubankarski_prenosi");
+			document.appendChild(root);
+			
+			List<MedjubankarskiPrenos> medjubankarskiPrenosi  = MedjubankarskiPrenos.findAll();
+			
+			for (MedjubankarskiPrenos medjubankarskiPrenos : medjubankarskiPrenosi) {
+				
+				Element nalog = document.createElement("nalog");
+				nalog.setAttribute("rbr", medjubankarskiPrenos.getId().toString());
+				
+				Element datumPrenosa = document.createElement("datum_prenosa");
+				datumPrenosa.setTextContent(medjubankarskiPrenos.datumKliringa.toString());
+				nalog.appendChild(datumPrenosa);
+
+				Element racunBanDuz = document.createElement("racun_banke_duznika");
+				racunBanDuz.setTextContent(medjubankarskiPrenos.racBankeDuz.toString());
+				nalog.appendChild(racunBanDuz);
+
+				Element ukupanIznos = document.createElement("ukupan_iznos");
+				ukupanIznos.setTextContent(medjubankarskiPrenos.ukupanIznos.toString());
+				nalog.appendChild(ukupanIznos);
+				
+				Element vrstaPrenosa = document.createElement("vrsta_prenosa");
+				vrstaPrenosa.setTextContent(medjubankarskiPrenos.vrstaPrenosa.toString());
+				nalog.appendChild(vrstaPrenosa);
+				
+				root.appendChild(nalog);
+			}
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			
+			DOMSource domSource = new DOMSource(document);
+			StreamResult streamResult = new StreamResult(new File("./nalozi/medjubankarskiTransferi_export.xml"));
+			
+			transformer.transform(domSource, streamResult);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}	
 	}
 }

@@ -124,4 +124,57 @@ public class Valute extends Controller {
 		List<Valuta> valute = Valuta.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("Valute/show.html", Konstante.KONF_IZMJENA, valute);
 	}
+	
+	public static void nextKurseviUValutiOsnovna(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_OSNOVNA_VALUTA,
+				Konstante.IME_ENTITETA_KURS_U_VALUTI,
+				filterId);
+		flash.keep();
+		KurseviUValuti.showDefault();
+	}
+	
+	public static void nextKurseviUValutiPrema(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_PREMA_VALUTI,
+				Konstante.IME_ENTITETA_KURS_U_VALUTI,
+				filterId);
+		flash.keep();
+		KurseviUValuti.showDefault();
+	}
+	
+	public static void nextRacuni(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_VALUTA,
+				Konstante.IME_ENTITETA_RACUN,
+				filterId);
+		flash.keep();
+		Racuni.showDefault();
+	}
+	
+	public static void nextAnalitike(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_VALUTA,
+				Konstante.IME_ENTITETA_ANALITIKA_IZVODA,
+				filterId);
+		flash.keep();
+		AnalitikeIzvoda.showDefault();
+	}
+	
 }

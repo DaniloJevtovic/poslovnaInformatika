@@ -14,6 +14,10 @@ $(document).ready(function() {
 		var loc = '@{Valute.show()}' + '?mode=add&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
 	});
+	$("#edit").click(function() {
+		var loc = '@{Valute.show()}' + '?mode=edit&highlightedId=' + highlightedId;
+		$(location).attr('href', loc);
+	});
 	$("#refresh").click(function() {
 		var mode = "${flash.mode}";
 		$(location).attr('href', '@{Valute.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
@@ -29,18 +33,49 @@ function sync(data){
     
     highlightedId = data[3];
 }
-/*
-function nextForm(id){
-	$(location).attr('href', '/NaseljenaMesta/nextForm?drzava_id=' +id);	
-}
-*/
+
 function remove(id){
 	$(location).attr('href', '/Valute/delete?id=' +id)
 }
 
+function nextKurseviUValutiOsnovna(){
+	if(highlightedId==null || highlightedId == "") {
+		alert("Valuta nije izabrana!");
+	} else {
+		var string = '/Valute/nextKurseviUValutiOsnovna?filterId=' + highlightedId;
+		$(location).attr('href', '/Valute/nextKurseviUValutiOsnovna?filterId=' + highlightedId);	
+	}
+}
+
+function nextKurseviUValutiPrema(){
+	if(highlightedId==null || highlightedId == "") {
+		alert("Valuta nije izabrana!");
+	} else {
+		var string = '/Valute/nextKurseviUValutiPrema?filterId=' + highlightedId;
+		$(location).attr('href', '/Valute/nextKurseviUValutiPrema?filterId=' + highlightedId);	
+	}
+}
+
+function nextRacuni(){
+	if(highlightedId==null || highlightedId == "") {
+		alert("Valuta nije izabrana!");
+	} else {
+		var string = '/Valute/nextRacuni?filterId=' + highlightedId;
+		$(location).attr('href', '/Valute/nextRacuni?filterId=' + highlightedId);	
+	}
+}
+
+function nextAnalitike(){
+	if(highlightedId==null || highlightedId == "") {
+		alert("Valuta nije izabrana!");
+	} else {
+		var string = '/Valute/nextAnalitike?filterId=' + highlightedId;
+		$(location).attr('href', '/Valute/nextAnalitike?filterId=' + highlightedId);	
+	}
+}
 </script>
 
-#{StandardFormToolbar /}
+#{StandardFormToolbar nextForms : [[disp:'Kurs u valuti po osnovnoj', action:'nextKurseviUValutiOsnovna()'],[disp:'Kurs u valuti po prema', action:'nextKurseviUValutiPrema()'],[disp:'Racuni', action:'nextRacuni()'],[disp:'Analitike izvoda', action:'nextAnalitike()']]/}
 
 <div class = "container-fluid">
 <h1>Valute</h1>

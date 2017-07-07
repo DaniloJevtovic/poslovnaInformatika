@@ -45,8 +45,12 @@ function sync(data){
 }
 
 function nextRacuni(){
-	var string = '/Klijenti/nextRacuni?filterId=' + highlightedId;
-	$(location).attr('href', '/Klijenti/nextRacuni?filterId=' + highlightedId);	
+	if(highlightedId==null || highlightedId == "") {
+		alert("Korisnik nije izabran!");
+	} else {
+		var string = '/Klijenti/nextRacuni?filterId=' + highlightedId;
+		$(location).attr('href', '/Klijenti/nextRacuni?filterId=' + highlightedId);	
+	}
 }
 
 function remove(id){

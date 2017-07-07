@@ -35,7 +35,7 @@ public class DnevnaStanjaRacuna extends Controller {
 	public static void show(String mode, String highlightedId){
 		if(PomocneOperacije.konfiguracijaJeDozvoljena(mode)) {
 			List<DnevnoStanjeRacuna> dnevnaStanjaRacuna;
-			if(Konstante.IME_ENTITETA_ANALITIKA_IZVODA.equals(flash.get(KonstanteSesije.TARGET_ENTITY))) {
+			if(Konstante.IME_ENTITETA_DNEVNO_STANJE_RACUNA.equals(flash.get(KonstanteSesije.TARGET_ENTITY))) {
 				String query = "";
 				switch(flash.get(KonstanteSesije.FILTER_ENTITY)) {
 				case Konstante.IME_ENTITETA_RACUN:

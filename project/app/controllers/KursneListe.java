@@ -13,6 +13,7 @@ import controllers.helpers.QueryBuilder;
 import controllers.session.KonstanteSesije;
 import controllers.validation.ValidacijaKursneListe;
 import models.Banka;
+import models.KursUValuti;
 import models.KursnaLista;
 import models.Valuta;
 import play.data.binding.As;
@@ -132,6 +133,19 @@ public class KursneListe extends Controller {
 		queryBuilder.buildGreaterThanEqualsQuery("PrimSeDo", primSeDoVeceJednako);
 		List<KursnaLista> kursneListe = KursnaLista.find(queryBuilder.getQuery(), queryBuilder.getParams()).fetch();
 		renderTemplate("KursneListe/show.html", kursneListe);
+	}
+	
+	public static void nextKurseviUValuti(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_KURSNA_LISTA,
+				Konstante.IME_ENTITETA_KURS_U_VALUTI,
+				filterId);
+		flash.keep();
+		KurseviUValuti.showDefault();
 	}
 
 }
