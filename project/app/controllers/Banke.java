@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import controllers.helpers.Konstante;
+import controllers.session.KonstanteSesije;
 import models.Banka;
 import models.Drzava;
 import net.sf.jasperreports.engine.JRException;
@@ -76,6 +78,32 @@ public class Banke extends Controller {
 		Banka banka = Banka.findById(id);
 		banka.delete();
 		show("edit");
+	}
+	
+	public static void nextKursneListe(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_BANKA,
+				Konstante.IME_ENTITETA_KURSNA_LISTA,
+				filterId);
+		flash.keep();
+		KursneListe.showDefault();
+	}
+	
+	public static void nextRacuni(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_BANKA,
+				Konstante.IME_ENTITETA_RACUN,
+				filterId);
+		flash.keep();
+		Racuni.showDefault();
 	}
 	
 	public static void reportPDF(Long id_banke) throws SQLException, JRException {

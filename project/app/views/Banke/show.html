@@ -4,24 +4,24 @@
 <script>
 $(document).ready(function() {
 	highlightedId = "${flash.highlightedId}";
-	/*
+	
 	selectedRow = null;
 	$("#search").click(function() {
-		var loc = '@{Klijenti.show()}' + '?mode=search&highlightedId=' + highlightedId;
+		var loc = '@{Banke.show()}' + '?mode=search&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
 	});
 	$("#add").click(function() {
-		var loc = '@{Klijenti.show()}' + '?mode=add&highlightedId=' + highlightedId;
+		var loc = '@{Banke.show()}' + '?mode=add&highlightedId=' + highlightedId;
 		$(location).attr('href', loc);
 	});
 	$("#edit").click(function() {
-		var loc = '@{Klijenti.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
+		var loc = '@{Banke.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
 		$(location).attr('href', loc);
 	});
 	$("#refresh").click(function() {
 		var mode = "${flash.mode}";
-		$(location).attr('href', '@{Klijenti.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
-	});*/
+		$(location).attr('href', '@{Banke.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
+	});
 });
 	function sync(data){
 		$("#id").val(data[0]);
@@ -43,6 +43,24 @@ $(document).ready(function() {
 		$(location).attr('href', '/'+ path +'/nextForm?banka_id='+id);
 	}
 	
+	function nextKursneListe(){
+    	if(highlightedId==null || highlightedId == "") {
+    		alert("Banka nije selektovana!");
+    	} else {
+    		var string = '/Banke/nextKursneListe?filterId=' + highlightedId;
+    		$(location).attr('href', '/Banke/nextKursneListe?filterId=' + highlightedId);	
+    	}
+    }
+	
+	function nextRacuni(){
+    	if(highlightedId==null || highlightedId == "") {
+    		alert("Banka nije selektovana!");
+    	} else {
+    		var string = '/Banke/nextRacuni?filterId=' + highlightedId;
+    		$(location).attr('href', '/Banke/nextRacuni?filterId=' + highlightedId);	
+    	}
+    }
+	
 	function openReportModal() {
 		//data-toggle="modal" data-target="#modal_report"
 		var table = $('#tabela_banke').DataTable();
@@ -61,6 +79,8 @@ $(document).ready(function() {
 	}
 </script>
 
+#{StandardFormToolbar nextForms : [[action : 'nextKursneListe()', disp : 'Kursne liste'],[action : 'nextRacuni()', disp : 'Racuni']] /}
+<!--  
 <p>
 	<ul class="dropdown">
 		<li><a href="/" id = "banke"><img src="@{'/public/images/home.png'}"/></a></li>
@@ -76,7 +96,6 @@ $(document).ready(function() {
   		<li><a href="@{Banke.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
   		<li><a href="@{Banke.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   		<li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  		<!-- <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li> -->
   		
   		<li>
 		<div class="dropdown show">
@@ -93,6 +112,7 @@ $(document).ready(function() {
   		#{include 'tags/ReportButton.html' /}
 	</ul>
 </p>
+-->
 
 <div class = "container-fluid">
 	<h1>Banke</h1>
