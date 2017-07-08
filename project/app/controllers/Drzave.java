@@ -19,12 +19,15 @@ public class Drzave extends Controller{
 	}
 	
 	public static void showDefault() {
-		KonstanteSesije.clearFlashConfig(flash);
-		if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_DRZAVA, KonstanteSesije.FILTRI_DRZAVE)) {
-			KonstanteSesije.clearFlashFilter(flash);
-		}
-		flash.keep();
-		show(Konstante.KONF_DODAVANJE, "");
+		KonstanteSesije.resetSession(flash);
+		show(Konstante.KONF_IZMJENA, "");
+		
+		//KonstanteSesije.clearFlashConfig(flash);
+		//if(!KonstanteSesije.filterIsValid(flash, Konstante.IME_ENTITETA_DRZAVA, KonstanteSesije.FILTRI_DRZAVE)) {
+			//KonstanteSesije.clearFlashFilter(flash);
+		//}
+		//flash.keep();
+		//show(Konstante.KONF_DODAVANJE, "");
 	}
 	
 	public static void show(String mode, String highlightedId){

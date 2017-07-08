@@ -13,6 +13,10 @@
 			var loc = '@{Drzave.show()}' + '?mode=add&highlightedId=' + highlightedId;
 			$(location).attr('href', loc);
 		});
+		$("#edit").click(function() {
+			var loc = '@{Drzave.show()}' + '?mode=edit&highlightedId=' + highlightedId;		
+			$(location).attr('href', loc);
+		});
 		$("#refresh").click(function() {
 			var mode = "${flash.mode}";
 			$(location).attr('href', '@{Drzave.show()}' + '?mode=' + mode + '&highlightedId=' + highlightedId);
