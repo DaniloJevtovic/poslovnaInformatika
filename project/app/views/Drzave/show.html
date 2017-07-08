@@ -26,6 +26,24 @@
 		$("#id").val(data[2]);
 		highlightedId = data[2];
 	}
+	
+	function nextNaseljenaMjesta(){
+    	if(highlightedId==null || highlightedId == "") {
+    		alert("Drzava nije selektovana!");
+    	} else {
+    		var string = '/Drzave/nextNaseljenaMjesta?filterId=' + highlightedId;
+    		$(location).attr('href', '/Drzave/nextNaseljenaMjesta?filterId=' + highlightedId);	
+    	}
+    }
+	
+	function nextValute(){
+    	if(highlightedId==null || highlightedId == "") {
+    		alert("Drzava nije selektovana!");
+    	} else {
+    		var string = '/Drzave/nextValute?filterId=' + highlightedId;
+    		$(location).attr('href', '/Drzave/nextValute?filterId=' + highlightedId);	
+    	}
+    }
 
 	/*
 	function sync(item) {
@@ -53,7 +71,9 @@
 </script>
 
 
+#{StandardFormToolbar nextForms : [[action : 'nextNaseljenaMjesta()', disp : 'Naseljena Mjesta'],[action : 'nextValute()', disp : 'Valute']] /}
 
+<!--  
 <p>
 
 <ul class="dropdown">
@@ -70,7 +90,6 @@
   <li><a href="@{Drzave.show('add')}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
   <li><a href="@{Drzave.show('edit')}" id = "edit"><img src="@{'/public/images/edit.png'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
-  <!-- <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li> -->
 
 	<li>
 		<div class="dropdown show">
@@ -89,6 +108,8 @@
 </ul>
 
 </p>
+
+-->
 
 <div class = "container-fluid">
 	<h1>Države</h1>

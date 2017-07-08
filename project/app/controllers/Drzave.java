@@ -82,6 +82,33 @@ public class Drzave extends Controller{
 	}
 	
 	
+	public static void nextNaseljenaMjesta(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_DRZAVA,
+				Konstante.IME_ENTITETA_NASELJENO_MESTO,
+				filterId);
+		flash.keep();
+		NaseljenaMesta.showDefault();
+	}
+	
+	public static void nextValute(String filterId) {
+		if(filterId==null || "".equals(filterId)) {
+			throw new IllegalStateException();
+		}
+		KonstanteSesije.insertFlashFilter(
+				flash,
+				Konstante.IME_ENTITETA_DRZAVA,
+				Konstante.IME_ENTITETA_VALUTA,
+				filterId);
+		flash.keep();
+		Valute.showDefault();
+	}
+	
+	
 	/*
 	public static void delete(Long id){
 		Drzava drzava = Drzava.findById(id);
