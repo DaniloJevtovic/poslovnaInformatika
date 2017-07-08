@@ -406,8 +406,47 @@ public class Obrada {
 			biljeznik.dodajLinijuUspjeh();
 			
 		} else {
-			biljeznik.dodajRazlogNeuspjeha("Medjubankarski transfer nije implementiran.");
-			//TODO generisati poruku o medjubankarskom transferu
+			AnalitikaIzvoda analitika = new AnalitikaIzvoda();
+			
+			analitika.datumPrijema = PomocneOperacije.getStartOfDay(
+					pre.getDatumPrijema().toGregorianCalendar().getTime());
+			analitika.datumValute = PomocnikZaUpite.datumZaSredstvo(pre);
+			analitika.svrhaPlacanja = pre.getSvrhaPlacanja();
+			analitika.iznos = pre.getIznos();
+			analitika.hitno = false;
+			analitika.naseljenoMjesto = null;
+			analitika.vrstaPlacanja = vrstaPlacanja;
+			
+			String nazivDuznika = validacija.nazivKlijentaRacuna(racunDuznika);
+			if(!nazivDuznika.equals(pre.getNazivDuznika())) {
+				biljeznik.dodajTekstNazivDuznika(pre.getNazivDuznika(), nazivDuznika);
+			}
+			analitika.duzNalogodavac = nazivDuznika;
+			analitika.racunDuznika = racunDuznika.brojRacuna;
+			analitika.modelZaduzenja = (pre.getModelZaduzenja()!=null)?(pre.getModelZaduzenja().intValue()):(null);
+			analitika.pozNaBrojZaduzenja = pre.getPozivNaBrojZaduzenja();
+			analitika.dnevnoStanjeNaTeret = posljednjeStanjeDuznika;
+			
+			String nazivPovjerioca = validacija.nazivKlijentaRacuna(racunPovjerioca);
+			if(!nazivPovjerioca.equals(pre.getNazivPovjerioca())) {
+				biljeznik.dodajTekstNazivPovjerioca(pre.getNazivPovjerioca(), nazivPovjerioca);
+			}
+			analitika.povjerPrimalac = nazivPovjerioca;
+			analitika.racunPovjerioca = racunPovjerioca.brojRacuna;
+			analitika.modelOdobrenja = (pre.getModelOdobrenja()!=null)?(pre.getModelOdobrenja().intValue()):(null);
+			analitika.pozNaBrojOdobrenja = pre.getPozivNaBrojOdobrenja();
+			
+			analitika.valuta = racunDuznika.valuta;
+			
+			analitika.dnevnoStanjeNaTeret = posljednjeStanjeDuznika;
+			racunDuznika.save();
+			posljednjeStanjeDuznika.save();
+			
+			analitika.save();
+			generisanjeNalogaZaMedjubankarskiTransfer(analitika);
+			biljeznik.dodajLinijuUspjeh();
+			
+			
 		}
 		
 	}
@@ -432,7 +471,7 @@ public class Obrada {
 		}
 		if((racunDuznika!=null) || (racunPovjerioca!=null)) {
 			analitika.save();
-			generisanjeNalogaZaMedjubankarskiTransfer(analitika);
+			
 		}
 	}
 	
@@ -450,7 +489,8 @@ public class Obrada {
 			MedjubankarskiPrenos medjubankarskiPrenos = new MedjubankarskiPrenos(analitikaIzvoda.datumPrijema,
 					analitikaIzvoda.racunDuznika, analitikaIzvoda.racunPovjerioca, analitikaIzvoda.iznos.longValue(),
 					"MT103 (RTGS)");
-
+			analitikaIzvoda.hitno = true;
+			analitikaIzvoda.save();
 			medjubankarskiPrenos.save();
 			medjubankarskiPrenosi.add(medjubankarskiPrenos);
 

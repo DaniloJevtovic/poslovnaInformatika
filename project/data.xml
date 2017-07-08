@@ -85,4 +85,34 @@
 		<iznos>30000.00</iznos>
 		<racun_duznika>123-0000000000001-89</racun_duznika>
 	</instrument_placanja>
+	<instrument_placanja xsi:type="NalogZaUplatu">
+		<naziv_duznika>Pero Peric</naziv_duznika>
+		<naziv_povjerioca>Preduzece A</naziv_povjerioca>
+		<svrha_placanja>Uplata na pracun preduzeca</svrha_placanja>
+		<datum_prijema>2017-06-30</datum_prijema>
+		<datum_izvrsenja>2017-07-04</datum_izvrsenja>
+		<sifra_placanja>189</sifra_placanja>
+		<valuta>BAM</valuta>
+		<iznos>200000.00</iznos>
+		<racun_povjerioca>124-0000000000000-47</racun_povjerioca>
+		<model_odobrenja>97</model_odobrenja>
+		<poziv_na_broj_odobrenja>0ABA0457487</poziv_na_broj_odobrenja>
+	</instrument_placanja>
+	<instrument_placanja xsi:type="NalogZaPrenos">
+		<naziv_duznika>Preduzece A</naziv_duznika>
+		<naziv_povjerioca>Preduzece B</naziv_povjerioca>
+		<svrha_placanja>Nabavka sirovina</svrha_placanja>
+		<datum_prijema>2017-06-30</datum_prijema>
+		<datum_izvrsenja>2017-07-04</datum_izvrsenja>
+		<sifra_placanja>220</sifra_placanja>
+		<valuta>BAM</valuta>
+		<iznos>60000.00</iznos>
+		<racun_duznika>124-0000000000000-47</racun_duznika>
+		<model_zaduzenja>97</model_zaduzenja>
+		<poziv_na_broj_zaduzenja>8AK89483</poziv_na_broj_zaduzenja>
+		<racun_povjerioca>125-0000000000000-02</racun_povjerioca>
+		<model_odobrenja>97</model_odobrenja>
+		<poziv_na_broj_odobrenja>545402004A4</poziv_na_broj_odobrenja>
+	</instrument_placanja>
+	
 </instrumenti_placanja>

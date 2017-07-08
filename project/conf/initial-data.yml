@@ -211,7 +211,7 @@ Racun(preduzeceAB1) :
  klijent : preduzeceA
 
 Racun(preduzeceBC1) : 
- brojRacuna : 125-0000000000000-2
+ brojRacuna : 125-0000000000000-02
  datumOtvaranja : 2017-06-26
  vazeci : true
  valuta : marka
