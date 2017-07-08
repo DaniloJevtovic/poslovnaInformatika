@@ -1,0 +1,25 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Šifra mjesta</th> 
+			<th>Naziv mjesta</th>
+			<th>PTT Oznaka</th>
+			<th>Država</th>
+			<th>Id</th>
+			<th>Id Drzave</th>	
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'naseljenoMjesto'}
+		<tr>
+			<td class = "oznaka">${naseljenoMjesto.oznaka}</td>
+			<td class = "naziv">${naseljenoMjesto.naziv}</td>
+			<td class = "postanskiBroj">${naseljenoMjesto.postanskiBroj}</td>
+			<td class = "drzava">#{if naseljenoMjesto.drzava}${naseljenoMjesto.drzava.naziv}#{/if}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${naseljenoMjesto.id}</td>
+			<td class = "drzava_id">#{if naseljenoMjesto.drzava}${naseljenoMjesto.drzava.id}#{/if}</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}

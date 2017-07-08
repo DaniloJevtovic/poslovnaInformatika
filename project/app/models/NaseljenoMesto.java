@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import models.constants.KonstanteNaseljenogMjesta;
 import play.data.validation.Max;
 import play.db.jpa.Model;
 
@@ -13,7 +14,9 @@ import play.db.jpa.Model;
 public class NaseljenoMesto extends Model {
 
 	public String oznaka;
+	@Column(unique=false, nullable=false, length=KonstanteNaseljenogMjesta.MAKSIMALNA_DUZINA_NAZIV)
 	public String naziv;
+	@Column(unique=false, nullable=false, length=KonstanteNaseljenogMjesta.MAKSIMALNA_DUZINA_PTT)
 	public String postanskiBroj;
 	
 	@ManyToOne
@@ -31,14 +34,12 @@ public class NaseljenoMesto extends Model {
 		this.drzava = drzava;
 	}
 	
-	public NaseljenoMesto(Long id, String oznaka, String naziv, String pb, Drzava drzava) {
+	public NaseljenoMesto(String oznaka, String naziv, String pb) {
 		// TODO Auto-generated constructor stub
 		super();
-		this.id = id;
 		this.oznaka = oznaka;
 		this.naziv = naziv;
 		this.postanskiBroj = pb;
-		this.drzava = drzava;
 	}
 
 }

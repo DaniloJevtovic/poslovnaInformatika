@@ -50,14 +50,19 @@ public class Drzave extends Controller{
 	}
 	
 	public static void edit(Long id, String oznaka, String naziv){
-		Drzava drzava = Drzava.findById(id);
-		if(drzava != null){
-			drzava.oznaka = oznaka;
-			drzava.naziv = naziv;
-			drzava.save();
-			show(Konstante.KONF_IZMJENA, id.toString());
+		ValidacijaDrzave.validate(validation, oznaka, naziv);
+		if(validation.hasErrors()) {
+			show(Konstante.KONF_DODAVANJE, "");
 		} else {
-			notFound(PomocneOperacije.porukaNijePronadjen(Konstante.IME_ENTITETA_VALUTA, id));
+			Drzava drzava = Drzava.findById(id);
+			if(drzava != null){
+				drzava.oznaka = oznaka;
+				drzava.naziv = naziv;
+				drzava.save();
+				show(Konstante.KONF_IZMJENA, id.toString());
+			} else {
+				notFound(PomocneOperacije.porukaNijePronadjen(Konstante.IME_ENTITETA_DRZAVA, id));
+			}
 		}
 	}
 	
