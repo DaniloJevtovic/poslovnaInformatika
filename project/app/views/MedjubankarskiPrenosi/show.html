@@ -16,8 +16,19 @@
 		$("#racBankePovj").val(racBankePovj);
 		$("#ukupanIznos").val(ukupanIznos);
 		$("#vrstaPrenosa").val(vrstaPrenosa);
-
 	}
+	
+	/*
+	function sync(data){
+		//po potrebi dodati sinhronizaciju
+		$("#datumKliringa").val(data[0])
+		$("#racBankeDuz").val(data[1])
+		$("#racBankePovj").val(data[2])
+		$("#ukupanIznos").val(data[3])
+		$("#vrstaPrenosa").val(data[4])
+		$("#id").val(data[5])
+		highlightedId = data[5];
+	}*/
 
 	function remove(id){
 		$(location).attr('href', '/MedjubankarskiPrenosi/delete?id=' +id)
@@ -47,6 +58,9 @@
 <div class = "container-fluid">
 	<h1>Međubankarski prenosi</h1>
 
+	<!--  #{TabelaMedjubankarskiPrenosi data : medjubanakarskiPrenosi, tableId : 'tabela_medjubanakarskiPrenosi', hiddenColumns : '[5]', idColumn:'5' /} -->
+
+	 
 	<table class = "maintable">
 		<tr class = "header">
 	   		<th>Datum kliringa</th>
@@ -66,6 +80,8 @@
 		</tr>
 		#{/list}
 	</table>
+	
+	
 	
 	<!-- 
 	<div class = "panel">

@@ -1,0 +1,25 @@
+<table style="padding: 2em; width: 100%;" id="${_tableId}">
+	<thead>
+		<tr>
+			<th>Datum prenosa</th> 
+			<th>Racun banke duznika</th>
+			<th>Racun banke primaoca</th>
+			<th>Ukupan iznos</th>
+			<th>Vrsta prenosa</th>
+			<th>Id</th>
+		</tr>
+	</thead>
+	<tbody>
+	#{list items:_data, as:'medjubankarskiPrenos'}
+		<tr>
+			<td class = "datumKliringa">${medjubankarskiPrenos.datumKliringa.format()}</td>
+			<td class = "racBankeDuz">${medjubankarskiPrenos.racBankeDuz}</td>
+			<td class = "racBankePovj">${medjubankarskiPrenos.racBankePovj}</td>
+			<td class = "ukupanIznos">${medjubankarskiPrenos.ukupanIznos}</td>
+			<td class = "vrstaPrenosa">${medjubankarskiPrenos.vrstaPrenosa}</td>
+			<td style = "visibility: hidden; max-width: 0px" class = "id">${medjubankarskiPrenos.id}</td>
+		</tr>
+	#{/list}
+	</tbody>
+</table>
+#{include 'tags/TableConfig.html' /}
